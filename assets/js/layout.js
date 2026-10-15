@@ -153,6 +153,7 @@
       '<div><h3>Talk to us</h3><ul><li><a href="tel:' + V.phone + '">' + V.phoneDisplay + '</a></li><li><a href="' + waLink + '" target="_blank" rel="noopener">WhatsApp us</a></li><li><a href="' + V.instagram + '" target="_blank" rel="noopener">Instagram ' + V.handle + '</a></li><li><a href="book.html">Book a table</a></li></ul></div>' +
       '<div class="ftr__explore"><h3>Explore</h3><ul><li><a href="whats-on.html">What\'s on</a></li><li><a href="brunches.html">Brunches & drunches</a></li><li><a href="live-music.html">Live music</a></li><li><a href="sports.html">Sports & darts</a></li><li><a href="offers.html">Offers</a></li><li><a href="menu.html">Menu</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="about.html">Our story</a></li><li><a href="hotel-guests.html">Hotel guests</a></li><li><a href="find-us.html">Find us</a></li></ul></div>' +
       "</div>" +
+      '<p class="ftr__family">Also pouring in Abu Dhabi: <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-reem/">Adam\x27s Beer Kitchen Al Reem Island</a> and <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-forsan/">Adam\x27s Beer Kitchen Al Forsan</a>.</p>' +
       '<div class="ftr__base"><span>&copy; ' + year + " Adam's Beer Kitchen JVC. Please drink responsibly. Over-21s only.</span>" +
       (isHome ? '<a href="index.html?intro">Pour another (replay the intro)</a>' : "") +
       '<span class="ftr__credit">Website by Lukas Grobler</span></div>' +

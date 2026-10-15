@@ -1065,3 +1065,8 @@ a.map--drawn { background: #1d1510; }
   .week__side--next { right: 8px; }
 }
 .bt-fix { margin: 0 0 6px !important; font-size: .82rem; font-style: italic; color: var(--foam-3); }
+
+/* sister branches line in the footer */
+.ftr__family { margin: 40px 0 0; padding-top: 20px; border-top: 1px solid rgba(201, 162, 91, .14); color: var(--foam-3); font-size: .95rem; }
+.ftr__family a { color: var(--foam-2); text-decoration: underline; text-decoration-color: rgba(201, 162, 91, .5); text-underline-offset: 3px; }
+.ftr__family + .ftr__base { margin-top: 18px; }
