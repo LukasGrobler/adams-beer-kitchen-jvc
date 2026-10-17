@@ -364,5 +364,21 @@ window.ABK_DATA = {
   },
 
   /* Real AI for Adam. endpoint: the web address of the small server that talks to Claude (empty = Adam answers from the schedule as before). */
-  ai: { endpoint: "", languages: ["English", "Arabic", "Russian"] }
+  ai: { endpoint: "", languages: ["English", "Arabic", "Russian"] },
+
+  /* ===================== v3 additions (18 October 2026) ===================== */
+
+  /* The server (jvc-server on Vercel), e.g. "https://ask-adam-jvc.vercel.app". Empty = practice mode:
+     the club, predictor and song requests work on each device with sample data, and Adam answers from the schedule.
+     Filling this in switches on the AI, the real club database, song requests, the predictor and live fixtures. */
+  api: "",
+
+  /* Where the site lives, for links in WhatsApp broadcasts and captions when the dashboard is opened from a file. */
+  siteUrl: "https://lukasgrobler.github.io/adams-beer-kitchen-jvc/",
+
+  /* Adam's Club. SAMPLE rewards, to confirm with the venue. "need" must match CLUB_STAMPS on the server (default 10). */
+  club: { need: 10, reward: "a house drink on us", birthday: "a dessert or a house drink in your birthday month" },
+
+  /* Score predictor prize. SAMPLE, to confirm. */
+  predictor: { prize: "An AED 200 bar tab for the top of the table each month" }
 };

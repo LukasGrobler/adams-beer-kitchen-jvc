@@ -50,14 +50,19 @@
   var more = [
     ["live-music.html", "Live music", "opt"],
     ["sports.html", "Sports & darts", "opt"],
+    ["club.html", "Adam's Club"],
+    ["matches.html", "Match board"],
+    ["predictor.html", "Score predictor"],
     ["christmas-parties.html", "Christmas & NYE"],
     ["vouchers.html", "Gift vouchers"],
     ["quiz-league.html", "Quiz league"],
+    ["songs.html", "Request a song"],
     ["offers.html", "Offers"],
     ["gallery.html", "Gallery"],
     ["reviews.html", "Reviews"],
     ["about.html", "Our story"],
     ["hotel-guests.html", "Hotel guests"],
+    ["creators.html", "Creators"],
     ["find-us.html", "Find us"]
   ];
   if (TX) more = [];
@@ -179,7 +184,7 @@
       '<div class="ftr__brand"><img src="assets/img/logo.png" alt="Adam\'s Beer Kitchen" width="120" height="120"><p>Good food, cold beer and great vibes, one floor up at HE Hotel Apartments. JVC\'s best-kept secret, until now.</p></div>' +
       '<div><h3>Visit</h3><address>' + V.address.join("<br>") + "</address><p class=\"small\" style=\"margin-top:10px\">Open daily 12PM – 3AM<br>Valet parking available</p></div>" +
       '<div><h3>Talk to us</h3><ul><li><a href="tel:' + V.phone + '">' + V.phoneDisplay + '</a></li><li><a href="' + waLink + '" target="_blank" rel="noopener">WhatsApp us</a></li><li><a href="' + V.instagram + '" target="_blank" rel="noopener">Instagram ' + V.handle + '</a></li><li><a href="book.html">Book a table</a></li></ul></div>' +
-      '<div class="ftr__explore"><h3>Explore</h3><ul><li><a href="whats-on.html">What\'s on</a></li><li><a href="brunches.html">Brunches & drunches</a></li><li><a href="live-music.html">Live music</a></li><li><a href="sports.html">Sports & darts</a></li><li><a href="christmas-parties.html">Christmas &amp; NYE</a></li><li><a href="vouchers.html">Gift vouchers</a></li><li><a href="quiz-league.html">Quiz league</a></li><li><a href="offers.html">Offers</a></li><li><a href="menu.html">Menu</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="about.html">Our story</a></li><li><a href="hotel-guests.html">Hotel guests</a></li><li><a href="find-us.html">Find us</a></li><li><a href="ar.html" lang="ar" dir="rtl">العربية</a></li><li><a href="ru.html" lang="ru">Русский</a></li></ul></div>' +
+      '<div class="ftr__explore"><h3>Explore</h3><ul><li><a href="whats-on.html">What\'s on</a></li><li><a href="brunches.html">Brunches & drunches</a></li><li><a href="live-music.html">Live music</a></li><li><a href="sports.html">Sports & darts</a></li><li><a href="club.html">Adam\'s Club</a></li><li><a href="matches.html">Match board</a></li><li><a href="predictor.html">Score predictor</a></li><li><a href="christmas-parties.html">Christmas &amp; NYE</a></li><li><a href="vouchers.html">Gift vouchers</a></li><li><a href="quiz-league.html">Quiz league</a></li><li><a href="offers.html">Offers</a></li><li><a href="menu.html">Menu</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="about.html">Our story</a></li><li><a href="hotel-guests.html">Hotel guests</a></li><li><a href="songs.html">Request a song</a></li><li><a href="creators.html">Creators</a></li><li><a href="find-us.html">Find us</a></li><li><a href="ar.html" lang="ar" dir="rtl">العربية</a></li><li><a href="ru.html" lang="ru">Русский</a></li></ul></div>' +
       "</div>" +
       '<p class="ftr__family">Also pouring in Abu Dhabi: <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-reem/">Adam\x27s Beer Kitchen Al Reem Island</a> and <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-forsan/">Adam\x27s Beer Kitchen Al Forsan</a>.</p>' +
       '<div class="ftr__base"><span>&copy; ' + year + " Adam's Beer Kitchen JVC. Please drink responsibly. Over-21s only.</span>" +

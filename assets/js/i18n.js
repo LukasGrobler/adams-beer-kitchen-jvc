@@ -85,7 +85,7 @@ window.ABK_I18N = {
     if (!T) return;
     /* "Ask Adam in Arabic / Russian": shown once the real AI is switched on */
     var band = document.querySelector("[data-ai-band]");
-    if (band && D.ai && D.ai.endpoint) {
+    if (band && ((D.ai && D.ai.endpoint) || D.api)) {
       band.hidden = false;
       band.querySelector("[data-open-adam]").addEventListener("click", function () { var l = document.querySelector(".bt-launch"); if (l) l.click(); });
     }

@@ -250,11 +250,18 @@
     var PIN = "2026", ok = false;
     try { ok = sessionStorage.getItem("abk_dash") === "1"; } catch (e) { ok = false; }
     if (!ok) {
-      root.innerHTML = '<form class="form dash-pin"><h2 class="d-m">Bookings dashboard</h2><p class="small" style="margin:0">For the Adam\'s Beer Kitchen team. Demo PIN: 2026.</p><div class="field"><label for="dash-pin">PIN</label><input id="dash-pin" inputmode="numeric" autocomplete="off"></div><button class="btn" type="submit">Open the dashboard</button><p class="small" data-pin-msg aria-live="polite" style="margin:0"></p></form>';
+      root.innerHTML = '<form class="form dash-pin"><h2 class="d-m">Bookings dashboard</h2><p class="small" style="margin:0">For the Adam\'s Beer Kitchen team.' + (D.api ? "" : " Practice PIN: 2026.") + '</p><div class="field"><label for="dash-pin">PIN</label><input id="dash-pin" inputmode="numeric" autocomplete="off"></div><button class="btn" type="submit">Open the dashboard</button><p class="small" data-pin-msg aria-live="polite" style="margin:0"></p></form>';
       $(".dash-pin", root).addEventListener("submit", function (e) {
         e.preventDefault();
-        if ($("#dash-pin", root).value.trim() === PIN) { try { sessionStorage.setItem("abk_dash", "1"); } catch (er) {} renderDashboard(root); }
-        else $("[data-pin-msg]", root).textContent = "That PIN doesn't match.";
+        var pin = $("#dash-pin", root).value.trim(), msg = $("[data-pin-msg]", root);
+        function enter() { try { sessionStorage.setItem("abk_dash", "1"); sessionStorage.setItem("abk_pin", pin); } catch (er) {} location.reload(); }
+        /* with the server on, the PIN is checked there (STAFF_PIN in Vercel); otherwise the practice PIN */
+        if (D.api) {
+          fetch(D.api.replace(/\/$/, "") + "/api/staff", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ pin: pin }) })
+            .then(function (r) { if (r.ok) enter(); else msg.textContent = r.status === 429 ? "Too many tries. Wait 15 minutes." : "That PIN doesn't match."; })
+            .catch(function () { msg.textContent = "Can't reach the server. Check the connection."; });
+        } else if (pin === PIN) enter();
+        else msg.textContent = "That PIN doesn't match.";
       });
       return;
     }

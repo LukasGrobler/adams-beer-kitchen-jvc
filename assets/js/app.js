@@ -1343,7 +1343,7 @@
   /* ---------------- Real AI Adam: once data.js has ai.endpoint, typed questions go to Claude
      (through the venue's own server, which holds the key). Chips stay instant. If the AI is slow
      or down, the built-in Adam answers instead, so the chat never breaks. */
-  var AI = D.ai && D.ai.endpoint, aiLog = [], BT_KEY = "abk_bt" + (TX ? "_" + LANG : "");
+  var AI = (D.ai && D.ai.endpoint) || (D.api ? D.api.replace(/\/$/, "") + "/api/adam" : ""), aiLog = [], BT_KEY = "abk_bt" + (TX ? "_" + LANG : "");
   function aiAsk(q) {
     var log = $(".bt__log", bt), t = document.createElement("div"), ctl = window.AbortController ? new AbortController() : null;
     btChips([]);
@@ -1359,7 +1359,7 @@
   /* the booking card on the Arabic and Russian pages: their language on screen, English for the team */
   function bookCardTx(n) {
     var A = TX.adam, d = fromIso(bk.date), e = bk.slug ? find(bk.slug) : null, time = bk.time >= 0 ? bk.time : -1;
-    var local = new Date(d.y, d.m, d.d).toLocaleDateString(LANG === "ar" ? "ar-AE" : "ru-RU", { weekday: "long", day: "numeric", month: "long" });
+    var local = new Date(d.y, d.m, d.d).toLocaleDateString(LANG === "ar" ? "ar-AE-u-nu-latn" : "ru-RU", { weekday: "long", day: "numeric", month: "long" });
     var msg = "Hi Adam's Beer Kitchen! I'd like to book a table.\n\nDate: " + longDate(d) + (time >= 0 ? "\nTime: " + fmt(time) : "") + "\nGuests: " + n + (e ? "\nFor: " + e.name : "") + "\n\n" + A.pageNote;
     var rows = [[A.date, esc(local)]];
     if (time >= 0) rows.push([A.time, fmtL(time)]);
