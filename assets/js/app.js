@@ -4,6 +4,7 @@
 (function () {
   "use strict";
   var D = window.ABK_DATA, V = D.venue, L = window.ABK_LAYOUT, I = L.icons;
+  var LANG = L.lang || "en", TX = L.tx || null; /* Arabic / Russian page: words come from i18n.js */
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -81,11 +82,27 @@
   function liveStatus() {
     var b = biz(), open = isOpen(b), hh = V.happyHour[b.bdow], h0 = toMin(hh[0]), h1 = toMin(hh[1]);
     var s = { open: open, b: b, h0: h0, h1: h1 };
+    if (TX) {
+      s.openText = open ? TX.live.open : TX.live.opens;
+      if (open && b.bmins >= h0 && b.bmins < h1) { s.hh = true; s.hhText = TX.live.hhOn.replace("{t}", fmtL(h1)); }
+      else s.hhText = b.bmins < h0 ? TX.live.hhLater : TX.live.hhTomorrow;
+      return s;
+    }
     s.openText = open ? "Open now, till 3AM" : "Opens today at 12PM";
     if (open && b.bmins >= h0 && b.bmins < h1) { s.hh = true; s.hhText = "Happy hour on, ends in " + dur(h1 - b.bmins); }
     else if (b.bmins < h0) s.hhText = "Happy hour from 12PM today";
     else s.hhText = "Happy hour's back tomorrow at 12PM";
     return s;
+  }
+  /* a time in the page's language: "9 مساءً" in Arabic, "21:00" in Russian */
+  function fmtL(m) {
+    var h = Math.floor(m / 60) % 24, mm = m % 60;
+    if (LANG === "ru") return pad(h) + ":" + pad(mm);
+    if (LANG === "ar") {
+      var h12 = h % 12 || 12, w = h === 0 ? "منتصف الليل" : h < 5 ? "فجرًا" : h < 12 ? "صباحًا" : h === 12 ? "ظهرًا" : "مساءً";
+      return h12 + (mm ? ":" + pad(mm) : "") + " " + w;
+    }
+    return fmt(m);
   }
   function paintLive() {
     var s = liveStatus();
@@ -371,6 +388,7 @@
         "</ul></div></section>";
     }
     if (e.hallOfFame) html += '<section class="sec sec--tight"><div class="wrap wrap--narrow" data-hof></div></section>';
+    if (e.hallOfFame) html += '<section class="sec sec--tight" style="padding-top:0"><div class="wrap wrap--narrow"><div class="sec-head"><h2 class="d-l">The league table</h2><p class="lede">Every Tuesday earns points. Here\x27s the top three.</p></div><div data-league-mini></div></div></section>';
 
     html += '<section class="sec sec--tight sec--wood"><div class="wrap split"><div><div class="sec-head"><h2 class="d-l">Good to know</h2></div>' + goodToKnow() + "</div>" +
       (e.img2 ? '<div class="frame frame--tall" style="max-width:420px;justify-self:center"><img src="' + img(e.img2) + '" alt="" loading="lazy"></div>' : '<div class="frame frame--tall" style="max-width:420px;justify-self:center"><img src="' + img("post-1") + '" alt="Inside Adam\'s Beer Kitchen JVC" loading="lazy"></div>') +
@@ -741,6 +759,14 @@
       if (o) $(".mnav__close", mnav).focus(); else burger.focus();
     }
     burger.addEventListener("click", function () { setNav(true); });
+    document.addEventListener("click", function (e) {
+      var a = e.target.closest && e.target.closest('a[href^="#"]'), id = a && a.getAttribute("href");
+      if (!a || id.length < 2 || id === "#main") return;
+      var target = document.getElementById(id.slice(1));
+      if (!target) return;
+      if (mnav.classList.contains("is-open")) { mnav.classList.remove("is-open"); burger.setAttribute("aria-expanded", "false"); document.documentElement.classList.remove("is-locked"); if (window.__lenis) window.__lenis.start(); }
+      if (window.__lenis) { e.preventDefault(); window.__lenis.scrollTo(target, { offset: -90 }); history.replaceState(null, "", id); }
+    });
     $(".mnav__close", mnav).addEventListener("click", function () { setNav(false); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape" && mnav.classList.contains("is-open")) setNav(false); });
   }
@@ -829,6 +855,7 @@
     return { t: t, e: e, a: a, z: z, on: b.bmins >= a, b: b };
   }
   function renderTakeover() {
+    if (TX) return;
     var hero = $(".hero"), info = takeoverInfo();
     if (!hero || !info) return;
     var label = info.a >= 17 * 60 ? "Tonight" : "Today";
@@ -842,6 +869,7 @@
     paintTakeover();
   }
   function paintTakeover() {
+    if (TX) return;
     var p = $("[data-takeover-pill]");
     if (!p) return;
     var info = takeoverInfo();
@@ -1251,6 +1279,7 @@
     return list;
   }
   function btGreeting() {
+    if (TX) return { html: '<p dir="auto">' + TX.adam.greeting + "</p>", chips: [] };
     var m = dubai().mins, hi = m >= 180 && m < 12 * 60 ? "Morning" : m >= 180 && m < 17 * 60 ? "Afternoon" : "Evening";
     return { html: hi + "! I'm Adam. Ask me anything about Adam's Beer Kitchen: what's on, happy hour, food and prices, how to find us, or just type naturally, like “table for 4 tomorrow at 8”.", chips: BT_MAIN };
   }
@@ -1300,12 +1329,57 @@
     }
   }
   function btSave() {
-    try { sessionStorage.setItem("abk_bt", JSON.stringify({ log: $(".bt__log", bt).innerHTML, chips: $(".bt__chips", bt).innerHTML, open: !bt.hidden, bk: bk, ctx: ctx })); } catch (e) { /* storage off: chat still works on this page */ }
+    try { sessionStorage.setItem(BT_KEY, JSON.stringify({ log: $(".bt__log", bt).innerHTML, chips: $(".bt__chips", bt).innerHTML, open: !bt.hidden, bk: bk, ctx: ctx, ai: aiLog.slice(-16) })); } catch (e) { /* storage off: chat still works on this page */ }
   }
   function btSay(who, html) {
     var log = $(".bt__log", bt), m = document.createElement("div");
     m.className = "bt-msg bt-msg--" + who; m.innerHTML = html; log.appendChild(m);
     log.scrollTop = log.scrollHeight;
+    /* the AI reads the whole chat, chip answers included, as plain text */
+    var text = (m.innerText || m.textContent || "").replace(/\s+\n/g, "\n").trim();
+    if (text) aiLog.push({ role: who === "you" ? "user" : "assistant", content: text.slice(0, 600) });
+  }
+
+  /* ---------------- Real AI Adam: once data.js has ai.endpoint, typed questions go to Claude
+     (through the venue's own server, which holds the key). Chips stay instant. If the AI is slow
+     or down, the built-in Adam answers instead, so the chat never breaks. */
+  var AI = D.ai && D.ai.endpoint, aiLog = [], BT_KEY = "abk_bt" + (TX ? "_" + LANG : "");
+  function aiAsk(q) {
+    var log = $(".bt__log", bt), t = document.createElement("div"), ctl = window.AbortController ? new AbortController() : null;
+    btChips([]);
+    t.className = "bt-msg bt-msg--bot bt-typing"; t.innerHTML = "<i></i><i></i><i></i>";
+    log.appendChild(t); log.scrollTop = log.scrollHeight;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 15000);
+    if (window.ABK_TRACK) window.ABK_TRACK.log("adam", { q: q.slice(0, 120) });
+    fetch(AI, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: aiLog.slice(-12) }), signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { if (!r.ok) throw new Error("AI " + r.status); return r.json(); })
+      .then(function (a) { clearTimeout(timer); t.remove(); btReply(aiAnswer(a, q)); })
+      .catch(function () { clearTimeout(timer); t.remove(); btReply(adamAnswer(q)); });
+  }
+  /* the booking card on the Arabic and Russian pages: their language on screen, English for the team */
+  function bookCardTx(n) {
+    var A = TX.adam, d = fromIso(bk.date), e = bk.slug ? find(bk.slug) : null, time = bk.time >= 0 ? bk.time : -1;
+    var local = new Date(d.y, d.m, d.d).toLocaleDateString(LANG === "ar" ? "ar-AE" : "ru-RU", { weekday: "long", day: "numeric", month: "long" });
+    var msg = "Hi Adam's Beer Kitchen! I'd like to book a table.\n\nDate: " + longDate(d) + (time >= 0 ? "\nTime: " + fmt(time) : "") + "\nGuests: " + n + (e ? "\nFor: " + e.name : "") + "\n\n" + A.pageNote;
+    var rows = [[A.date, esc(local)]];
+    if (time >= 0) rows.push([A.time, fmtL(time)]);
+    rows.push([A.guests, String(n)], [A.forE, e ? esc(e.name) : A.justTable]);
+    bk = null;
+    return { html: A.booking + btList(rows) + "<p>" + A.bookingNote + "</p>" + btBtns([[A.sendWa, waTo(msg)]]), chips: [] };
+  }
+  function aiAnswer(a, q) {
+    var html = '<p dir="auto">' + esc(a.reply || "").replace(/\n+/g, "<br>") + "</p>", btns = [];
+    (a.links || []).forEach(function (l, i) { btns.push([esc(l.label), l.page + ".html", i ? "btn--ghost" : ""]); });
+    if (a.handoff) btns.push([TX ? TX.adam.team : "Ask the team on WhatsApp", waTo((TX ? TX.waHello : "Hi Adam's Beer Kitchen! ") + q), btns.length ? "btn--ghost" : ""]);
+    var first = { html: html + (btns.length ? btBtns(btns) : ""), chips: TX ? [] : BT_MAIN };
+    var b = a.booking || {};
+    if (b.wants && /^\d{4}-\d{2}-\d{2}$/.test(b.date) && b.guests > 0) {
+      /* everything needed for a booking: show the WhatsApp booking card, same as the built-in Adam */
+      var tm = /^(\d{1,2}):(\d{2})$/.exec(b.time || ""), ev = b.event && find(b.event);
+      bk = { date: b.date, guests: Math.min(b.guests, 8), plus: b.guests >= 8, time: tm ? +tm[1] * 60 + +tm[2] : -1, slug: ev && ev.days ? ev.slug : "" };
+      return [first, TX ? bookCardTx(b.guests) : bookStep()];
+    }
+    return first;
   }
   function btChips(list) {
     $(".bt__chips", bt).innerHTML = list.map(function (c) {
@@ -1338,24 +1412,26 @@
     btSave();
   }
   function initAdam() {
+    if (TX && !AI) return; /* the built-in Adam speaks English only */
     var chat = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/><path d="M8 9.5h8M8 12.5h5" stroke-linecap="round"/></svg>';
     var send = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 20l18-8L3 4l2.5 8z"/></svg>';
     document.body.insertAdjacentHTML("beforeend",
-      '<button class="bt-launch" type="button" aria-haspopup="dialog" aria-controls="bt">' + chat + '<span class="bt-launch__txt">Ask Adam</span></button>' +
-      '<section class="bt" id="bt" role="dialog" aria-label="Ask Adam" hidden>' +
-      '<header class="bt__head"><img src="assets/img/logo.png" alt=""><div><b>Adam</b><span><i class="dot" aria-hidden="true"></i>Your host at Adam\'s Beer Kitchen JVC</span></div><button class="bt__close" type="button" aria-label="Close chat">&times;</button></header>' +
+      '<button class="bt-launch" type="button" aria-haspopup="dialog" aria-controls="bt">' + chat + '<span class="bt-launch__txt">' + (TX ? TX.adam.launch : "Ask Adam") + "</span></button>" +
+      '<section class="bt" id="bt" role="dialog" aria-label="' + (TX ? TX.adam.launch : "Ask Adam") + '" hidden>' +
+      '<header class="bt__head"><img src="assets/img/logo.png" alt=""><div><b>' + (LANG === "ar" ? "آدم" : LANG === "ru" ? "Адам" : "Adam") + '</b><span><i class="dot" aria-hidden="true"></i>' + (TX ? TX.adam.sub : "Your host at Adam\'s Beer Kitchen JVC") + '</span></div><button class="bt__close" type="button" aria-label="' + (TX ? TX.adam.close : "Close chat") + '">&times;</button></header>' +
       '<div class="bt__log" role="log" aria-live="polite" data-lenis-prevent></div>' +
       '<div class="bt__chips" data-lenis-prevent></div>' +
-      '<form class="bt__form" autocomplete="off"><input type="text" placeholder="Ask me anything, e.g. table for 4 tomorrow at 8" aria-label="Your question" maxlength="200"><button type="submit" aria-label="Send">' + send + "</button></form>" +
-      '<p class="bt__note">Answers come straight from our live schedule. For anything else, the team is on WhatsApp.</p></section>');
+      '<form class="bt__form" autocomplete="off"><input type="text" placeholder="' + (TX ? TX.adam.placeholder : AI ? 'Ask me anything, in any language' : 'Ask me anything, e.g. table for 4 tomorrow at 8') + '" aria-label="Your question" maxlength="200"><button type="submit" aria-label="Send">' + send + "</button></form>" +
+      '<p class="bt__note">' + (TX ? TX.adam.note : "Answers come straight from our live schedule. For anything else, the team is on WhatsApp.") + "</p></section>");
     bt = $("#bt");
     var saved = null;
-    try { saved = JSON.parse(sessionStorage.getItem("abk_bt") || "null"); } catch (e) { saved = null; }
+    try { saved = JSON.parse(sessionStorage.getItem(BT_KEY) || "null"); } catch (e) { saved = null; }
     if (saved && saved.log) {
       $(".bt__log", bt).innerHTML = saved.log.replace(/<div class="bt-msg bt-msg--bot bt-typing">[\s\S]*?<\/div>/g, "");
-      if (saved.chips) $(".bt__chips", bt).innerHTML = saved.chips; else btChips(BT_MAIN);
+      if (saved.chips) $(".bt__chips", bt).innerHTML = saved.chips; else btChips(TX ? [] : BT_MAIN);
       bk = saved.bk || null;
       if (saved.ctx) ctx = saved.ctx;
+      if (saved.ai) aiLog = saved.ai;
     }
     $(".bt-launch").addEventListener("click", function () { btOpen(true); });
     $(".bt__close", bt).addEventListener("click", function () { btOpen(false); });
@@ -1372,14 +1448,14 @@
       if (!q) return;
       inp.value = "";
       btSay("you", esc(q));
-      btReply(adamAnswer(q));
+      if (AI) aiAsk(q); else btReply(adamAnswer(q));
     });
     /* on laptops the chat stays open as visitors move between pages; on phones it waits, with the history kept */
     if (saved && saved.open && window.innerWidth > 760) btOpen(true, true);
     var demo = /[?&]chat(?:=([^&]+))?/.exec(location.search); /* preview: open the chat, optionally ask one question */
     if (demo) {
       btOpen(true, true);
-      if (demo[1]) setTimeout(function () { var q = decodeURIComponent(demo[1]); btSay("you", esc(q)); btReply(adamAnswer(q)); }, 900);
+      if (demo[1]) setTimeout(function () { var q = decodeURIComponent(demo[1]); btSay("you", esc(q)); if (AI) aiAsk(q); else btReply(adamAnswer(q)); }, 900);
     }
   }
 

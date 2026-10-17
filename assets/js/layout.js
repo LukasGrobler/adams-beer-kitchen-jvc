@@ -6,6 +6,11 @@
   var file = (location.pathname.split("/").pop() || "index.html").toLowerCase();
   if (file.indexOf(".html") === -1) file = "index.html";
   var isHome = file === "index.html";
+  /* Arabic and Russian pages (ar.html, ru.html) set <html lang> and load i18n.js */
+  var LANG = (document.documentElement.getAttribute("lang") || "en").slice(0, 2);
+  var TX = LANG !== "en" && window.ABK_I18N ? window.ABK_I18N[LANG] : null;
+  function tx(k, en) { return TX && TX[k] !== undefined ? TX[k] : en; }
+  var home = TX ? file : "index.html", bookHref = TX ? "#book" : "book.html";
   if (isHome) { document.documentElement.classList.add("pre-hero"); setTimeout(function () { document.documentElement.classList.remove("pre-hero"); }, 2500); }
 
   function ls(k, v) {
@@ -35,7 +40,7 @@
     hop: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l5 3.6-5 3-5-3zM7 8.6l5 3 5-3v3.2l-5 3-5-3zM7 14.2l5 3 5-3V17l-5 4-5-4z"/></svg>'
   };
 
-  var nav = [
+  var nav = TX ? TX.nav : [
     ["whats-on.html", "What's on"],
     ["brunches.html", "Brunches"],
     ["live-music.html", "Live music", "opt"],
@@ -45,6 +50,9 @@
   var more = [
     ["live-music.html", "Live music", "opt"],
     ["sports.html", "Sports & darts", "opt"],
+    ["christmas-parties.html", "Christmas & NYE"],
+    ["vouchers.html", "Gift vouchers"],
+    ["quiz-league.html", "Quiz league"],
     ["offers.html", "Offers"],
     ["gallery.html", "Gallery"],
     ["reviews.html", "Reviews"],
@@ -52,30 +60,40 @@
     ["hotel-guests.html", "Hotel guests"],
     ["find-us.html", "Find us"]
   ];
+  if (TX) more = [];
+  /* the language picker: every page, top right */
+  var LANGS = [["index.html", "English", "en", "EN"], ["ar.html", "العربية", "ar", "ع"], ["ru.html", "Русский", "ru", "RU"]];
+  var globe = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.6 2.6 3.8 5.6 3.8 9s-1.2 6.4-3.8 9c-2.6-2.6-3.8-5.6-3.8-9S9.4 5.6 12 3z"/></svg>';
+  var langPick = '<div class="langpick"><button type="button" aria-expanded="false" aria-controls="langdrop" aria-label="Language / اللغة / Язык">' + globe + "<span>" + LANGS.filter(function (l) { return l[2] === LANG; })[0][3] + "</span>" + "</button>" +
+    '<div class="langpick__drop" id="langdrop">' + LANGS.map(function (l) {
+      return '<a href="' + l[0] + '" lang="' + l[2] + '"' + (l[2] === "ar" ? ' dir="rtl"' : "") + (l[2] === LANG ? ' aria-current="true"' : "") + ">" + l[1] + "</a>";
+    }).join("") + "</div></div>";
+  function hl(n) { return n[3] ? ' lang="' + n[3] + '"' + (n[3] === "ar" ? ' dir="rtl"' : "") : ""; }
   function cur(h) { return h === file ? ' aria-current="page"' : ""; }
 
-  var waLink = "https://wa.me/" + V.whatsapp + "?text=" + encodeURIComponent("Hi Adam's Beer Kitchen! ");
+  var waLink = "https://wa.me/" + V.whatsapp + "?text=" + encodeURIComponent(tx("waHello", "Hi Adam's Beer Kitchen! "));
 
   var header =
-    '<a class="skip" href="#main">Skip to content</a>' +
+    '<a class="skip" href="#main">' + tx("skip", "Skip to content") + "</a>" +
     '<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="chalk" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="2.4" xChannelSelector="R" yChannelSelector="G"/></filter></svg>' +
     '<header class="hdr" id="hdr"><div class="wrap hdr__in">' +
-    '<a class="brand" href="index.html" aria-label="Adam\'s Beer Kitchen JVC, home"><img src="assets/img/logo.png" alt="" width="58" height="58"><span class="brand__txt"><span class="brand__name">Adam\'s Beer Kitchen</span><span class="brand__sub">JVC, Floor 1 of HE Hotel</span></span></a>' +
+    '<a class="brand" href="' + home + '" aria-label="Adam\'s Beer Kitchen JVC, home"><img src="assets/img/logo.png" alt="" width="58" height="58"><span class="brand__txt"><span class="brand__name">Adam\'s Beer Kitchen</span><span class="brand__sub">' + tx("brandSub", "JVC, Floor 1 of HE Hotel") + "</span></span></a>" +
     '<nav class="nav" aria-label="Main">' +
     nav.map(function (n) { return '<a class="nav__a' + (n[2] ? " nav__a--opt" : "") + '" href="' + n[0] + '"' + cur(n[0]) + ">" + n[1] + "</a>"; }).join("") +
-    '<div class="nav__more"><button type="button" aria-expanded="false" aria-controls="moredrop">More ' + I.chev + '</button><div class="nav__drop" id="moredrop">' +
-    more.map(function (n) { return '<a href="' + n[0] + '"' + (n[2] ? ' class="opt"' : "") + cur(n[0]) + ">" + n[1] + "</a>"; }).join("") +
-    "</div></div></nav>" +
-    '<div class="hdr__cta"><span class="pill" data-open-pill><span class="pill__dot"></span><span data-open-text>Open daily 12PM – 3AM</span></span><a class="btn btn--sm" href="book.html">Book a table</a>' +
-    '<button class="hdr__burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><span></span></button></div>' +
+    (more.length ? '<div class="nav__more"><button type="button" aria-expanded="false" aria-controls="moredrop">More ' + I.chev + '</button><div class="nav__drop" id="moredrop">' +
+    more.map(function (n) { return '<a href="' + n[0] + '"' + (n[2] ? ' class="opt"' : "") + hl(n) + cur(n[0]) + ">" + n[1] + "</a>"; }).join("") +
+    "</div></div>" : "") + "</nav>" +
+    '<div class="hdr__cta">' + langPick + '<span class="pill" data-open-pill><span class="pill__dot"></span><span data-open-text>' + tx("openDaily", "Open daily 12PM – 3AM") + '</span></span><a class="btn btn--sm" href="' + bookHref + '">' + tx("bookShort", "Book a table") + "</a>" +
+    '<button class="hdr__burger" type="button" aria-label="' + tx("menuOpen", "Open menu") + '" aria-expanded="false" aria-controls="mnav"><span></span></button></div>' +
     "</div></header>" +
-    '<div class="mnav" id="mnav" role="dialog" aria-modal="true" aria-label="Menu"><div class="mnav__top"><a class="brand" href="index.html"><img src="assets/img/logo.png" alt="Adam\'s Beer Kitchen" width="58" height="58"></a><button class="mnav__close" type="button" aria-label="Close menu">&times;</button></div>' +
+    '<div class="mnav" id="mnav" role="dialog" aria-modal="true" aria-label="Menu"><div class="mnav__top"><a class="brand" href="' + home + '"><img src="assets/img/logo.png" alt="Adam\'s Beer Kitchen" width="58" height="58"></a><button class="mnav__close" type="button" aria-label="' + tx("menuClose", "Close menu") + '">&times;</button></div>' +
     '<ul class="mnav__list">' +
-    [["index.html", "Home"]].concat(nav, more.filter(function (m) { return !m[2]; })).map(function (n, i) {
-      return '<li' + (i > 5 ? ' class="mnav__minor"' : "") + '><a href="' + n[0] + '"' + cur(n[0]) + ">" + n[1] + "</a></li>";
+    [[home, tx("home", "Home")]].concat(nav, more.filter(function (m) { return !m[2]; })).map(function (n, i) {
+      return '<li' + (i > 5 ? ' class="mnav__minor"' : "") + '><a href="' + n[0] + '"' + hl(n) + cur(n[0]) + ">" + n[1] + "</a></li>";
     }).join("") +
     "</ul>" +
-    '<div class="mnav__foot"><a class="btn" href="book.html">Book a table</a><div class="btn-row" style="display:grid;grid-template-columns:1fr 1fr"><a class="btn btn--wa" href="' + waLink + '" target="_blank" rel="noopener">' + I.wa + ' WhatsApp</a><a class="btn btn--ghost" href="tel:' + V.phone + '">' + I.phone + " Call</a></div></div></div>";
+    '<div class="mnav__langs">' + LANGS.map(function (l) { return '<a href="' + l[0] + '" lang="' + l[2] + '"' + (l[2] === LANG ? ' aria-current="true"' : "") + ">" + l[1] + "</a>"; }).join("") + "</div>" +
+    '<div class="mnav__foot"><a class="btn" href="' + bookHref + '">' + tx("book", "Book a table") + '</a><div class="btn-row" style="display:grid;grid-template-columns:1fr 1fr"><a class="btn btn--wa" href="' + waLink + '" target="_blank" rel="noopener">' + I.wa + " " + tx("wa", "WhatsApp") + '</a><a class="btn btn--ghost" href="tel:' + V.phone + '">' + I.phone + " " + tx("call", "Call") + "</a></div></div></div>";
 
   /* 21+ check, remembered on this device */
   var skip = /[?&]skip\b/.test(location.search); /* preview mode for screenshots */
@@ -85,9 +103,9 @@
   var gate = needGate ?
     '<div class="gate" id="gate" role="dialog" aria-modal="true" aria-labelledby="gate-q"><div class="gate__card">' +
     '<img class="gate__logo" src="assets/img/logo.png" alt="Adam\'s Beer Kitchen" width="190" height="190">' +
-    '<h2 class="gate__q" id="gate-q">Are you 21 or over?</h2>' +
-    '<p class="gate__fine">This website features alcohol. In line with UAE law, you need to be 21 or over to come in.</p>' +
-    '<div class="btn-row" style="justify-content:center"><button class="btn" type="button" data-gate-yes>Yes, I\'m 21+</button><button class="btn btn--ghost" type="button" data-gate-no>Not yet</button></div>' +
+    '<h2 class="gate__q" id="gate-q">' + tx("gateQ", "Are you 21 or over?") + "</h2>" +
+    '<p class="gate__fine">' + tx("gateFine", "This website features alcohol. In line with UAE law, you need to be 21 or over to come in.") + "</p>" +
+    '<div class="btn-row" style="justify-content:center"><button class="btn" type="button" data-gate-yes>' + tx("gateYes", "Yes, I\'m 21+") + '</button><button class="btn btn--ghost" type="button" data-gate-no>' + tx("gateNo", "Not yet") + "</button></div>" +
     '<p class="gate__no" aria-live="polite"></p></div></div>' : "";
 
   /* the pour: homepage, once per visit (add ?intro to the address to see it again) */
@@ -126,6 +144,15 @@
   var me = document.currentScript;
   me.insertAdjacentHTML("afterend", header + gate + pour);
 
+  (function () {
+    var lp = document.querySelector(".langpick"), b = lp && lp.querySelector("button");
+    if (!lp) return;
+    function set(o) { lp.classList.toggle("is-open", o); b.setAttribute("aria-expanded", String(o)); }
+    b.addEventListener("click", function (e) { e.stopPropagation(); set(!lp.classList.contains("is-open")); });
+    document.addEventListener("click", function (e) { if (!lp.contains(e.target)) set(false); });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") set(false); });
+  })();
+
   if (needGate) {
     var g = document.getElementById("gate");
     g.querySelector("[data-gate-yes]").addEventListener("click", function () {
@@ -137,7 +164,7 @@
       setTimeout(function () { g.remove(); }, 560);
     });
     g.querySelector("[data-gate-no]").addEventListener("click", function () {
-      g.querySelector(".gate__no").textContent = "Come back on your 21st. We'll save you a stool.";
+      g.querySelector(".gate__no").textContent = tx("gateNoText", "Come back on your 21st. We'll save you a stool.");
     });
     setTimeout(function () { var y = g.querySelector("[data-gate-yes]"); if (y) y.focus(); }, 50);
   }
@@ -146,12 +173,13 @@
   function mountFooter() {
     if (document.querySelector(".ftr")) return;
     var year = new Date().getFullYear();
+    if (TX) return document.body.insertAdjacentHTML("beforeend", footerTx(year));
     var html =
       '<footer class="ftr"><div class="wrap"><div class="ftr__grid">' +
       '<div class="ftr__brand"><img src="assets/img/logo.png" alt="Adam\'s Beer Kitchen" width="120" height="120"><p>Good food, cold beer and great vibes, one floor up at HE Hotel Apartments. JVC\'s best-kept secret, until now.</p></div>' +
       '<div><h3>Visit</h3><address>' + V.address.join("<br>") + "</address><p class=\"small\" style=\"margin-top:10px\">Open daily 12PM – 3AM<br>Valet parking available</p></div>" +
       '<div><h3>Talk to us</h3><ul><li><a href="tel:' + V.phone + '">' + V.phoneDisplay + '</a></li><li><a href="' + waLink + '" target="_blank" rel="noopener">WhatsApp us</a></li><li><a href="' + V.instagram + '" target="_blank" rel="noopener">Instagram ' + V.handle + '</a></li><li><a href="book.html">Book a table</a></li></ul></div>' +
-      '<div class="ftr__explore"><h3>Explore</h3><ul><li><a href="whats-on.html">What\'s on</a></li><li><a href="brunches.html">Brunches & drunches</a></li><li><a href="live-music.html">Live music</a></li><li><a href="sports.html">Sports & darts</a></li><li><a href="offers.html">Offers</a></li><li><a href="menu.html">Menu</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="about.html">Our story</a></li><li><a href="hotel-guests.html">Hotel guests</a></li><li><a href="find-us.html">Find us</a></li></ul></div>' +
+      '<div class="ftr__explore"><h3>Explore</h3><ul><li><a href="whats-on.html">What\'s on</a></li><li><a href="brunches.html">Brunches & drunches</a></li><li><a href="live-music.html">Live music</a></li><li><a href="sports.html">Sports & darts</a></li><li><a href="christmas-parties.html">Christmas &amp; NYE</a></li><li><a href="vouchers.html">Gift vouchers</a></li><li><a href="quiz-league.html">Quiz league</a></li><li><a href="offers.html">Offers</a></li><li><a href="menu.html">Menu</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="about.html">Our story</a></li><li><a href="hotel-guests.html">Hotel guests</a></li><li><a href="find-us.html">Find us</a></li><li><a href="ar.html" lang="ar" dir="rtl">العربية</a></li><li><a href="ru.html" lang="ru">Русский</a></li></ul></div>' +
       "</div>" +
       '<p class="ftr__family">Also pouring in Abu Dhabi: <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-reem/">Adam\x27s Beer Kitchen Al Reem Island</a> and <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-forsan/">Adam\x27s Beer Kitchen Al Forsan</a>.</p>' +
       '<div class="ftr__base"><span>&copy; ' + year + " Adam's Beer Kitchen JVC. Please drink responsibly. Over-21s only.</span>" +
@@ -163,5 +191,21 @@
     document.body.insertAdjacentHTML("beforeend", html);
   }
 
-  window.ABK_LAYOUT = { icons: I, mountFooter: mountFooter, isHome: isHome, file: file, needGate: needGate, needPour: needPour, ss: ss, ls: ls, waLink: waLink };
+  function footerTx(year) {
+    return '<footer class="ftr"><div class="wrap"><div class="ftr__grid">' +
+      '<div class="ftr__brand"><img src="assets/img/logo.png" alt="Adam\'s Beer Kitchen" width="120" height="120"><p>' + TX.ftrBlurb + "</p></div>" +
+      "<div><h3>" + TX.ftrVisit + "</h3><address>" + TX.ftrAddress.join("<br>") + '</address><p class="small" style="margin-top:10px">' + TX.ftrHours + "<br>" + TX.ftrValet + "</p></div>" +
+      "<div><h3>" + TX.ftrTalk + '</h3><ul><li><a href="tel:' + V.phone + '" dir="ltr">' + V.phoneDisplay + '</a></li><li><a href="' + waLink + '" target="_blank" rel="noopener">' + TX.ftrWa + '</a></li><li><a href="' + V.instagram + '" target="_blank" rel="noopener">' + TX.ftrIg + " " + V.handle + '</a></li><li><a href="#book">' + TX.book + "</a></li></ul></div>" +
+      '<div class="ftr__explore"><h3>' + TX.ftrExplore + "</h3><ul>" + TX.nav.map(function (n) { return '<li><a href="' + n[0] + '">' + n[1] + "</a></li>"; }).join("") +
+      '<li><a href="index.html" lang="en" dir="ltr">' + TX.ftrEnglish + "</a></li>" + TX.langs.filter(function (l) { return l[2] !== "en"; }).map(function (l) { return '<li><a href="' + l[0] + '"' + hl([0, 0, 0, l[2]]) + ">" + l[1] + "</a></li>"; }).join("") + "</ul></div>" +
+      "</div>" +
+      '<p class="ftr__family">' + TX.ftrFamily + ' <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-reem/">' + TX.ftrReem + "</a>" + TX.ftrAnd + '<a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-forsan/">' + TX.ftrForsan + "</a>.</p>" +
+      '<div class="ftr__base"><span>&copy; ' + year + " Adam's Beer Kitchen JVC. " + TX.ftrBase + "</span>" +
+      '<span class="ftr__credit">' + TX.ftrCredit + "</span></div>" +
+      "</div></footer>" +
+      '<nav class="actbar" aria-label="Quick actions"><a href="tel:' + V.phone + '">' + I.phone + " " + TX.call + '</a><a href="' + waLink + '" target="_blank" rel="noopener">' + I.wa + " " + TX.wa + '</a><a class="actbar__book" href="#book">' + TX.bookShort + "</a></nav>" +
+      '<div class="toast" role="status" aria-live="polite"></div>';
+  }
+
+  window.ABK_LAYOUT = { icons: I, mountFooter: mountFooter, isHome: isHome, file: file, needGate: needGate, needPour: needPour, ss: ss, ls: ls, waLink: waLink, lang: LANG, tx: TX };
 })();

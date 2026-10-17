@@ -276,5 +276,93 @@ window.ABK_DATA = {
     ["Kale & quinoa salad", "Add chicken, salmon or shrimps", 68],
     ["Lava cake", "", 60],
     ["Apple crumble", "", 60]
-  ]
+  ],
+
+  /* ===================== v2 additions (18 October 2026) ===================== */
+
+  /* Where bookings come from. Each ad or QR code links with ?src=..., so every WhatsApp booking is counted by source.
+     endpoint: the booking counter's web address once it's live (empty = demo, kept on this device). */
+  track: {
+    endpoint: "",
+    sources: {
+      instagram: "Instagram", "ig-ad": "Instagram ads", google: "Google search", "google-ads": "Google ads",
+      "qr-table": "QR on the tables", "qr-hotel": "QR in HE Hotel", whatsapp: "WhatsApp broadcast", facebook: "Facebook", direct: "Direct and other"
+    }
+  },
+
+  /* Payments for deposits and vouchers. mode "demo" shows a practice checkout (no card is charged);
+     at launch it becomes "links", with one payment link per item from the venue's payment provider. */
+  payments: { mode: "demo", provider: "Card or Apple Pay", links: {} },
+
+  /* Campaign landing pages for ads. SAMPLE packages and prices, to confirm with the venue. */
+  campaigns: [
+    {
+      slug: "christmas-parties", name: "Christmas parties", season: "1 – 24 December 2026", img: "post-1", src: "ig-ad",
+      title: ["Christmas", "parties"], hook: "Office parties, friends' nights out and family get-togethers, in a pub that already has the screens, the booths and the private area.",
+      from: "2026-12-01", to: "2026-12-24", groupMin: 8,
+      packages: [
+        { id: "xmas-feast", name: "Festive feast", note: "Three-course festive menu with 2 house drinks", price: 199, deposit: 50 },
+        { id: "xmas-party", name: "Party package", note: "Sharing platters and 3 hours of house drinks", price: 249, deposit: 75 },
+        { id: "xmas-premium", name: "Premium party", note: "Platters, carvery station and 3 hours of premium drinks", price: 329, deposit: 100 }
+      ],
+      perks: ["Private area for groups of 15 – 40", "Big screens for your slides or the match", "A deposit locks the date, so it's yours", "Free table for the organiser's birthday month"]
+    },
+    {
+      slug: "new-years-eve", name: "New Year's Eve", season: "Thursday 31 December 2026", img: "post-12", src: "ig-ad",
+      title: ["New Year's", "Eve"], hook: "Live music, a countdown on every screen and a package that runs right through midnight.",
+      from: "2026-12-31", to: "2026-12-31", groupMin: 2,
+      packages: [
+        { id: "nye-house", name: "House package", note: "9PM – 1AM, house drinks, bites platter and the countdown", price: 299, deposit: 299 },
+        { id: "nye-premium", name: "Premium package", note: "9PM – 1AM, premium drinks, sharing platters and a reserved table", price: 399, deposit: 399 }
+      ],
+      perks: ["Live band from 9PM", "Countdown on every screen", "Reserved table for your group", "Paid in full to secure the table"]
+    },
+    {
+      slug: "match-day-tables", name: "Match-day tables", season: "Every Premier League weekend", img: "post-11", src: "google-ads",
+      title: ["Match", "day"], hook: "Every Premier League game on the big screens, with a table saved for you and your mates.",
+      from: "2026-10-01", to: "2027-05-31", groupMin: 2,
+      packages: [
+        { id: "match-bucket", name: "Bucket and bites", note: "5 select beers and a bites platter for the table", price: 199, deposit: 0 },
+        { id: "match-tower", name: "Tower up", note: "3.5L beer tower and a bites platter", price: 179, deposit: 0 }
+      ],
+      perks: ["A table facing the screens", "Darts and pool for half-time", "Happy hour till 7PM on Fri and Sat", "Free to book, no deposit"]
+    }
+  ],
+
+  /* Gift vouchers. SAMPLE values, to confirm with the venue. */
+  vouchers: [
+    { id: "roast-2", name: "Sunday roast for two", note: "Two roast buffets on any Sunday", price: 198, img: "post-9" },
+    { id: "steak-2", name: "Steak night for two", note: "Two 250g rib-eyes with fries and 2 house drinks each", price: 398, img: "post-3" },
+    { id: "tower", name: "Tower and bites", note: "A 3.5L beer tower with a bites platter", price: 179, img: "post-1" },
+    { id: "credit-250", name: "AED 250 credit", note: "Spend it on anything, any day", price: 250, img: "post-5" },
+    { id: "credit-500", name: "AED 500 credit", note: "Spend it on anything, any day", price: 500, img: "post-12" }
+  ],
+
+  /* Where you can sit. Zones on the floor plan in the booking form; the layout is a sketch, to confirm with the venue. */
+  zones: [
+    { id: "booths", name: "Booths", note: "Cosy, seats 4 – 6", seat: "Booth" },
+    { id: "screens", name: "By the big screens", note: "Best for the match", seat: "Near the big screens" },
+    { id: "bar", name: "High tables by the bar", note: "Quick service, great buzz", seat: "High table by the bar" },
+    { id: "games", name: "Darts and pool", note: "Settle it the old way", seat: "Near the darts and pool" },
+    { id: "terrace", name: "Terrace", note: "Fresh air, covered", seat: "Outdoor terrace" },
+    { id: "private", name: "Private area", note: "Groups of 15 – 40", seat: "Private area (groups)" }
+  ],
+
+  /* Quiz league: points per week (1st 10, 2nd 8, 3rd 6, 4th 5, then 4, 3, 2, 1 for taking part). SAMPLE season, to confirm. */
+  league: {
+    season: "Autumn league 2026", weeks: ["8 Sep", "15 Sep", "22 Sep", "29 Sep", "6 Oct", "13 Oct"], prize: "AED 2,000 in prizes at the season final, 15 December",
+    teams: [
+      { name: "Quiz Team Aguilera", pts: [6, 8, 5, 8, 10, 6] },
+      { name: "Les Quizérables", pts: [8, 5, 6, 10, 8, 5] },
+      { name: "The Hoppy Campers", pts: [5, 6, 10, 6, 5, 8] },
+      { name: "Pint of No Return", pts: [4, 10, 8, 5, 6, 4] },
+      { name: "Universally Challenged", pts: [10, 4, 4, 4, 4, 10] },
+      { name: "Know It Ales", pts: [3, 3, 3, 3, 3, 3] },
+      { name: "JVC Brainiacs", pts: [2, 2, 1, 2, 2, 2] },
+      { name: "Circle of Trust", pts: [1, 1, 2, 1, 1, 1] }
+    ]
+  },
+
+  /* Real AI for Adam. endpoint: the web address of the small server that talks to Claude (empty = Adam answers from the schedule as before). */
+  ai: { endpoint: "", languages: ["English", "Arabic", "Russian"] }
 };
