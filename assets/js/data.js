@@ -193,12 +193,12 @@ window.ABK_DATA = {
       fine: "All day, 26 – 31 October. Terms and conditions apply."
     },
     {
-      slug: "beer-bucket", name: "Beer Bucket Deal", with: "Any 5 bottles for AED 99",
-      from: "2026-10-01", to: "2026-11-30", when: "October and November", img: null, type: ["5 for 99", "beer bucket at Adam's Beer Kitchen"],
-      short: "Pick any 5 bottles of Budweiser, Singha, Brooklyn IPA or Amstel for AED 99. Dine-in only.",
-      intro: "Pick any five bottles from the line-up and mix them however you like: Budweiser, Singha, Brooklyn IPA or Amstel. Same price, every brand, all through October and November.",
-      facts: [["Bucket", "Any 5 bottles"], ["Price", "AED 99"], ["Until", "30 November"]],
-      deal: { title: "Any 5 bottles: Budweiser, Singha, Brooklyn IPA or Amstel", price: 99 },
+      slug: "beer-bucket", name: "Heineken Beer Bucket", with: "A bucket of Heineken for AED 129",
+      from: "2026-10-01", to: "2026-11-30", when: "October and November", img: null, type: ["Heineken", "bucket at Adam's Beer Kitchen"],
+      short: "A bucket of Heineken for the table, AED 129. Dine-in only.",
+      intro: "A bucket of Heineken bottles on ice for the table, AED 129, all through October and November. Built for the match, the race or just the catch-up.",
+      facts: [["Bucket", "Heineken"], ["Price", "AED 129"], ["Until", "30 November"]],
+      deal: { title: "A bucket of Heineken bottles", price: 129 },
       fine: "Dine-in only. Same price for every brand. Valid October and November 2026."
     },
     {
@@ -342,7 +342,7 @@ window.ABK_DATA = {
       title: ["Match", "day"], hook: "Every Premier League game on the big screens, with a table saved for you and your mates.",
       from: "2026-10-01", to: "2027-05-31", groupMin: 2,
       packages: [
-        { id: "match-bucket", name: "Beer bucket", note: "Any 5 bottles of Budweiser, Singha, Brooklyn IPA or Amstel (October and November)", price: 99, deposit: 0, per: "bucket" },
+        { id: "match-bucket", name: "Heineken bucket", note: "A bucket of Heineken bottles for the table (October and November)", price: 129, deposit: 0, per: "bucket" },
         { id: "match-tower", name: "Tower up", note: "2.5L beer tower and a bites platter, for Monday to Thursday games", price: 179, deposit: 0, per: "tower" }
       ],
       perks: ["A table facing the screens", "Darts and pool for half-time", "Happy hour till 7PM on Fri and Sat", "Free to book, no deposit"]

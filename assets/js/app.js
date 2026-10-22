@@ -1165,7 +1165,7 @@
   }
   function aDrinks() {
     var bucket = find("beer-bucket"), bucketOn = bucket && specialState(bucket) === "on";
-    return { html: "Guinness on tap, cocktails and a large selection of beers. The <b>beer tower</b> (2.5 litres with a bites platter) is AED 179 Monday to Thursday" + (bucketOn ? ", the <b>beer bucket</b> is any 5 bottles for AED 99" : "") + ", and happy hour runs every day from 12PM. The full drinks list is on its way to the site; the team can send it on WhatsApp now." + btBtns([["Ask for the drinks list", waTo("Hi Adam's Beer Kitchen! Could you send me the drinks menu?")]]), chips: [["hh", "Is it happy hour?"], ["deals", "Any deals today?"]] };
+    return { html: "Guinness on tap, cocktails and a large selection of beers. The <b>beer tower</b> (2.5 litres with a bites platter) is AED 179 Monday to Thursday" + (bucketOn ? ", the <b>Heineken bucket</b> is AED 129" : "") + ", and happy hour runs every day from 12PM. The full drinks list is on its way to the site; the team can send it on WhatsApp now." + btBtns([["Ask for the drinks list", waTo("Hi Adam's Beer Kitchen! Could you send me the drinks menu?")]]), chips: [["hh", "Is it happy hour?"], ["deals", "Any deals today?"]] };
   }
   function aAge() {
     return { html: "You need to be <b>21 or over</b> to drink in Dubai, and the team may ask for ID.", chips: BT_MAIN };
