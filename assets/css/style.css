@@ -1375,3 +1375,30 @@ button.link { background: none; border: 0; border-bottom: 2px solid currentColor
 /* creators */
 .creator-stats { margin-bottom: 8px; }
 .creator-cols h2 { margin-bottom: 16px; }
+
+/* ---------- v4 (22 October 2026): Grand Prix season, staff confirmation on the club card ---------- */
+/* the staff PIN on a guest's phone: dots, without a password field the phone would offer to save */
+.pin-mask { -webkit-text-security: disc; }
+.club-done { margin: 0; padding: 10px 14px; border-radius: 6px; background: rgba(121, 179, 86, .14); border: 1px solid rgba(121, 179, 86, .5); color: #c8f0b0; font-family: var(--f-display); font-weight: 700; font-size: 1.1rem; }
+.races { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.races li { display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "day act" "name act"; gap: 2px 14px; align-items: center; padding: 14px 18px; border-radius: 8px; background: var(--wood); border: 2px solid var(--wood-line); }
+.races li > :last-child { grid-area: act; }
+.races li.is-past { opacity: .55; }
+.races li.is-finale { border-color: var(--yellow); }
+.races__day { grid-area: day; font-family: var(--f-display); font-weight: 700; font-size: 1.1rem; color: var(--yellow); }
+.races b { grid-area: name; font-family: var(--f-display); font-weight: 700; font-size: 1.25rem; color: var(--foam); }
+.races b .small { display: block; font-family: var(--f-text); font-weight: 400; }
+.promos { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: start; }
+.promo { display: grid; gap: 14px; padding: clamp(20px, 3vw, 30px); border-radius: 8px; background: var(--stout-2); border: 2px solid var(--wood-line); }
+.promo > p { margin: 0; color: var(--foam-2); }
+.promo h4 { margin: 4px 0 -4px; }
+.steps { margin: 0; padding-left: 1.3em; display: grid; gap: 8px; color: var(--foam-2); }
+.ladder { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.ladder li { display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; }
+.ladder__p { display: grid; place-items: center; height: 44px; border-radius: 6px; background: var(--yellow); color: var(--yellow-ink); font-family: var(--f-display); font-weight: 800; font-size: 1.3rem; }
+.ladder li:not(:first-child) .ladder__p { background: transparent; color: var(--yellow); border: 2px solid var(--yellow); }
+.ladder b { display: block; font-family: var(--f-display); font-weight: 700; font-size: 1.2rem; line-height: 1.1; color: var(--foam); }
+.pts { list-style: none; margin: 0; padding: 0; display: grid; }
+.pts li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--wood-line); color: var(--foam-2); }
+.pts b { font-family: var(--f-display); font-weight: 700; color: var(--foam); white-space: nowrap; }
+@media (max-width: 900px) { .promos { grid-template-columns: 1fr; } }

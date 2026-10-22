@@ -65,6 +65,8 @@
     ["creators.html", "Creators"],
     ["find-us.html", "Find us"]
   ];
+  /* Grand Prix season (data.js > f1), listed until the last race */
+  if (D.f1 && new Date(Date.now() + 4 * 36e5).toISOString().slice(0, 10) <= D.f1.to) more.splice(3, 0, ["grand-prix.html", "Grand Prix season"]);
   if (TX) more = [];
   /* the language picker: every page, top right */
   var LANGS = [["index.html", "English", "en", "EN"], ["ar.html", "العربية", "ar", "ع"], ["ru.html", "Русский", "ru", "RU"]];

@@ -28,7 +28,7 @@
     var pkgs = c.packages.map(function (p, i) {
       return '<label class="pk' + (i === 0 ? " is-on" : "") + '"><input type="radio" name="pkg" value="' + p.id + '"' + (i === 0 ? " checked" : "") + '>' +
         '<span class="pk__name">' + esc(p.name) + '</span><span class="pk__note">' + esc(p.note) + '</span>' +
-        '<span class="pk__price"><b>' + aed(p.price) + '</b> per person</span>' +
+        '<span class="pk__price"><b>' + aed(p.price) + "</b> per " + esc(p.per || "person") + "</span>" +
         '<span class="pk__dep">' + (p.deposit ? (p.deposit === p.price ? "Paid in full to book" : aed(p.deposit) + " deposit per person to lock the date") : "Free to book, pay on the night") + "</span></label>";
     }).join("");
     root.innerHTML =
@@ -55,12 +55,13 @@
       return { p: p, g: g, date: $("#cp-date", form).value, name: $("#cp-name", form).value.trim(), co: $("#cp-co", form).value.trim() };
     }
     function draw() {
-      var s = state(), total = s.p.price * s.g, dep = s.p.deposit * s.g;
+      /* a bucket or a tower is priced per item, so there's no total for the group */
+      var s = state(), each = s.p.per && s.p.per !== "person", total = s.p.price * s.g, dep = s.p.deposit * s.g;
       $$(".pk", form).forEach(function (l) { l.classList.toggle("is-on", $("input", l).checked); });
       sum.innerHTML =
-        '<ul class="cp-lines"><li><span>' + esc(s.p.name) + "</span><b>" + aed(s.p.price) + " × " + s.g + "</b></li>" +
+        '<ul class="cp-lines"><li><span>' + esc(s.p.name) + "</span><b>" + aed(s.p.price) + (each ? " per " + esc(s.p.per) : " × " + s.g) + "</b></li>" +
         "<li><span>" + (s.date ? nice(s.date) : "Pick a date") + "</span><b>" + s.g + " guests</b></li>" +
-        '<li class="cp-total"><span>Package total</span><b>' + aed(total) + "</b></li>" +
+        (each ? "" : '<li class="cp-total"><span>Package total</span><b>' + aed(total) + "</b></li>") +
         (dep ? '<li class="cp-dep"><span>' + (dep === total ? "Pay now" : "Deposit to pay now") + "</span><b>" + aed(dep) + "</b></li>" : "") + "</ul>" +
         (dep ? '<button class="btn" type="button" data-cp-go>Reserve with ' + aed(dep) + " " + (dep === total ? "payment" : "deposit") + "</button>"
           : '<button class="btn btn--wa" type="button" data-cp-go>' + (I.wa || "") + " Book on WhatsApp</button>") +

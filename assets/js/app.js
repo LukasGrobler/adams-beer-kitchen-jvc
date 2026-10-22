@@ -260,11 +260,13 @@
       '<span class="evcard__img">' + (e.img ? '<img src="' + img(e.img) + '" alt="" loading="lazy">' : "") + "</span>" +
       '<span class="evcard__body"><span class="evcard__time">' + esc(time) + '</span><span class="evcard__name">' + esc(e.name) + '</span><span class="evcard__note">' + esc(e.short) + "</span></span></a>";
   }
+  /* a special without a photo gets a type poster: data.js > type, or its name */
+  function typeLines(e) { return e.type || [e.name, "at Adam's Beer Kitchen"]; }
   function specialCard(s) {
     var stt = specialState(s);
     if (stt === "past") return "";
     return '<a class="special" href="' + s.slug + '.html">' +
-      '<span class="special__img">' + (s.img ? '<img src="' + img(s.img) + '" alt="" loading="lazy">' : '<span class="ev-poster--type" style="display:grid;place-items:center;height:100%;background:radial-gradient(circle at 50% 30%,#3b2412,#1a110b 70%)"><span class="d-m c-yellow">Hallo&shy;ween</span></span>') + "</span>" +
+      '<span class="special__img">' + (s.img ? '<img src="' + img(s.img) + '" alt="" loading="lazy">' : '<span class="ev-poster--type" style="display:grid;place-items:center;height:100%;text-align:center;padding:8px;background:radial-gradient(circle at 50% 30%,#3b2412,#1a110b 70%)"><span class="d-m c-yellow">' + esc(typeLines(s)[0]) + "</span></span>") + "</span>" +
       '<span style="display:grid;gap:8px"><span class="special__badge' + (stt === "soon" ? " special__badge--soon" : "") + '">' + (stt === "on" ? "On now" : "Coming up") + '</span><span class="d-m c-yellow">' + esc(s.name) + '</span><span class="kicker">' + esc(s.when) + '</span><span class="small">' + esc(s.short) + "</span></span>" +
       '<span class="btn btn--sm btn--brass">See the details</span></a>';
   }
@@ -277,7 +279,7 @@
       return '<button class="chip" type="button" data-f="' + f[0] + '" aria-pressed="' + (i === 0) + '">' + f[1] + "</button>";
     }).join("") + "</div>";
     html += '<div class="days">';
-    html += '<div class="dayrow" id="every-day"><div class="dayrow__head"><h3 class="dayrow__day">Every day</h3><span class="dayrow__date">Open 12PM – 3AM</span></div><div class="dayrow__items">' +
+    html += '<div class="dayrow" id="every-day"><div class="dayrow__head"><h3 class="dayrow__day">Offers</h3><span class="dayrow__date">Open 12PM – 3AM</span></div><div class="dayrow__items">' +
       D.offers.map(function (o) { return evCard(o, { time: o.facts[0][1] + (o.slug === "happy-hour" ? " Sun – Thu" : "") }); }).join("") + "</div></div>";
     for (var i = 0; i < 7; i++) {
       var dt = addDays(b.by, b.bm, b.bd, i), dow = dt.dow;
@@ -298,8 +300,19 @@
       $$(".dayrow", root).forEach(function (row) { row.hidden = !$$(".evcard", row).some(function (c2) { return !c2.hidden; }); });
     });
   }
+  /* Grand Prix season (data.js > f1) sits with the specials until the last race */
+  function f1Card() {
+    var F = D.f1;
+    if (!F) return [];
+    var a = fromIso(F.from), b = fromIso(F.to);
+    return [{ slug: "grand-prix", name: "Grand Prix season", from: F.from, to: F.to, img: F.img,
+      when: (a.m === b.m ? a.d : a.d + " " + MONTHS[a.m]) + " – " + b.d + " " + MONTHS[b.m],
+      short: "Every F1 race on the big screens, and F1 prizes to win with Heineken and Jack Daniel's." }];
+  }
   function renderSpecials(el) {
-    var html = D.specials.map(specialCard).join("");
+    /* what's on now first, then the rest by start date */
+    var key = function (s) { return (specialState(s) === "on" ? "0" : "1") + s.from; };
+    var html = D.specials.concat(f1Card()).sort(function (a, b) { return key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0; }).map(specialCard).join("");
     el.innerHTML = html || '<p class="empty">No specials on right now. Check back soon, or follow ' + V.handle + " on Instagram.</p>";
   }
 
@@ -354,7 +367,7 @@
 
     var poster = e.img
       ? '<div class="frame frame--tilt ev-poster"><img src="' + img(e.img) + '" alt="' + esc(e.name) + ' at Adam\'s Beer Kitchen JVC"></div>'
-      : '<div class="frame frame--tilt ev-poster ev-poster--type"><div><p class="d-xl c-yellow" style="line-height:.8">Hallo&shy;ween</p><p class="voice" style="margin-top:12px">week at Adam\'s Beer Kitchen</p></div></div>';
+      : '<div class="frame frame--tilt ev-poster ev-poster--type"><div><p class="d-xl c-yellow" style="line-height:.8">' + esc(typeLines(e)[0]) + '</p><p class="voice" style="margin-top:12px">' + esc(typeLines(e)[1]) + "</p></div></div>";
 
     var html =
       '<section class="ev-hero"><div class="wrap ev-hero__in"><div class="ev-hero__copy">' +
@@ -940,9 +953,9 @@
   function aDeals() {
     var b = biz(), st = liveStatus(), rows = [];
     rows.push(["Daily", '<a href="happy-hour.html">Happy hour</a>', st.hh ? "On now, till " + fmt(st.h1) : "From 12PM, till " + fmt(st.h1)]);
-    var e = find({ 1: "monday-50-off", 2: "quiz-night", 3: "ladies-night", 4: "steak-night", 5: "fuel-up-friday", 6: "smoking-saturdays", 0: "sunday-social" }[b.bdow]);
+    var e = find({ 1: "monday-20-off", 2: "quiz-night", 3: "ladies-night", 4: "steak-night", 5: "fuel-up-friday", 6: "smoking-saturdays", 0: "sunday-social" }[b.bdow]);
     if (e) rows.push([DAYS3[b.bdow], '<a href="' + e.slug + '.html">' + esc(e.name) + "</a>", esc(e.short)]);
-    rows.push(["Any day", '<a href="tower-up.html">Tower up your day</a>', "3.5L beer tower and a bites platter, AED 179"]);
+    if (b.bdow >= 1 && b.bdow <= 4) rows.push(["Mon – Thu", '<a href="tower-up.html">Tower up your day</a>', "2.5L beer tower and a bites platter, AED 179"]);
     D.specials.forEach(function (s) { if (specialState(s) === "on") rows.push(["On now", '<a href="' + s.slug + '.html">' + esc(s.name) + "</a>", esc(s.short)]); });
     return { html: "Today's best deals:" + btList(rows) + btBtns([["All offers", "offers.html", "btn--ghost"]]), chips: [["book", "Book a table"], ["brunch", "Brunch this weekend?"]] };
   }
@@ -963,6 +976,7 @@
     var e = find(slug);
     if (!e) return aTonight();
     var when = e.dayLabel || e.when || "";
+    if (e.from && specialState(e) === "past") return { html: "<b>" + esc(e.name) + "</b> has finished (" + esc(when) + "). Here's what's on at the moment:", chips: [["deals", "Any deals today?"], ["tonight", "What's on tonight?"]] };
     var html = "<b>" + esc(e.name) + "</b>, " + esc(when.charAt(0).toLowerCase() + when.slice(1)) + (e.slots ? ", " + timeRange(e) : "") + ". " + esc(e.short);
     if (e.packages) html += btList(e.packages.map(function (p) { return ["AED", esc(p.name), esc(p.time) + ": House " + p.house + ", Premium " + p.premium]; }));
     if (e.slots) { var nx = nextOn(e.days[0], eventSpan(e)[1]); html += "<p>Next one: <b>" + (nx.add === 0 ? "today" : shortDate(nx)) + "</b>.</p>"; }
@@ -1029,7 +1043,8 @@
     "book booking reserve reservation table group party birthday private office celebration football soccer match premier league sports screens darts pool " +
     "terrace outdoor outside kids children family vegetarian vegan gluten halal dress smoking shisha pets dogs wifi payment delivery room service hotel " +
     "teachers teacher cabin crew hotelier hoteliers tower towers halloween vouchers burger pizza pasta salmon lamb chicken salad dessert desserts sliders sandwich " +
-    "stew lava crumble wheelchair accessible access capacity hiring joke funny thanks hello weather christmas restaurant people guests tickets").split(" ");
+    "stew lava crumble wheelchair accessible access capacity hiring joke funny thanks hello weather christmas restaurant people guests tickets " +
+    "heineken formula prix race races jack daniel scratch amstel festive jumper bucket bottles").split(" ");
   var STOP = ("the and for with you your are can could would should will does did have has had this that what when where which who whom whose how why " +
     "there here they them their then than from about into onto over under just also very much many some more most any anything something nothing " +
     "please thanks thank good great nice best fine okay hello help need want like love know tell show give make take come coming going gone get got " +
@@ -1077,8 +1092,8 @@
   var EVENT_WORDS = [
     [/\b(quiz|trivia)\b/, "quiz-night"], [/\bladies\b/, "ladies-night"], [/\b(steak night|thirsty thursday)/, "steak-night"],
     [/\b(karaoke|singing|sing)\b/, "karaoke-night"], [/\b(roast|sunday social)\b/, "sunday-social"], [/\b(bbq|smoking saturday)/, "smoking-saturdays"],
-    [/\bteachers?\b/, "teachers-brunch"], [/\bfuel up\b/, "fuel-up-friday"], [/(\b50 ?%|\b50 off|half price|half off|cabin crew|hoteliers?\b)/, "monday-50-off"],
-    [/\b(beer )?towers?\b/, "tower-up"], [/\b(mid ?term|mayhem|vouchers?)\b/, "mid-term-mayhem"], [/\bhalloween\b/, "halloween-week"]
+    [/\bteachers?\b/, "teachers-brunch"], [/\bfuel up\b/, "fuel-up-friday"], [/(\b[25]0 ?%|\b[25]0 off|half price|half off|cabin crew|hoteliers?\b)/, "monday-20-off"],
+    [/\b(beer )?towers?\b/, "tower-up"], [/\b(beer )?buckets?\b/, "beer-bucket"], [/\b(festive|jumpers?)\b/, "festive-with-amstel"], [/\b(mid ?term|mayhem|vouchers?)\b/, "mid-term-mayhem"], [/\bhalloween\b/, "halloween-week"]
   ];
   function eventIn(s) { for (var i = 0; i < EVENT_WORDS.length; i++) if (EVENT_WORDS[i][0].test(s)) return EVENT_WORDS[i][1]; return null; }
   function dishesIn(s) {
@@ -1149,7 +1164,8 @@
     return { html: "Staying at HE Hotel Apartments? Our kitchen does <b>room service</b>, and the bar is one lift ride away." + btBtns([["Room service menu (PDF)", D.menus.roomService || "menu.html"]]), chips: [["tonight", "What's on tonight?"], ["hh", "Is it happy hour?"]] };
   }
   function aDrinks() {
-    return { html: "Guinness on tap, cocktails and a large selection of beers. The <b>beer tower</b> (3.5 litres with a bites platter) is AED 179, and happy hour runs every day from 12PM. The full drinks list is on its way to the site; the team can send it on WhatsApp now." + btBtns([["Ask for the drinks list", waTo("Hi Adam's Beer Kitchen! Could you send me the drinks menu?")]]), chips: [["hh", "Is it happy hour?"], ["deals", "Any deals today?"]] };
+    var bucket = find("beer-bucket"), bucketOn = bucket && specialState(bucket) === "on";
+    return { html: "Guinness on tap, cocktails and a large selection of beers. The <b>beer tower</b> (2.5 litres with a bites platter) is AED 179 Monday to Thursday" + (bucketOn ? ", the <b>beer bucket</b> is any 5 bottles for AED 99" : "") + ", and happy hour runs every day from 12PM. The full drinks list is on its way to the site; the team can send it on WhatsApp now." + btBtns([["Ask for the drinks list", waTo("Hi Adam's Beer Kitchen! Could you send me the drinks menu?")]]), chips: [["hh", "Is it happy hour?"], ["deals", "Any deals today?"]] };
   }
   function aAge() {
     return { html: "You need to be <b>21 or over</b> to drink in Dubai, and the team may ask for ID.", chips: BT_MAIN };
@@ -1174,13 +1190,19 @@
     return { html: "From our current menu:" + btList(rows) + (steak ? '<p>Tip: on Thursdays it\'s <a href="steak-night.html">steak night</a>, a 250g rib-eye with fries and two house drinks for AED 199.</p>' : "") + btBtns([["Full food menu (PDF)", D.menus.food || "menu.html", "btn--ghost"]]), chips: [["menu", "Show me the menu"], ["book", "Book a table"]] };
   }
   function aPrice() {
-    return { html: "A quick guide to prices:" + btList([["AED 99", "Sunday roast buffet", ""], ["AED 149+", "Brunches and drunches", "Up to AED 279 for Premium"], ["AED 199", "Thursday steak night", "Rib-eye, fries and 2 house drinks"], ["AED 179", "Beer tower + bites platter", ""], ["AED 55–210", "Food menu", "Salads to the Angus rib-eye"]]), chips: [["brunch", "Brunch this weekend?"], ["deals", "Any deals today?"], ["menu", "Show me the menu"]] };
+    return { html: "A quick guide to prices:" + btList([["AED 99", "Sunday roast buffet", ""], ["AED 149+", "Brunches and drunches", "Up to AED 279 for Premium"], ["AED 199", "Thursday steak night", "Rib-eye, fries and 2 house drinks"], ["AED 179", "Beer tower + bites platter", "Monday to Thursday"], ["AED 55–210", "Food menu", "Salads to the Angus rib-eye"]]), chips: [["brunch", "Brunch this weekend?"], ["deals", "Any deals today?"], ["menu", "Show me the menu"]] };
   }
   function aHandoff(label, q) {
     return { html: "Good question about " + label + ". I'd rather not guess, so the team will answer that one on WhatsApp." + btBtns([["Ask the team", waTo("Hi Adam's Beer Kitchen! " + (q || ""))]]), chips: BT_MAIN };
   }
   function aFestive(q) {
     return { html: "Christmas and New Year plans are coming soon. Follow @abk_jvc on Instagram, or ask the team to hold a table for your group." + btBtns([["Ask the team", waTo("Hi Adam's Beer Kitchen! " + (q || ""))]]), chips: [["groups", "Big group or party?"], ["tonight", "What's on tonight?"]] };
+  }
+  function aF1() {
+    var F = D.f1, t = iso(today()), next = F.races.filter(function (r) { return r.date >= t; })[0];
+    return { html: "<b>Grand Prix season</b>: every F1 race on the big screens" + (next ? ", and next up is the <b>" + esc(next.name) + "</b> on " + longDate(fromIso(next.date)) : "") + "." +
+      btList([["Heineken", "Fans' Grid", "Order 2+ Heineken pints, scan the QR and climb for F1 prizes, up to the VIP lounge at the Abu Dhabi Grand Prix"], ["Jack Daniel's", "Scratch and win", "Order from the F1 menu for a chance at a cap or a T-shirt"]]) +
+      btBtns([["Grand Prix season", "grand-prix.html"], ["Book a race night", "book.html" + (next ? "?date=" + next.date : ""), "btn--ghost"]]), chips: [["tonight", "What's on tonight?"], ["more", "More questions"]] };
   }
   function aOffTopic() {
     return { html: "I'm better with food, drinks and what's on than that one, I'm afraid. Here's what I can help with:", chips: BT_MAIN };
@@ -1198,6 +1220,7 @@
     if (/\b(christmas|new year)\b/.test(s)) return [["festive"]];
     if (/\b(joke|funny|make me laugh)\b/.test(s)) add("joke");
     if (/\b(who are you|are you (a )?(bot|robot|human|real|ai)|your name)\b/.test(s)) add("who");
+    if (D.f1 && /\b(f1|formula (1|one)|grand prix|race nights?|races?|heineken|jack daniel|jack|fans grid|scratch cards?)\b/.test(s)) add("f1");
     if (/\bhappy hour\b/.test(s)) add("hh");
     var ev = eventIn(s), dishes = dishesIn(s), priceQ = /\b(how much|price|prices|cost|costs|aed|expensive|cheap)\b/.test(s);
     var vegQ = /\b(vegetarian|vegan|plant based|meat free)\b/.test(s);
@@ -1312,6 +1335,7 @@
       case "joke": return aJoke();
       case "price": return aPrice();
       case "festive": return aFestive(text);
+      case "f1": return aF1();
       case "offtopic": return aOffTopic();
       case "handoff": return aHandoff(arg, text);
       case "more": return { html: "Sure. What would you like to know?", chips: BT_MORE };

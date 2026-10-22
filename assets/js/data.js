@@ -37,14 +37,14 @@ window.ABK_DATA = {
   /* Weekly events. "slots" drive the chalkboard, the calendar files and the booking form. */
   events: [
     {
-      slug: "monday-50-off", days: [1], dayLabel: "Every Monday",
-      name: "50% Off Mondays", with: "For cabin crew, teachers and hoteliers",
+      slug: "monday-20-off", days: [1], dayLabel: "Every Monday",
+      name: "20% Off Mondays", with: "For cabin crew, teachers and hoteliers",
       cats: ["deals"], img: "post-6",
-      short: "Half off the food and drinks menus, 9PM till close.",
-      intro: "You spend all week looking after everyone else. On Monday nights we return the favour: half off the food menu and the drinks menu for cabin crew, teachers and hoteliers.",
-      facts: [["When", "9PM till close"], ["Discount", "50% off food & drinks"], ["Who", "Cabin crew, teachers, hoteliers"]],
-      slots: [{ label: "50% off for cabin crew, teachers & hoteliers", start: "21:00", end: "03:00" }],
-      week: { title: "50% off", lines: [["9PM till close", "Half off food & drinks"], ["For", "Cabin crew, teachers, hoteliers"]] }
+      short: "20% off the food and drinks menus, 9PM till close.",
+      intro: "You spend all week looking after everyone else. On Monday nights we return the favour: 20% off the food menu and the drinks menu for cabin crew, teachers and hoteliers.",
+      facts: [["When", "9PM till close"], ["Discount", "20% off food & drinks"], ["Who", "Cabin crew, teachers, hoteliers"]],
+      slots: [{ label: "20% off for cabin crew, teachers & hoteliers", start: "21:00", end: "03:00" }],
+      week: { title: "20% off", lines: [["9PM till close", "20% off food & drinks"], ["For", "Cabin crew, teachers, hoteliers"]] }
     },
     {
       slug: "quiz-night", days: [2], dayLabel: "Every Tuesday",
@@ -144,7 +144,7 @@ window.ABK_DATA = {
 
   /* Tonight takeover: on each day the homepage headline becomes that day's main event. */
   takeover: {
-    1: { slug: "monday-50-off", lines: ["50% off", "Mondays"], sub: "Half off food and drinks for cabin crew, teachers and hoteliers, from 9PM till close." },
+    1: { slug: "monday-20-off", lines: ["20% off", "Mondays"], sub: "20% off food and drinks for cabin crew, teachers and hoteliers, from 9PM till close." },
     2: { slug: "quiz-night", lines: ["Quiz", "night"], sub: "With ItsDylanLive. Prizes up to AED 2,000, and quiz drunch from AED 189." },
     3: { slug: "ladies-night", lines: ["Ladies", "night"], sub: "Ladies from AED 99 with a mixed bites platter, and Joe & David live from 8PM." },
     4: { slug: "steak-night", lines: ["Steak", "night"], sub: "A 250g rib-eye, fries and two house drinks for AED 199, with Fergal O'Neill live from 8PM." },
@@ -165,11 +165,12 @@ window.ABK_DATA = {
       facts: [["Sun – Thu", "12PM – 9PM"], ["Fri – Sat", "12PM – 7PM"], ["Where", "Whole venue"]]
     },
     {
-      slug: "tower-up", name: "Tower Up Your Day", with: "3.5L beer tower + bites platter", cats: ["deals", "drinks"], img: "post-1",
-      dayLabel: "Any day",
-      short: "A 3.5 litre tower of select beer with a bites platter, AED 179.",
-      intro: "A 3.5 litre tower of select beer and a bites platter, for AED 179. Built for sharing, so bring the group.",
-      facts: [["Tower", "3.5 litres of select beer"], ["Plus", "Bites platter"], ["Price", "AED 179"]]
+      slug: "tower-up", name: "Tower Up Your Day", with: "2.5L beer tower + bites platter", cats: ["deals", "drinks"], img: "post-1",
+      dayLabel: "Monday to Thursday, all day",
+      short: "A 2.5 litre tower of select beer with a bites platter, AED 179, Monday to Thursday.",
+      intro: "A 2.5 litre tower of select beer and a bites platter, for AED 179, all day Monday to Thursday. Built for sharing, so bring the group.",
+      facts: [["When", "Mon – Thu, all day"], ["Tower", "2.5L + bites platter"], ["Price", "AED 179"]],
+      fine: "Monday to Thursday, all day. Terms and conditions apply."
     }
   ],
 
@@ -183,12 +184,30 @@ window.ABK_DATA = {
       fine: "All vouchers can be redeemed throughout the mid-term break. Terms and conditions apply."
     },
     {
-      slug: "halloween-week", name: "Halloween Week", with: "Two house drinks and a main course",
-      from: "2026-10-25", to: "2026-10-31", when: "Late October, dates to be confirmed", img: null,
-      short: "Two house drinks and a main course, price to be announced.",
-      intro: "Two house drinks and a main course for one spooky price. Costumes are encouraged, though not compulsory. Dates and price coming soon.",
-      vouchers: [["2 house drinks + a main course", "TBC"]],
-      fine: "Dates and price to be confirmed."
+      slug: "halloween-week", name: "Halloween Week", with: "Two house drinks and a main course for AED 99",
+      from: "2026-10-26", to: "2026-10-31", when: "26 – 31 October, all day", img: null, type: ["Hallo­ween", "week at Adam's Beer Kitchen"],
+      short: "Two house drinks and a main course for AED 99, all day.",
+      intro: "Two house drinks and a main course for one spooky price, AED 99, all day from Monday 26 to Saturday 31 October. Costumes are encouraged, though not compulsory.",
+      facts: [["When", "26 – 31 October"], ["Hours", "All day"], ["Price", "AED 99"]],
+      deal: { title: "2 house drinks and a main course", price: 99 },
+      fine: "All day, 26 – 31 October. Terms and conditions apply."
+    },
+    {
+      slug: "beer-bucket", name: "Beer Bucket Deal", with: "Any 5 bottles for AED 99",
+      from: "2026-10-01", to: "2026-11-30", when: "October and November", img: null, type: ["5 for 99", "beer bucket at Adam's Beer Kitchen"],
+      short: "Pick any 5 bottles of Budweiser, Singha, Brooklyn IPA or Amstel for AED 99. Dine-in only.",
+      intro: "Pick any five bottles from the line-up and mix them however you like: Budweiser, Singha, Brooklyn IPA or Amstel. Same price, every brand, all through October and November.",
+      facts: [["Bucket", "Any 5 bottles"], ["Price", "AED 99"], ["Until", "30 November"]],
+      deal: { title: "Any 5 bottles: Budweiser, Singha, Brooklyn IPA or Amstel", price: 99 },
+      fine: "Dine-in only. Same price for every brand. Valid October and November 2026."
+    },
+    {
+      slug: "festive-with-amstel", name: "Festive with Amstel", with: "Win an Amstel festive jumper",
+      from: "2026-12-01", to: "2026-12-31", when: "December", img: null, type: ["Festive", "with Amstel at Adam's Beer Kitchen"],
+      short: "Order 2 Amstel pints for a chance to win an Amstel festive jumper.",
+      intro: "Christmas comes with a jumper this year. Order two Amstel pints at the bar for a chance to win an Amstel festive jumper.",
+      facts: [["Order", "2 Amstel pints"], ["Win", "A festive jumper"], ["When", "December"]],
+      fine: "Run by Amstel. Dates to be confirmed."
     }
   ],
 
@@ -226,7 +245,7 @@ window.ABK_DATA = {
     { img: "post-10", cap: "Live music, Saturday evening" },
     { img: "post-1", cap: "Booths, screens and a seat with your name on it" },
     { img: "post-9", cap: "Two pints of the black stuff" },
-    { img: "post-6", cap: "50% off Mondays, out on the terrace" },
+    { img: "post-6", cap: "20% off Mondays, out on the terrace" },
     { img: "post-5", cap: "The quiz night platter" },
     { img: "post-11", cap: "Premier League returns" },
     { img: "post-7", cap: "Terrace season" },
@@ -294,7 +313,8 @@ window.ABK_DATA = {
      at launch it becomes "links", with one payment link per item from the venue's payment provider. */
   payments: { mode: "demo", provider: "Card or Apple Pay", links: {} },
 
-  /* Campaign landing pages for ads. SAMPLE packages and prices, to confirm with the venue. */
+  /* Campaign landing pages for ads. SAMPLE packages and prices, to confirm with the venue.
+     Prices are per person; a package with per: "bucket" (or "tower") is priced per item instead. */
   campaigns: [
     {
       slug: "christmas-parties", name: "Christmas parties", season: "1 – 24 December 2026", img: "post-1", src: "ig-ad",
@@ -322,8 +342,8 @@ window.ABK_DATA = {
       title: ["Match", "day"], hook: "Every Premier League game on the big screens, with a table saved for you and your mates.",
       from: "2026-10-01", to: "2027-05-31", groupMin: 2,
       packages: [
-        { id: "match-bucket", name: "Bucket and bites", note: "5 select beers and a bites platter for the table", price: 199, deposit: 0 },
-        { id: "match-tower", name: "Tower up", note: "3.5L beer tower and a bites platter", price: 179, deposit: 0 }
+        { id: "match-bucket", name: "Beer bucket", note: "Any 5 bottles of Budweiser, Singha, Brooklyn IPA or Amstel (October and November)", price: 99, deposit: 0, per: "bucket" },
+        { id: "match-tower", name: "Tower up", note: "2.5L beer tower and a bites platter, for Monday to Thursday games", price: 179, deposit: 0, per: "tower" }
       ],
       perks: ["A table facing the screens", "Darts and pool for half-time", "Happy hour till 7PM on Fri and Sat", "Free to book, no deposit"]
     }
@@ -333,7 +353,7 @@ window.ABK_DATA = {
   vouchers: [
     { id: "roast-2", name: "Sunday roast for two", note: "Two roast buffets on any Sunday", price: 198, img: "post-9" },
     { id: "steak-2", name: "Steak night for two", note: "Two 250g rib-eyes with fries and 2 house drinks each", price: 398, img: "post-3" },
-    { id: "tower", name: "Tower and bites", note: "A 3.5L beer tower with a bites platter", price: 179, img: "post-1" },
+    { id: "tower", name: "Tower and bites", note: "A 2.5L beer tower with a bites platter, Monday to Thursday", price: 179, img: "post-1" },
     { id: "credit-250", name: "AED 250 credit", note: "Spend it on anything, any day", price: 250, img: "post-5" },
     { id: "credit-500", name: "AED 500 credit", note: "Spend it on anything, any day", price: 500, img: "post-12" }
   ],
@@ -380,5 +400,33 @@ window.ABK_DATA = {
   club: { need: 10, reward: "a house drink on us", birthday: "a dessert or a house drink in your birthday month" },
 
   /* Score predictor prize. SAMPLE, to confirm. */
-  predictor: { prize: "An AED 200 bar tab for the top of the table each month" }
+  predictor: { prize: "An AED 200 bar tab for the top of the table each month" },
+
+  /* ===================== v4 additions (22 October 2026) ===================== */
+
+  /* Grand Prix season (grand-prix.html): every F1 race on the big screens, and the brands' own F1 promotions.
+     Heineken and Jack Daniel's run their promotions and pick their own winners; the page explains how to take part.
+     Details from the brands' trade decks. Delete this block when the season's over. */
+  f1: {
+    from: "2026-10-30", to: "2026-12-06", img: "post-1",
+    /* race start, Dubai time. Las Vegas (Sunday 22 November) is left out: it starts at 8AM, before we open. */
+    races: [
+      { date: "2026-11-01", time: "00:00", name: "Mexico City Grand Prix", ar: "جائزة مكسيكو سيتي الكبرى", ru: "Гран-при Мехико" },
+      { date: "2026-11-08", time: "21:00", name: "São Paulo Grand Prix", ar: "جائزة ساو باولو الكبرى", ru: "Гран-при Сан-Паулу" },
+      { date: "2026-11-29", time: "20:00", name: "Qatar Grand Prix", ar: "جائزة قطر الكبرى", ru: "Гран-при Катара" },
+      { date: "2026-12-06", time: "17:00", name: "Abu Dhabi Grand Prix", ar: "جائزة أبوظبي الكبرى", ru: "Гран-при Абу-Даби", finale: true }
+    ],
+    heineken: {
+      name: "Heineken Fans' Grid", from: "2026-10-30", to: "2026-11-27",
+      url: "", /* the Fans' Grid website, once Heineken shares it; until then guests scan the QR code on the Heineken card */
+      prizes: [["P12", "A Heineken F1 cup", "Your first entry"], ["P8", "F1 TV 2027 season subscription", "Prize draw"], ["P4", "Abu Dhabi Grand Prix GA tickets", "Prize draw"], ["P1", "VIP Hospitality Lounge at the Abu Dhabi Grand Prix", "Prize draw"]],
+      points: [["2+ Heineken pints at the bar", "+4 places"], ["A Heineken 24-pack from a shop or delivery", "+4 places"], ["A Heineken 12-pack", "+2 places"], ["A friend joins with your code", "+4 for you, +2 for them"]]
+    },
+    jack: {
+      name: "Jack Daniel's F1 menu", from: "2026-10-01", to: "2026-11-30",
+      prize: "a Jack's Garage cap or a limited edition T-shirt",
+      /* [drink, AED] SAMPLE dates and prices, to confirm with the venue (0 = no price shown) */
+      menu: [["Formula Jack", 0], ["Lynchburg Lemonade", 0], ["Jack & Cola", 0], ["Jack & Ginger", 0], ["Jack Honey & Lemonade", 0], ["Jack Apple & Tonic", 0]]
+    }
+  }
 };

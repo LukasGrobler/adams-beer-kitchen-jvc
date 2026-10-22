@@ -14,6 +14,7 @@
   var MON3 = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   var MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
   var CLUB = D.club || { need: 10, reward: "a house drink on us", birthday: "a dessert or a house drink in your birthday month" };
+  var F1 = D.f1 || null;
 
   function esc(s) { return String(s === undefined || s === null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
   function pad(n) { return (n < 10 ? "0" : "") + n; }
@@ -40,6 +41,17 @@
     function done() { if (btn) { var t = btn.textContent; btn.textContent = "Copied"; setTimeout(function () { btn.textContent = t; }, 1600); } }
     if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, fallback); else fallback();
     function fallback() { var ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand("copy"); done(); } catch (e) {} ta.remove(); }
+  }
+
+  /* ================= dates for the Grand Prix season page ================= */
+  function bizIso() { return biz().toISOString().slice(0, 10); }
+  function dayOf(day) { return new Date(day + "T00:00:00Z"); }
+  /* a race start ("21:00", Dubai time) in each language: 9PM, 9 مساءً, 21:00 */
+  function raceTime(t, lang) {
+    var h = +t.slice(0, 2), m = t.slice(3), hm = (h % 12 || 12) + (m !== "00" ? ":" + m : "");
+    if (lang === "ru") return t;
+    if (lang === "ar") return h === 0 ? "منتصف الليل" : hm + (h < 12 ? " صباحًا" : " مساءً");
+    return h === 0 ? "midnight" : hm + (h < 12 ? "AM" : "PM");
   }
 
   /* ================= the server, or practice mode on this device ================= */
@@ -206,7 +218,8 @@
         .catch(function (err) { msg.textContent = err.message; btn.disabled = false; });
     });
   }
-  function showCard(root, mine, card, fresh) {
+  var STAFF_DONE = { stamp: "Stamp added.", reward: "Reward given.", birthday: "Birthday treat given." };
+  function showCard(root, mine, card, fresh, note) {
     if (!card) {
       root.innerHTML = '<p class="small">Loading your card…</p>';
       call("/api/club", { action: "card", id: mine.id, token: mine.token })
@@ -225,20 +238,54 @@
       '<div class="club-card"><div class="club-card__top"><img src="assets/img/logo.png" alt="" width="64" height="64"><div><span class="kicker">Adam\'s Club</span><b>' + esc(card.name) + '</b><span class="small">Member no. ' + esc(card.id) + "</span></div></div>" +
       '<div class="stamps" role="img" aria-label="' + card.stamps + " of " + card.need + ' stamps">' + dots + "</div>" +
       '<p class="small" style="margin:0">' + card.stamps + " of " + card.need + " stamps. Every " + card.need + "th visit: " + esc(CLUB.reward) + ". " + (card.rewards ? "Rewards so far: " + card.rewards + "." : "") + "</p>" + perks.join("") +
+      (note ? '<p class="club-done" role="status">' + esc(note) + "</p>" : "") +
       '<div class="btn-row"><button class="btn btn--ghost" type="button" data-staff>Staff: stamp or reward</button></div>' +
-      '<div class="club-staff" hidden><label for="cl-pin" class="small">Staff PIN' + (API ? "" : " (practice PIN: 2026)") + '</label><input id="cl-pin" inputmode="numeric" autocomplete="off" maxlength="8">' +
-      '<div class="btn-row"><button class="btn btn--sm" type="button" data-do="stamp">Add today\'s stamp</button>' + (card.rewardReady ? '<button class="btn btn--sm" type="button" data-do="reward">Give the reward</button>' : "") + (card.birthdayMonth && !card.birthdayUsed ? '<button class="btn btn--sm" type="button" data-do="birthday">Give the birthday treat</button>' : "") + "</div>" +
+      '<div class="club-staff" hidden><label for="cl-pin" class="small">Staff PIN' + (API ? "" : " (practice PIN: 2026)") + '</label><input id="cl-pin" class="pin-mask" inputmode="numeric" autocomplete="off" maxlength="8">' +
+      '<div class="btn-row"><button class="btn btn--sm" type="button" data-do="stamp">Add today\'s stamp</button>' +
+      (card.rewardReady ? '<button class="btn btn--sm" type="button" data-do="reward">Give the reward</button>' : "") + (card.birthdayMonth && !card.birthdayUsed ? '<button class="btn btn--sm" type="button" data-do="birthday">Give the birthday treat</button>' : "") + "</div>" +
       '<p class="small" data-staff-msg aria-live="polite" style="margin:0"></p></div></div>' +
       '<p class="small" style="margin-top:16px">New phone or lost this page? <a href="' + esc(waTo("Hi Adam's Beer Kitchen! Could you send me my Adam's Club card again? My member number is " + card.id + ".")) + '" target="_blank" rel="noopener">Ask the team on WhatsApp</a> and they\'ll send your card link.</p>';
     $("[data-staff]", root).addEventListener("click", function () { var p = $(".club-staff", root); p.hidden = !p.hidden; if (!p.hidden) $("#cl-pin", root).focus(); });
     $$("[data-do]", root).forEach(function (b) {
       b.addEventListener("click", function () {
-        var m = $("[data-staff-msg]", root);
-        call("/api/club", { action: b.getAttribute("data-do"), id: mine.id, token: mine.token, pin: $("#cl-pin", root).value.trim() })
-          .then(function (j) { showCard(root, mine, j.card); })
-          .catch(function (err) { m.textContent = err.message; });
+        var m = $("[data-staff-msg]", root), act = b.getAttribute("data-do");
+        b.disabled = true;
+        call("/api/club", { action: act, id: mine.id, token: mine.token, pin: $("#cl-pin", root).value.trim() })
+          .then(function (j) { showCard(root, mine, j.card, false, STAFF_DONE[act]); })
+          .catch(function (err) { m.textContent = err.message; b.disabled = false; });
       });
     });
+  }
+
+  /* ================= Grand Prix season page (data.js > f1): race nights and the brands' F1 promotions ================= */
+  function renderF1(root) {
+    if (!F1) { root.innerHTML = '<section class="sec sec--tight"><div class="wrap"><p class="empty">Grand Prix season is over for this year. <a href="sports.html">See what\'s on the big screens</a>.</p></div></section>'; return; }
+    var today = bizIso(), H = F1.heineken, J = F1.jack;
+    function range(a, b) { var x = dayOf(a), y = dayOf(b); return (x.getUTCMonth() === y.getUTCMonth() ? x.getUTCDate() : x.getUTCDate() + " " + MONTHS[x.getUTCMonth()]) + " – " + y.getUTCDate() + " " + MONTHS[y.getUTCMonth()]; }
+    function rows(list) { return '<ul class="pts">' + list.map(function (r) { return "<li><span>" + esc(r[0]) + "</span><b>" + esc(r[1]) + "</b></li>"; }).join("") + "</ul>"; }
+    var races = F1.races.map(function (r) {
+      var d = dayOf(r.date), past = r.date < today, when = dayLabel(d) + ", " + raceTime(r.time, "en");
+      return "<li" + (past ? ' class="is-past"' : r.finale ? ' class="is-finale"' : "") + '><span class="races__day">' + when + "</span><b>" + esc(r.name) + (r.finale ? ' <span class="small">The season finale</span>' : "") + "</b>" +
+        (past ? '<span class="small">Done</span>' : '<a class="btn btn--sm" href="' + esc(waTo("Hi Adam's Beer Kitchen! I'd like to book a table to watch the " + r.name + " on " + when + ".\nGuests: ")) + '" target="_blank" rel="noopener">Book a table</a>') + "</li>";
+    }).join("");
+    root.innerHTML =
+      '<section class="sec sec--tight" style="padding-top:0" id="races"><div class="wrap split split--top">' +
+      '<div><div class="sec-head"><h2 class="d-l">Race nights</h2><p class="lede">Every race on the big screens, with the sound up. Times are Dubai time.</p></div><ul class="races">' + races + "</ul></div>" +
+      '<div class="frame frame--tall" style="max-width:420px;justify-self:center"><img src="assets/img/ig/' + esc(F1.img) + '.jpg" alt="The big screens at Adam\'s Beer Kitchen JVC" loading="lazy"></div></div></section>' +
+      '<section class="sec sec--tight sec--wood" id="win"><div class="wrap"><div class="sec-head"><h2 class="d-l">Win your way to the Grand Prix</h2><p class="lede">Two ways to win while you watch. Heineken and Jack Daniel\'s run these themselves and pick the winners.</p></div><div class="promos">' +
+      '<article class="promo"><span class="kicker">' + range(H.from, H.to) + '</span><h3 class="d-m">' + esc(H.name) + "</h3>" +
+      '<ol class="steps"><li>Order 2 or more Heineken pints at the bar.</li><li>Scan the QR code on the Heineken card and scratch to reveal your code.</li><li>Enter it on the Fans\' Grid. You start at P16, and your first entry moves you up 4 places and wins you an F1 cup.</li><li>Come back and climb: 2 or more pints move you up 4 places, once every 24 hours.</li></ol>' +
+      '<ul class="ladder">' + H.prizes.slice().reverse().map(function (r) { return '<li><span class="ladder__p">' + esc(r[0]) + "</span><span><b>" + esc(r[1]) + '</b><span class="small">' + esc(r[2]) + "</span></span></li>"; }).join("") + "</ul>" +
+      '<h4 class="kicker">Ways to climb</h4>' + rows(H.points) +
+      (H.url ? '<div class="btn-row"><a class="btn" href="' + esc(H.url) + '" target="_blank" rel="noopener">Open the Fans\' Grid</a></div>' : "") +
+      '<p class="small" style="margin:0">Heineken runs the Fans\' Grid and picks the winners, under its own terms.</p></article>' +
+      '<article class="promo"><span class="kicker">' + range(J.from, J.to) + '</span><h3 class="d-m">' + esc(J.name) + "</h3>" +
+      "<p>Order any Jack Daniel's drink from the F1 menu and you get a scratch card. You could win " + esc(J.prize) + " on the spot.</p>" +
+      rows(J.menu.map(function (m) { return [m[0], m[1] ? "AED " + m[1] : ""]; })) +
+      '<p class="small" style="margin:0">Jack Daniel\'s runs the scratch cards and the prizes.</p></article>' +
+      "</div></div></section>" +
+      '<section class="sec sec--flush"><div class="wrap"><div class="band"><div><h2 class="d-l">First to know</h2><p>Join Adam\'s Club and hear about race nights and F1 specials on WhatsApp before anyone else.</p></div><div class="btn-row"><a class="btn" href="club.html">Join Adam\'s Club</a></div></div></div></section>' +
+      '<section class="sec sec--tight"><div class="wrap"><p class="small" style="margin:0">21+ only. Please drink responsibly. Heineken\'s Fans\' Grid and the Jack Daniel\'s scratch cards are run by the brands, under their own terms.</p></div></section>';
   }
 
   /* ================= match board ================= */
@@ -351,7 +398,7 @@
   /* Arabic and Russian wording for each night (update these if a price changes; English comes from data.js) */
   var PT = {
     ar: {
-      1: { k: "كل اثنين", t: ["خصم 50%", "أيام الاثنين"], l: ["من 9 مساءً حتى الإغلاق", "نصف السعر على الطعام والمشروبات", "لطاقم الطيران والمعلمين والعاملين في الفنادق"] },
+      1: { k: "كل اثنين", t: ["خصم 20%", "أيام الاثنين"], l: ["من 9 مساءً حتى الإغلاق", "خصم 20% على الطعام والمشروبات", "لطاقم الطيران والمعلمين والعاملين في الفنادق"] },
       2: { k: "كل ثلاثاء", t: ["ليلة", "المسابقات"], l: ["7 – 9:30 مساءً مع ItsDylanLive", "جوائز تصل إلى 2,000 درهم", "برانش مسائي 7 – 10 مساءً: 189 / 239 درهم"] },
       3: { k: "كل أربعاء", t: ["ليلة", "السيدات"], l: ["للسيدات 99 / 129 درهم", "للرجال 149 / 199 درهم", "موسيقى حية 8 – 11 مساءً: Joe & David"] },
       4: { k: "كل خميس", t: ["ليلة", "الستيك"], l: ["ريب آي 250 غرام مع البطاطس ومشروبين: 199 درهم", "برانش مسائي 7 – 11 مساءً: 199 / 249 درهم", "موسيقى حية 8 – 11 مساءً: Fergal O'Neill"] },
@@ -362,12 +409,14 @@
       "christmas-parties": { k: "1 – 24 ديسمبر", t: ["حفلات", "الكريسماس"], l: ["باقات من 199 درهم", "مساحة خاصة لـ 15 – 40 شخصًا", "احجز موعدك بعربون بسيط"] },
       "new-years-eve": { k: "31 ديسمبر", t: ["ليلة", "رأس السنة"], l: ["فرقة موسيقية حية من 9 مساءً", "العد التنازلي على كل الشاشات", "باقات من 299 درهم"] },
       "match-day-tables": { k: "كل نهاية أسبوع", t: ["يوم", "المباراة"], l: ["كل مباريات الدوري الإنجليزي على الشاشات الكبيرة", "طاولة مقابل الشاشات", "الحجز مجاني"] },
+      f1: { race: "ليلة سباق الفورمولا 1", screens: "على الشاشات الكبيرة، الساعة",
+        promo: "*اربح جوائز الفورمولا 1:* اطلب كأسين أو أكثر من Heineken وامسح رمز QR للتقدم في Fans' Grid، أو اطلب من قائمة Jack Daniel's للفورمولا 1 واكشط البطاقة لتربح." },
       week: { k: "هذا الأسبوع في Adam's Beer Kitchen", t: ["سبع", "ليالٍ"] },
       days: ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"],
       bar: "احجز عبر واتساب \u2066+971 54 306 8854\u2069", addr: "الطابق 1، HE Hotel Apartments، JVC", hh: "ساعة السعادة يوميًا من 12 ظهرًا"
     },
     ru: {
-      1: { k: "Каждый понедельник", t: ["−50%", "по понедельникам"], l: ["С 21:00 до закрытия", "Половина цены на еду и напитки", "Для бортпроводников, учителей и сотрудников отелей"] },
+      1: { k: "Каждый понедельник", t: ["−20%", "по понедельникам"], l: ["С 21:00 до закрытия", "Скидка 20% на еду и напитки", "Для бортпроводников, учителей и сотрудников отелей"] },
       2: { k: "Каждый вторник", t: ["Квиз", "по вторникам"], l: ["19:00 – 21:30, ведущий ItsDylanLive", "Призы до 2 000 AED", "Квиз-бранч 19:00 – 22:00: 189 / 239 AED"] },
       3: { k: "Каждую среду", t: ["Ladies", "Night"], l: ["Девушки: 99 / 129 AED", "Мужчины: 149 / 199 AED", "Живая музыка 20:00 – 23:00: Joe & David"] },
       4: { k: "Каждый четверг", t: ["Стейк-", "вечер"], l: ["Рибай 250 г, фри и 2 напитка: 199 AED", "Вечерний бранч 19:00 – 23:00: 199 / 249 AED", "Живая музыка 20:00 – 23:00: Fergal O'Neill"] },
@@ -378,6 +427,8 @@
       "christmas-parties": { k: "1 – 24 декабря", t: ["Рождество", "в Adam's"], l: ["Пакеты от 199 AED", "Отдельная зона на 15 – 40 гостей", "Дата закрепляется депозитом"] },
       "new-years-eve": { k: "31 декабря", t: ["Новый", "год"], l: ["Живая группа с 21:00", "Обратный отсчёт на всех экранах", "Пакеты от 299 AED"] },
       "match-day-tables": { k: "Каждые выходные", t: ["Футбол", "АПЛ"], l: ["Все матчи Премьер-лиги на больших экранах", "Стол напротив экранов", "Бронь бесплатно"] },
+      f1: { race: "Вечер Формулы 1", screens: "на больших экранах, старт в",
+        promo: "*Выиграйте призы Формулы 1:* закажите 2+ пинты Heineken и отсканируйте QR-код, чтобы подняться в Fans' Grid, или закажите напиток из F1-меню Jack Daniel's и сотрите скретч-карту." },
       week: { k: "Эта неделя в Adam's Beer Kitchen", t: ["Семь", "вечеров"] },
       days: ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"],
       bar: "Бронь в WhatsApp +971 54 306 8854", addr: "1-й этаж, HE Hotel Apartments, JVC", hh: "Happy hour каждый день с 12:00"
@@ -566,12 +617,12 @@
 
   /* ================= WhatsApp broadcast writer (dashboard) ================= */
   function renderBroadcast(root) {
-    var st = { lang: "en", start: 0, hh: true, specials: true, football: true, club: true };
+    var st = { lang: "en", start: 0, hh: true, specials: true, football: true, club: true, f1: !!F1 };
     root.innerHTML = '<div class="studio"><div class="studio__controls">' +
       '<fieldset class="field"><legend>Language</legend><div class="choices" data-lang><button class="chip" type="button" data-v="en" aria-pressed="true">English</button><button class="chip" type="button" data-v="ar" aria-pressed="false" lang="ar">العربية</button><button class="chip" type="button" data-v="ru" aria-pressed="false" lang="ru">Русский</button></div></fieldset>' +
       '<fieldset class="field"><legend>Which week</legend><div class="choices" data-start><button class="chip" type="button" data-v="0" aria-pressed="true">From today</button><button class="chip" type="button" data-v="next" aria-pressed="false">Next Monday</button></div></fieldset>' +
       '<fieldset class="field"><legend>Include</legend><div class="choices" data-inc>' +
-      [["hh", "Happy hour"], ["specials", "Specials & parties"], ["football", "Football"], ["club", "Adam's Club"]].map(function (x) { return '<button class="chip" type="button" data-v="' + x[0] + '" aria-pressed="true">' + x[1] + "</button>"; }).join("") + "</div></fieldset>" +
+      [["hh", "Happy hour"], ["specials", "Specials & parties"], ["football", "Football"], ["club", "Adam's Club"]].concat(F1 ? [["f1", "F1 race nights"]] : []).map(function (x) { return '<button class="chip" type="button" data-v="' + x[0] + '" aria-pressed="true">' + x[1] + "</button>"; }).join("") + "</div></fieldset>" +
       '<p class="small">Paste it into a WhatsApp Business broadcast list, or a status. Every link carries a tag, so bookings from it show up as "WhatsApp broadcast" on the dashboard.</p>' +
       '<div class="btn-row"><button class="btn" type="button" data-copy>Copy message</button><a class="btn btn--wa" data-open target="_blank" rel="noopener">Open in WhatsApp</a></div></div>' +
       '<div class="studio__preview"><div class="wa-phone"><div class="wa-phone__top"><img src="assets/img/logo.png" alt=""><div><b>Broadcast</b><span>Preview</span></div></div><div class="wa-bubble" data-preview></div></div></div></div>';
@@ -609,6 +660,19 @@
         var wkEnd = s.getTime() + 7 * 864e5 - 4 * 36e5, big = matches.filter(function (m) { var t = Date.parse(m.utc); return t >= s.getTime() - 4 * 36e5 && t < wkEnd && m.status !== "FINISHED"; }).slice(0, 4);
         if (big.length) lines.push("", { en: "*Football on the big screens:* ", ar: "*كرة القدم على الشاشات الكبيرة:* ", ru: "*Футбол на больших экранах:* " }[L] +
           big.map(function (m) { var d = dubai(Date.parse(m.utc)); return m.home + " v " + m.away + " (" + (L === "en" ? DAY3[d.getUTCDay()] + " " + hm(d) : (L === "ar" ? PT.ar.days[d.getUTCDay()] : PT.ru.days[d.getUTCDay()]) + " " + pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes())) + ")"; }).join(", ") + ". " + base + "matches.html?src=whatsapp");
+      }
+      if (st.f1 && F1) {
+        var wFrom = s.toISOString().slice(0, 10), wTo = new Date(s.getTime() + 7 * 864e5).toISOString().slice(0, 10), f1 = [];
+        F1.races.forEach(function (r) {
+          if (r.date < wFrom || r.date >= wTo) return;
+          var d = dayOf(r.date);
+          f1.push(L === "en" ? "*F1 race night, " + short(d) + ":* the " + r.name + " on the big screens, from " + raceTime(r.time, "en") + "."
+            : "*" + PT[L].f1.race + (L === "ar" ? "، " : ", ") + dateIn(d, L) + ":* " + r[L] + " " + PT[L].f1.screens + " " + raceTime(r.time, L) + ".");
+        });
+        if ((wFrom <= F1.heineken.to && wTo > F1.heineken.from) || (wFrom <= F1.jack.to && wTo > F1.jack.from)) {
+          f1.push((L === "en" ? "*Win F1 prizes:* order 2+ Heineken pints and scan the QR to climb Heineken's Fans' Grid, or order from the Jack Daniel's F1 menu and scratch to win." : PT[L].f1.promo) + " " + base + "grand-prix.html?src=whatsapp");
+        }
+        if (f1.length) lines.push("", f1.join("\n"));
       }
       if (st.club) lines.push("", { en: "Not in Adam's Club yet? A birthday treat and every " + CLUB.need + "th visit on us: " + base + "club.html?src=whatsapp", ar: "لست عضوًا في Adam's Club بعد؟ هدية في شهر ميلادك، والزيارة رقم " + CLUB.need + " علينا: " + base + "club.html?src=whatsapp", ru: "Ещё не в Adam's Club? Подарок в месяц рождения и каждый " + CLUB.need + "-й визит за наш счёт: " + base + "club.html?src=whatsapp" }[L]);
       lines.push("", { en: "Book a table: " + base + "book.html?src=whatsapp\nFloor 1, HE Hotel Apartments, JVC", ar: "احجز طاولة: " + base + "ar.html?src=whatsapp#book\nالطابق 1، HE Hotel Apartments، JVC", ru: "Бронь стола: " + base + "ru.html?src=whatsapp#book\n1-й этаж, HE Hotel Apartments, JVC" }[L]);
@@ -703,7 +767,7 @@
   }
 
   function boot() {
-    [["[data-club]", renderClub], ["[data-matchboard]", renderMatchBoard], ["[data-predictor]", renderPredictor], ["[data-songs]", renderSongs],
+    [["[data-club]", renderClub], ["[data-f1]", renderF1], ["[data-matchboard]", renderMatchBoard], ["[data-predictor]", renderPredictor], ["[data-songs]", renderSongs],
       ["[data-creator-form]", renderCreatorForm], ["[data-dash-nav]", renderDashNav]
     ].forEach(function (r) { $$(r[0]).forEach(function (el) { try { r[1](el); } catch (err) { if (window.console) console.error(err); } }); });
   }
