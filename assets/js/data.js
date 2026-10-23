@@ -103,12 +103,12 @@ window.ABK_DATA = {
     },
     {
       slug: "get-real-fridays", days: [5], dayLabel: "Every Friday",
-      name: "Get Real Fridays", with: "Real estate agent deals",
+      name: "Get Real Fridays", with: "Unlimited drinks and a bites platter for real estate agents",
       cats: ["drinks", "deals"], img: "post-5",
-      short: "Brunch for real estate agents, 4PM – 8PM, from AED 199.",
-      intro: "Viewings done, deals closed, phone on silent. Get Real Fridays is the brunch for Dubai's real estate agents, 4PM to 8PM every Friday from AED 199. Bring the team and close out the week.",
-      facts: [["When", "4PM – 8PM"], ["For", "Real estate agents"], ["From", "AED 199"]],
-      packages: [{ name: "Get Real Brunch", time: "4PM – 8PM, for real estate agents", house: 199, premium: 249 }],
+      short: "Unlimited drinks and a bites platter for real estate agents, 4PM – 8PM, from AED 199.",
+      intro: "Viewings done, deals closed, phone on silent. Get Real Fridays is the brunch for Dubai's real estate agents: unlimited drinks and a bites platter, 4PM to 8PM every Friday, from AED 199. Bring the team and close out the week.",
+      facts: [["When", "4PM – 8PM"], ["Includes", "Unlimited drinks + bites platter"], ["From", "AED 199"]],
+      packages: [{ name: "Get Real Brunch", time: "4PM – 8PM, unlimited drinks and a bites platter", house: 199, premium: 249 }],
       slots: [{ label: "Get Real Fridays", start: "16:00", end: "20:00", price: "AED 199 / 249" }]
     },
     {
