@@ -1440,3 +1440,32 @@ button.link { background: none; border: 0; border-bottom: 2px solid currentColor
 .gp-banner { aspect-ratio: 1476 / 830; margin-top: 8px; }
 .guest-note { margin: 6px 0 0; }
 .guest-note a { color: var(--yellow); }
+
+/* artist names open a pop-up with the bio and their next dates */
+a[data-artist] { text-decoration: underline dotted rgba(201, 162, 91, .7); text-decoration-thickness: 1px; text-underline-offset: 5px; cursor: pointer; }
+a[data-artist]:hover { color: var(--yellow); text-decoration-color: currentColor; }
+.artist__name a { color: inherit; }
+.lineup__role a { color: inherit; }
+.artist { grid-template-rows: auto auto 1fr auto; }
+.artist__more { justify-self: start; align-self: end; display: inline-flex; align-items: center; gap: 6px; margin-top: 4px; padding: 9px 14px; background: none; border: 1px solid rgba(244, 234, 219, .25); border-radius: 4px; font-family: var(--f-display); font-weight: 700; font-size: 1.02rem; color: var(--foam); cursor: pointer; position: relative; }
+.artist__more svg { width: 14px; height: 14px; transform: rotate(-90deg); }
+.artist__more:hover { border-color: var(--yellow); color: var(--yellow); }
+.modal--artist .modal__card { width: min(560px, 100%); max-height: calc(100vh - 40px); max-height: calc(100dvh - 40px); overflow-y: auto; overscroll-behavior: contain; }
+.artist-pop { display: grid; gap: 18px; }
+.artist-pop__head { display: flex; gap: 18px; align-items: center; }
+.artist-pop__head .artist__role { margin: 0 0 4px; }
+.artist-pop__initials, .artist-pop__photo { flex: none; width: 88px; height: 88px; border-radius: 50%; border: 2px solid var(--wood-line); overflow: hidden; }
+.artist-pop__initials { display: grid; place-items: center; background: rgba(201, 162, 91, .12); font-family: var(--f-display); font-weight: 800; font-size: 2rem; color: var(--yellow); }
+.artist-pop__photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.artist-pop__plays { display: flex; align-items: center; gap: 6px; margin-top: 6px; font-family: var(--f-text); font-style: italic; color: var(--foam-2); }
+.artist-pop__plays svg { width: 16px; height: 16px; flex: none; color: var(--brass-2); }
+.artist-pop__bio { font-size: 1.08rem; line-height: 1.55; color: var(--foam-2); margin: 0; }
+.artist-pop__h { font-family: var(--f-display); font-weight: 700; text-transform: uppercase; letter-spacing: .06em; font-size: .95rem; color: var(--brass-2); margin-bottom: 4px; }
+.artist-pop__slots b { font-weight: 700; color: var(--foam); }
+.artist-pop__slots em { display: block; font-style: normal; font-size: .9rem; color: var(--foam-3); margin-top: 2px; }
+.artist-pop .btn-row { margin: 0; }
+@media (max-width: 520px) {
+  .artist-pop__initials, .artist-pop__photo { width: 64px; height: 64px; font-size: 1.5rem; }
+  .artist-pop .modal__title { font-size: 1.8rem; }
+  .artist-pop .btn-row .btn { flex: 1 1 100%; justify-content: center; }
+}

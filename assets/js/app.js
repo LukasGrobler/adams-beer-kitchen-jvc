@@ -319,8 +319,10 @@
 
   /* ---------------- event pages ---------------- */
   function priceTiles(p) {
+    if (p.premium == null) return '<span class="price price--hot"><span>AED</span><b>' + p.house + "</b></span>";
     return '<span class="price"><span>House</span><b>' + p.house + '</b></span><span class="price price--hot"><span>Premium</span><b>' + p.premium + "</b></span>";
   }
+  function priceText(p) { return p.premium == null ? "AED " + p.house : "AED " + p.house + " / " + p.premium; }
   function icsStamp(dateObj, min) {
     var dt = new Date(Date.UTC(dateObj.y, dateObj.m, dateObj.d, 0, 0) + (min - 240) * 60000);
     return dt.getUTCFullYear() + pad(dt.getUTCMonth() + 1) + pad(dt.getUTCDate()) + "T" + pad(dt.getUTCHours()) + pad(dt.getUTCMinutes()) + "00Z";
@@ -391,7 +393,7 @@
     if (e.vouchers) e.vouchers.forEach(function (v) { deal += '<div class="deal"><div><p class="deal__name">' + esc(v[0]) + '</p></div><div class="deal__prices"><span class="price price--hot"><span>AED</span><b>' + esc(v[1]) + "</b></span></div></div>"; });
     if (!deal && e.facts) e.facts.forEach(function (f) { deal += '<div class="deal"><div><p class="deal__name">' + esc(f[0]) + '</p></div><div class="deal__prices"><span class="price price--hot"><span>&nbsp;</span><b>' + esc(f[1]) + "</b></span></div></div>"; });
     html += '<section class="sec sec--tight"><div class="wrap wrap--narrow"><div class="sec-head"><h2 class="d-l">The deal</h2>' +
-      (e.packages ? '<p class="lede">Packages come in two levels, House and Premium. The team will happily talk you through what\'s in each.</p>' : "") +
+      (e.packages && e.packages.some(function (p) { return p.premium != null; }) ? '<p class="lede">Packages come in two levels, House and Premium. The team will happily talk you through what\'s in each.</p>' : "") +
       (e.fine ? '<p class="small">' + esc(e.fine) + "</p>" : "") +
       '</div><div class="deals">' + deal + "</div></div></section>";
 
@@ -405,7 +407,7 @@
     /* who's on */
     if (e.lineup) {
       html += '<section class="sec sec--tight"><div class="wrap wrap--narrow"><div class="sec-head"><h2 class="d-l">Who\'s on</h2></div><ul class="lineup">' +
-        e.lineup.map(function (l) { var a = D.artists[l.who]; return '<li><span class="lineup__who"><a href="live-music.html">' + esc(a.name) + '</a><span class="lineup__role">' + esc(a.role) + '</span></span><span class="lineup__time">' + esc(l.time) + "</span></li>"; }).join("") +
+        e.lineup.map(function (l) { var a = D.artists[l.who]; return '<li><span class="lineup__who">' + artistLink(l.who) + '<span class="lineup__role">' + esc(a.role) + '</span></span><span class="lineup__time">' + esc(l.time) + "</span></li>"; }).join("") +
         "</ul></div></section>";
     }
     if (e.hallOfFame) html += '<section class="sec sec--tight"><div class="wrap wrap--narrow" data-hof></div></section>';
@@ -467,6 +469,7 @@
   }
   function renderFinder(root) {
     var list = brunches(), state = { day: "any", time: "any", max: 279 };
+    var low = Math.min.apply(null, list.map(function (x) { return x.p.house; }));
     var dayOpts = [["any", "Any day"]].concat([2, 4, 5, 6, 0].map(function (d) { return [String(d), DAYS[d]]; }));
     var timeOpts = [["any", "Any time"], ["day", "Afternoon"], ["eve", "Evening"], ["late", "Late night"]];
     function chips(name, opts) { return '<div class="finder__chips" data-group="' + name + '">' + opts.map(function (o, i) { return '<button class="chip" type="button" data-v="' + o[0] + '" aria-pressed="' + (i === 0) + '">' + o[1] + "</button>"; }).join("") + "</div>"; }
@@ -474,7 +477,7 @@
       '<div class="finder"><div class="finder__controls">' +
       '<div class="finder__group"><span class="finder__label">Which day?</span>' + chips("day", dayOpts) + "</div>" +
       '<div class="finder__group"><span class="finder__label">What time?</span>' + chips("time", timeOpts) + "</div>" +
-      '<div class="finder__group"><label class="finder__label" for="budget">Budget per person</label><input class="range" id="budget" type="range" min="149" max="279" step="10" value="279"><div class="finder__budget"><span>AED 149</span><b data-budget>Up to AED 279</b></div></div>' +
+      '<div class="finder__group"><label class="finder__label" for="budget">Budget per person</label><input class="range" id="budget" type="range" min="' + low + '" max="279" step="10" value="279"><div class="finder__budget"><span>AED ' + low + '</span><b data-budget>Up to AED 279</b></div></div>' +
       '<p class="small" style="margin:0">Budget uses the House price. Premium is the upgraded package.</p>' +
       '</div><div><p class="finder__count" aria-live="polite" data-count></p><div class="finder__results" data-results></div></div></div>';
     function draw() {
@@ -511,12 +514,16 @@
     });
     return map;
   }
+  function artistLink(k, label) {
+    return '<a href="live-music.html#artist-' + k + '" data-artist="' + k + '">' + esc(label || D.artists[k].name) + "</a>";
+  }
   function renderArtists(el) {
     var map = artistSlots();
     el.innerHTML = Object.keys(D.artists).map(function (k) {
       var a = D.artists[k], sl = map[k] || [];
-      return '<article class="artist"><span class="artist__initials" aria-hidden="true">' + esc(a.initials) + '</span><span class="artist__role">' + esc(a.role) + '</span><h3 class="artist__name">' + esc(a.name) + '</h3><ul class="artist__slots">' +
-        sl.map(function (s) { return '<li><a href="' + s.e.slug + '.html"><span>' + DAYS[s.dow] + ", " + esc(s.e.name) + "</span><span>" + esc(s.time) + "</span></a></li>"; }).join("") + "</ul></article>";
+      return '<article class="artist" id="artist-' + k + '"><span class="artist__initials" aria-hidden="true">' + esc(a.initials) + '</span><span class="artist__role">' + esc(a.role) + '</span><h3 class="artist__name">' + artistLink(k) + '</h3><ul class="artist__slots">' +
+        sl.map(function (s) { return '<li><a href="' + s.e.slug + '.html"><span>' + DAYS[s.dow] + ", " + esc(s.e.name) + "</span><span>" + esc(s.time) + "</span></a></li>"; }).join("") + "</ul>" +
+        (a.bio ? '<button class="artist__more" type="button" data-artist="' + k + '">About ' + esc(a.name.split(" ")[0]) + " " + I.chev + "</button>" : "") + "</article>";
     }).join("");
   }
   function renderLineupWeek(el) {
@@ -524,10 +531,66 @@
     WEEK.forEach(function (dow) {
       D.events.forEach(function (e) {
         if (e.days[0] !== dow || !e.lineup) return;
-        e.lineup.forEach(function (l) { var a = D.artists[l.who]; rows.push('<li><span class="lineup__who"><a href="' + e.slug + '.html">' + esc(a.name) + '</a><span class="lineup__role">' + DAYS[dow] + ", " + esc(e.name) + '</span></span><span class="lineup__time">' + esc(l.time) + "</span></li>"); });
+        e.lineup.forEach(function (l) { rows.push('<li><span class="lineup__who">' + artistLink(l.who) + '<span class="lineup__role">' + DAYS[dow] + ", " + '<a href="' + e.slug + '.html">' + esc(e.name) + '</a></span></span><span class="lineup__time">' + esc(l.time) + "</span></li>"); });
       });
     });
     el.innerHTML = '<ul class="lineup">' + rows.join("") + "</ul>";
+  }
+  /* when an artist is next on, soonest first */
+  function artistDates(k) {
+    return (artistSlots()[k] || []).map(function (s) { return { s: s, nx: nextOn(s.dow, parseRange(s.time)[1]) }; })
+      .sort(function (x, y) { return x.nx.add - y.nx.add; });
+  }
+  function dayWord(nx) { return nx.add === 0 ? "today" : nx.add === 1 ? "tomorrow" : shortDate(nx); }
+  /* the pop-up when someone taps a name (live-music.html#artist-KEY opens it straight away) */
+  function openArtist(k, from) {
+    var a = D.artists[k]; if (!a) return;
+    var m = $(".modal--artist");
+    if (!m) {
+      document.body.insertAdjacentHTML("beforeend", '<div class="modal modal--artist" role="dialog" aria-modal="true" aria-labelledby="artist-t"><div class="modal__card" data-lenis-prevent><button class="modal__close" type="button" aria-label="Close">&times;</button><div class="artist-pop" data-artist-body></div></div></div>');
+      m = $(".modal--artist");
+      m._close = function () {
+        if (!m.classList.contains("is-open")) return;
+        m.classList.remove("is-open");
+        document.documentElement.classList.remove("is-locked");
+        if (window.__lenis) window.__lenis.start();
+        if (/^#artist-/.test(location.hash)) history.replaceState(null, "", location.pathname + location.search);
+        if (m._from && m._from.focus) m._from.focus();
+      };
+      $(".modal__close", m).addEventListener("click", m._close);
+      m.addEventListener("click", function (e) { if (e.target === m) m._close(); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") m._close(); });
+    }
+    var dates = artistDates(k), first = a.name.split(" ")[0], nx = dates[0];
+    var head = a.img ? '<span class="artist-pop__photo"><img src="' + img(a.img) + '" alt="' + esc(a.name) + '"></span>' : '<span class="artist-pop__initials" aria-hidden="true">' + esc(a.initials) + "</span>";
+    var share = nx ? a.name + " is on at Adam's Beer Kitchen JVC " + (nx.nx.add > 1 ? "on " : "") + dayWord(nx.nx) + ", " + nx.s.e.name + ", " + nx.s.time + ". " : a.name + " at Adam's Beer Kitchen JVC. ";
+    $("[data-artist-body]", m).innerHTML =
+      '<div class="artist-pop__head">' + head + '<div><p class="artist__role">' + esc(a.role) + '</p><h2 class="modal__title" id="artist-t">' + esc(a.name) + "</h2>" +
+      (a.plays && a.plays !== a.role ? '<p class="artist-pop__plays">' + I.music + " " + esc(a.plays) + "</p>" : "") + "</div></div>" +
+      (a.bio ? '<p class="artist-pop__bio">' + esc(a.bio) + "</p>" : "") +
+      (dates.length ? '<div><h3 class="artist-pop__h">When ' + esc(first) + "'s on</h3>" + '<ul class="artist__slots artist-pop__slots">' + dates.map(function (d) {
+        return '<li><a href="' + d.s.e.slug + '.html"><span><b>Every ' + DAYS[d.s.dow] + "</b> " + esc(d.s.e.name) + '<em>Next: ' + dayWord(d.nx) + "</em></span><span>" + esc(d.s.time) + "</span></a></li>";
+      }).join("") + "</ul></div>" : "") +
+      '<div class="btn-row">' + (nx ? '<a class="btn" href="book.html?event=' + nx.s.e.slug + "&date=" + iso(nx.nx) + '">Book for ' + dayWord(nx.nx) + "</a>" : "") +
+      (a.ig ? '<a class="btn btn--ghost" href="https://instagram.com/' + encodeURIComponent(a.ig.replace(/^@/, "")) + '" target="_blank" rel="noopener">' + I.ig + " Instagram</a>" : "") +
+      '<a class="btn btn--ghost" href="' + waShare(share + new URL("live-music.html#artist-" + k, location.href).href) + '" target="_blank" rel="noopener">' + I.share + " Send to a friend</a></div>";
+    m._from = from || document.activeElement;
+    m.classList.add("is-open");
+    document.documentElement.classList.add("is-locked");
+    if (window.__lenis) window.__lenis.stop();
+    $(".modal__card", m).scrollTop = 0;
+    $(".modal__close", m).focus();
+  }
+  function artistUi() {
+    document.addEventListener("click", function (e) {
+      var t = e.target.closest && e.target.closest("[data-artist]");
+      if (!t || e.metaKey || e.ctrlKey || e.shiftKey) return;
+      e.preventDefault();
+      openArtist(t.getAttribute("data-artist"), t);
+    });
+    var fromHash = function () { var m = /^#artist-([\w-]+)$/.exec(location.hash); if (m && D.artists[m[1]]) openArtist(m[1]); };
+    window.addEventListener("hashchange", fromHash);
+    fromHash();
   }
 
   /* ---------------- reviews ---------------- */
@@ -684,10 +747,10 @@
         var k = b.getAttribute("data-menu-open"), url = D.menus[k === "room" ? "roomService" : k];
         if (url) { if (b.tagName !== "A") window.open(url, "_blank", "noopener"); return; }
         ev.preventDefault();
-        var m = $(".modal");
+        var m = $(".modal--menu");
         if (!m) {
-          document.body.insertAdjacentHTML("beforeend", '<div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-t"><div class="modal__card"><button class="modal__close" type="button" aria-label="Close">&times;</button><h2 class="modal__title" id="modal-t"></h2><p class="lede" data-modal-p></p><div class="btn-row"><a class="btn btn--wa" target="_blank" rel="noopener" data-modal-wa>' + I.wa + ' Ask on WhatsApp</a></div><p class="small" style="margin:0">Demo: the real PDF opens here once the venue sends it.</p></div></div>');
-          m = $(".modal");
+          document.body.insertAdjacentHTML("beforeend", '<div class="modal modal--menu" role="dialog" aria-modal="true" aria-labelledby="modal-t"><div class="modal__card"><button class="modal__close" type="button" aria-label="Close">&times;</button><h2 class="modal__title" id="modal-t"></h2><p class="lede" data-modal-p></p><div class="btn-row"><a class="btn btn--wa" target="_blank" rel="noopener" data-modal-wa>' + I.wa + ' Ask on WhatsApp</a></div><p class="small" style="margin:0">Demo: the real PDF opens here once the venue sends it.</p></div></div>');
+          m = $(".modal--menu");
           $(".modal__close", m).addEventListener("click", function () { m.classList.remove("is-open"); });
           m.addEventListener("click", function (e2) { if (e2.target === m) m.classList.remove("is-open"); });
           document.addEventListener("keydown", function (e2) { if (e2.key === "Escape") m.classList.remove("is-open"); });
@@ -942,9 +1005,13 @@
   }
   function aBrunch() {
     var rows = brunches().filter(function (x) { return [5, 6, 0].indexOf(x.dow) > -1; }).map(function (x) {
-      return [DAYS3[x.dow], '<a href="' + x.e.slug + '.html">' + esc(x.p.name) + "</a>", esc(x.p.time) + ", AED " + x.p.house + " / " + x.p.premium];
+      return [DAYS3[x.dow], '<a href="' + x.e.slug + '.html">' + esc(x.p.name) + "</a>", esc(x.p.time) + ", " + priceText(x.p)];
     });
     return { html: "This weekend's brunches and drunches:" + btList(rows) + "<p>House is the standard package and Premium is the upgrade.</p>" + btBtns([["Find my brunch", "brunches.html"]]), chips: [["book", "Book a table"], ["deals", "Any deals today?"], ["more", "More questions"]] };
+  }
+  function aArtist(k) {
+    var a = D.artists[k], rows = artistDates(k).map(function (d) { return [DAYS3[d.s.dow], '<a href="' + d.s.e.slug + '.html">' + esc(d.s.e.name) + "</a>", esc(d.s.time) + ", next " + dayWord(d.nx)]; });
+    return { html: "<b>" + esc(a.name) + "</b>" + (a.plays ? " (" + esc(a.plays.toLowerCase()) + ")" : "") + ". " + esc(a.bio || "") + btList(rows) + btBtns([["More about " + a.name.split(" ")[0], "live-music.html#artist-" + k, "btn--ghost"]]), chips: [["live", "Who else plays?"], ["book", "Book a table"]] };
   }
   function aLive() {
     var b = biz(), rows = [];
@@ -962,7 +1029,7 @@
   function aDeals() {
     var b = biz(), st = liveStatus(), rows = [];
     rows.push(["Daily", '<a href="happy-hour.html">Happy hour</a>', st.hh ? "On now, till " + fmt(st.h1) : "From 12PM, till " + fmt(st.h1)]);
-    var e = find({ 1: "monday-20-off", 2: "quiz-night", 3: "ladies-night", 4: "steak-night", 5: "fuel-up-friday", 6: "smoking-saturdays", 0: "sunday-social" }[b.bdow]);
+    var e = find({ 1: "monday-20-off", 2: "quiz-night", 3: "ladies-night", 4: "steak-night", 5: "get-real-fridays", 6: "smoking-saturdays", 0: "sunday-social" }[b.bdow]);
     if (e) rows.push([DAYS3[b.bdow], '<a href="' + e.slug + '.html">' + esc(e.name) + "</a>", esc(e.short)]);
     if (b.bdow >= 1 && b.bdow <= 4) rows.push(["Mon – Thu", '<a href="tower-up.html">Tower up your day</a>', "2.5L beer tower and a bites platter, AED 179"]);
     D.specials.forEach(function (s) { if (specialState(s) === "on") rows.push(["On now", '<a href="' + s.slug + '.html">' + esc(s.name) + "</a>", esc(s.short)]); });
@@ -987,7 +1054,7 @@
     var when = e.dayLabel || e.when || "";
     if (e.from && specialState(e) === "past") return { html: "<b>" + esc(e.name) + "</b> has finished (" + esc(when) + "). Here's what's on at the moment:", chips: [["deals", "Any deals today?"], ["tonight", "What's on tonight?"]] };
     var html = "<b>" + esc(e.name) + "</b>, " + esc(when.charAt(0).toLowerCase() + when.slice(1)) + (e.slots ? ", " + timeRange(e) : "") + ". " + esc(e.short);
-    if (e.packages) html += btList(e.packages.map(function (p) { return ["AED", esc(p.name), esc(p.time) + ": House " + p.house + ", Premium " + p.premium]; }));
+    if (e.packages) html += btList(e.packages.map(function (p) { return ["AED", esc(p.name), esc(p.time) + (p.premium == null ? ": AED " + p.house : ": House " + p.house + ", Premium " + p.premium)]; }));
     if (e.slots) { var nx = nextOn(e.days[0], eventSpan(e)[1]); html += "<p>Next one: <b>" + (nx.add === 0 ? "today" : shortDate(nx)) + "</b>.</p>"; }
     return { html: html + btBtns([["Book it", "book.html?event=" + e.slug], ["See the night", e.slug + ".html", "btn--ghost"]]), chips: [["tonight", "What's on tonight?"], ["more", "More questions"]] };
   }
@@ -1047,11 +1114,11 @@
     footy: "football", prem: "premier", epl: "premier", dhs: "aed", dh: "aed", bbq: "bbq", wifi: "wifi", "wi-fi": "wifi"
   };
   var VOCAB = ("happy hour brunch drunch quiz trivia ladies steak ribeye karaoke roast sunday monday tuesday wednesday thursday friday saturday " +
-    "tonight today tomorrow weekend music live band singer singing artist guitar fergal bracken dylan kusch parking valet location address where directions " +
+    "tonight today tomorrow weekend music live band singer singing artist guitar fergal bracken david dylan itsdylanlive kusch wall parking valet location address where directions " +
     "open opening close closing hours menu food drinks drink beer beers guinness cocktail cocktails wine whisky price prices cost deal deals offer offers discount " +
     "book booking reserve reservation table group party birthday private office celebration football soccer match premier league sports screens darts pool " +
     "terrace outdoor outside kids children family vegetarian vegan gluten halal dress smoking shisha pets dogs wifi payment delivery room service hotel " +
-    "teachers teacher cabin crew hotelier hoteliers tower towers halloween vouchers burger pizza pasta salmon lamb chicken salad dessert desserts sliders sandwich " +
+    "teachers teacher cabin crew hotelier hoteliers real estate agent agents realtor realtors broker brokers tower towers halloween vouchers burger pizza pasta salmon lamb chicken salad dessert desserts sliders sandwich " +
     "stew crumble brownie cheesecake wings nachos calamari platter prawns mussels hotdog burrito fries truffle wheelchair accessible access capacity hiring joke funny thanks hello weather christmas restaurant people guests tickets " +
     "heineken formula prix race races jack daniel scratch amstel festive jumper bucket bottles").split(" ");
   var STOP = ("the and for with you your are can could would should will does did have has had this that what when where which who whom whose how why " +
@@ -1101,7 +1168,7 @@
   var EVENT_WORDS = [
     [/\b(quiz|trivia)\b/, "quiz-night"], [/\bladies\b/, "ladies-night"], [/\b(steak night|thirsty thursday)/, "steak-night"],
     [/\b(karaoke|singing|sing)\b/, "karaoke-night"], [/\b(roast|sunday social)\b/, "sunday-social"], [/\b(bbq|smoking saturday)/, "smoking-saturdays"],
-    [/\bteachers?\b/, "teachers-brunch"], [/\bfuel up\b/, "fuel-up-friday"], [/(\b[25]0 ?%|\b[25]0 off|half price|half off|cabin crew|hoteliers?\b)/, "monday-20-off"],
+    [/\bteachers?\b/, "teachers-brunch"], [/\b(get real|real ?estate|realtors?|estate agents?|property agents?|brokers?|fuel up)\b/, "get-real-fridays"], [/(\b[25]0 ?%|\b[25]0 off|half price|half off|cabin crew|hoteliers?\b)/, "monday-20-off"],
     [/\b(beer )?towers?\b/, "tower-up"], [/\b(beer )?buckets?\b/, "beer-bucket"], [/\b(festive|jumpers?)\b/, "festive-with-amstel"], [/\b(mid ?term|mayhem|vouchers?)\b/, "mid-term-mayhem"], [/\bhalloween\b/, "halloween-week"]
   ];
   function eventIn(s) { for (var i = 0; i < EVENT_WORDS.length; i++) if (EVENT_WORDS[i][0].test(s)) return EVENT_WORDS[i][1]; return null; }
@@ -1199,7 +1266,7 @@
     return { html: "From our current menu:" + btList(rows) + (steak ? '<p>Tip: on Thursdays it\'s <a href="steak-night.html">steak night</a>, a 250g rib-eye with fries and two house drinks for AED 199.</p>' : "") + btBtns([["Full food menu (PDF)", D.menus.food || "menu.html", "btn--ghost"]]), chips: [["menu", "Show me the menu"], ["book", "Book a table"]] };
   }
   function aPrice() {
-    return { html: "A quick guide to prices:" + btList([["AED 99", "Sunday roast buffet", ""], ["AED 149+", "Brunches and drunches", "Up to AED 279 for Premium"], ["AED 199", "Thursday steak night", "Rib-eye, fries and 2 house drinks"], ["AED 179", "Beer tower + bites platter", "Monday to Thursday"], ["AED 30 – 250", "Food menu", "Fries to the seafood platter"]]), chips: [["brunch", "Brunch this weekend?"], ["deals", "Any deals today?"], ["menu", "Show me the menu"]] };
+    return { html: "A quick guide to prices:" + btList([["AED 99", "Sunday roast buffet", ""], ["AED 169+", "Brunches and drunches", "Up to AED 279 for Premium"], ["AED 199", "Thursday steak night", "Rib-eye, fries and 2 house drinks"], ["AED 179", "Beer tower + bites platter", "Monday to Thursday"], ["AED 30 – 250", "Food menu", "Fries to the seafood platter"]]), chips: [["brunch", "Brunch this weekend?"], ["deals", "Any deals today?"], ["menu", "Show me the menu"]] };
   }
   function aHandoff(label, q) {
     return { html: "Good question about " + label + ". I'd rather not guess, so the team will answer that one on WhatsApp." + btBtns([["Ask the team", waTo("Hi Adam's Beer Kitchen! " + (q || ""))]]), chips: BT_MAIN };
@@ -1239,13 +1306,15 @@
     if (/\bweekend\b/.test(s)) add("weekend");
     var dayIdx = -1;
     DAYS.forEach(function (d, i) { if (new RegExp("\\b" + d.toLowerCase() + "\\b").test(s)) dayIdx = i; });
-    var liveQ = /\b(live|music|band|singer|artist|guitar|playing|performing|on stage|dj|fergal|lee wall|bracken|joe and david|dylan)\b/.test(s) && !ev;
+    var liveQ = /\b(live|music|band|singer|artist|guitar|playing|performing|on stage|dj|fergal|lee wall|bracken|joe|dylan)\b/.test(s) && !ev;
     var whatsOnQ = /\b(what is on|whats on|what's on|what on|going on|happening|on now|on tonight)\b/.test(s);
     var todayQ = /\b(tonight|today|right now)\b/.test(s);
     if (dayIdx > -1 && !ev) add("day", dayIdx);
     else if (/\btomorrow\b/.test(s) && !ev) add("day", (biz().bdow + 1) % 7);
     else if (whatsOnQ && !ev && !liveQ) add("tonight");
-    if (liveQ) add("live");
+    var who = !ev && [[/\b(itsdylanlive|dylan)\b/, "itsdylanlive"], [/\bjoe\b/, "joe"], [/\bfergal\b/, "fergal"], [/\b(jen|kusch)\b/, "jen"], [/\b(david|bracken)\b/, "david"], [/\blee\b/, "lee"]].filter(function (x) { return D.artists[x[1]] && x[0].test(s); });
+    if (who.length === 1) add("artist", who[0][1]);
+    else if (liveQ) add("live");
     if (/\b(where|address|location|find you|directions|map|how do i get|get there)\b/.test(s)) add("find");
     if (/\b(parking|park|valet)\b/.test(s) && !hits.some(function (h) { return h[0] === "find"; })) add("find");
     if (/\b(football|soccer|match|premier|league|sports?|rugby|screens?|watch the game)\b/.test(s)) add("sport");
@@ -1322,6 +1391,7 @@
       case "hours": return aHours();
       case "brunch": return aBrunch();
       case "live": return aLive();
+      case "artist": return aArtist(arg);
       case "find": return aFind();
       case "deals": return aDeals();
       case "menu": return aMenu();
@@ -1506,6 +1576,7 @@
   $$("[data-finder]").forEach(renderFinder);
   $$("[data-artists]").forEach(renderArtists);
   $$("[data-lineup-week]").forEach(renderLineupWeek);
+  artistUi();
   $$("[data-reviews]").forEach(renderReviews);
   $$("[data-reviews-mini]").forEach(renderReviewsMini);
   $$("[data-gallery]").forEach(renderGallery);

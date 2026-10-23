@@ -26,13 +26,21 @@ window.ABK_DATA = {
     happyHour: { 0: ["12:00", "21:00"], 1: ["12:00", "21:00"], 2: ["12:00", "21:00"], 3: ["12:00", "21:00"], 4: ["12:00", "21:00"], 5: ["12:00", "19:00"], 6: ["12:00", "19:00"] }
   },
 
+  /* Each name opens a pop-up with the bio and their next dates (live-music.html#artist-KEY links straight to it).
+     bio/plays are written from the schedule until the artists send their own. Optional: img (a photo in assets/img/ig), ig (Instagram handle). */
   artists: {
-    "itsdylanlive": { name: "ItsDylanLive", role: "Quiz host", initials: "DL" },
-    "joe-david": { name: "Joe & David", role: "Live duo", initials: "J&D" },
-    "fergal": { name: "Fergal O'Neill", role: "Live music", initials: "FO" },
-    "jen": { name: "Jen Kusch", role: "Karaoke host", initials: "JK" },
-    "david": { name: "David Bracken", role: "Live music", initials: "DB" },
-    "lee": { name: "Lee Wall", role: "Live music", initials: "LW" }
+    "itsdylanlive": { name: "ItsDylanLive", role: "Quiz host", initials: "DL", plays: "Quiz host",
+      bio: "ItsDylanLive runs quiz night every Tuesday: rounds of trivia, a league table that runs all season, and prizes worth up to AED 2,000 for the winning team. Bring your cleverest friends, plus the one who knows football." },
+    "joe": { name: "Joe", role: "Live music", initials: "J",
+      bio: "Joe is the sound of Ladies Night on Wednesdays, playing while the ladies' packages and the bites platters go round." },
+    "fergal": { name: "Fergal O'Neill", role: "Live music", initials: "FO", plays: "Acoustic guitar",
+      bio: "Fergal is our busiest musician, on three times a week: Thursday steak night, the late set after Friday karaoke, and the afternoon set at the Smoking Saturdays BBQ brunch." },
+    "jen": { name: "Jen Kusch", role: "Karaoke host", initials: "JK", plays: "Karaoke host",
+      bio: "Jen hosts Friday karaoke, running the list and handing out the mic. All you have to do is pick the song." },
+    "david": { name: "David Bracken", role: "Live music", initials: "DB",
+      bio: "David closes out Smoking Saturdays, taking over once the BBQ brunch and the drunch are done." },
+    "lee": { name: "Lee Wall", role: "Live music", initials: "LW",
+      bio: "Lee plays Sunday nights after the roast buffet, to see the weekend out." }
   },
 
   /* Weekly events. "slots" drive the chalkboard, the calendar files and the booking form. */
@@ -62,15 +70,15 @@ window.ABK_DATA = {
     },
     {
       slug: "ladies-night", days: [3], dayLabel: "Every Wednesday",
-      name: "Ladies Night", with: "Live music with Joe & David",
+      name: "Ladies Night", with: "Live music with Joe",
       cats: ["drinks", "music"], img: "post-12", img2: "post-5",
       short: "Ladies from AED 99, lads from AED 149, mixed bites platter included.",
-      intro: "Wednesday belongs to the ladies. The lads are welcome too, at lads' prices. Every package comes with a mixed bites platter, and Joe & David play from 8PM.",
+      intro: "Wednesday belongs to the ladies. The lads are welcome too, at lads' prices. Every package comes with a mixed bites platter, and Joe plays from 8PM.",
       facts: [["Live music", "8PM – 11PM"], ["Ladies", "From AED 99"], ["Lads", "From AED 149"]],
       packages: [{ name: "Ladies", time: "Mixed bites platter included", house: 99, premium: 129 }, { name: "Lads", time: "Mixed bites platter included", house: 149, premium: 199 }],
-      lineup: [{ who: "joe-david", time: "8PM – 11PM" }],
-      slots: [{ label: "Ladies Night", start: "20:00", end: "23:00", price: "Ladies AED 99 / 129" }, { label: "Joe & David live", start: "20:00", end: "23:00" }],
-      week: { title: "Ladies night", lines: [["Ladies", "AED 99 / 129"], ["Lads", "AED 149 / 199"], ["8PM – 11PM", "Live: Joe & David"]] }
+      lineup: [{ who: "joe", time: "8PM – 11PM" }],
+      slots: [{ label: "Ladies Night", start: "20:00", end: "23:00", price: "Ladies AED 99 / 129" }, { label: "Joe live", start: "20:00", end: "23:00" }],
+      week: { title: "Ladies night", lines: [["Ladies", "AED 99 / 129"], ["Lads", "AED 149 / 199"], ["8PM – 11PM", "Live: Joe"]] }
     },
     {
       slug: "steak-night", days: [4], dayLabel: "Every Thursday",
@@ -89,21 +97,21 @@ window.ABK_DATA = {
       slug: "teachers-brunch", days: [5], dayLabel: "Every Friday",
       name: "Teachers' Brunch", with: "School's out, brunch is in",
       cats: ["drinks"], img: "teachers-brunch",
-      short: "Brunch 1PM – 5PM from AED 149, drunch 5PM – 9PM from AED 199.",
+      short: "Brunch 1PM – 5PM from AED 169, drunch 5PM – 9PM from AED 199.",
       intro: "The bell has gone and the marking can wait. Teachers' Brunch runs 1PM to 5PM, and for the ones who aren't done yet, Teachers Drunch picks up from 5PM till 9PM.",
-      facts: [["Brunch", "1PM – 5PM"], ["Drunch", "5PM – 9PM"], ["From", "AED 149"]],
-      packages: [{ name: "Teachers' Brunch", time: "1PM – 5PM", house: 149, premium: 179 }, { name: "Teachers Drunch", time: "5PM – 9PM", house: 199, premium: 249 }],
-      slots: [{ label: "Teachers' Brunch", start: "13:00", end: "17:00", price: "AED 149 / 179" }, { label: "Teachers Drunch", start: "17:00", end: "21:00", price: "AED 199 / 249" }]
+      facts: [["Brunch", "1PM – 5PM"], ["Drunch", "5PM – 9PM"], ["From", "AED 169"]],
+      packages: [{ name: "Teachers' Brunch", time: "1PM – 5PM", house: 169, premium: 199 }, { name: "Teachers Drunch", time: "5PM – 9PM", house: 199, premium: 249 }],
+      slots: [{ label: "Teachers' Brunch", start: "13:00", end: "17:00", price: "AED 169 / 199" }, { label: "Teachers Drunch", start: "17:00", end: "21:00", price: "AED 199 / 249" }]
     },
     {
-      slug: "fuel-up-friday", days: [5], dayLabel: "Every Friday",
-      name: "Friday Fuel Up", with: "Unlimited drinks packages with a food platter",
-      cats: ["drinks", "food"], img: "post-5",
-      short: "4PM – 8PM, AED 229 / 279 with a food platter.",
-      intro: "Four hours of unlimited drinks packages and a food platter to keep you upright. Consider it fuel for the weekend.",
-      facts: [["When", "4PM – 8PM"], ["House", "AED 229"], ["Premium", "AED 279"]],
-      packages: [{ name: "Fuel Up Brunch", time: "4PM – 8PM, food platter included", house: 229, premium: 279 }],
-      slots: [{ label: "Friday Fuel Up", start: "16:00", end: "20:00", price: "AED 229 / 279" }]
+      slug: "get-real-fridays", days: [5], dayLabel: "Every Friday",
+      name: "Get Real Fridays", with: "Real estate agent deals",
+      cats: ["drinks", "deals"], img: "post-5",
+      short: "Brunch for real estate agents, 4PM – 8PM, AED 199.",
+      intro: "Viewings done, deals closed, phone on silent. Get Real Fridays is the brunch for Dubai's real estate agents, 4PM to 8PM every Friday for AED 199. Bring the team and close out the week.",
+      facts: [["When", "4PM – 8PM"], ["For", "Real estate agents"], ["Brunch", "AED 199"]],
+      packages: [{ name: "Get Real Brunch", time: "4PM – 8PM, for real estate agents", house: 199 }],
+      slots: [{ label: "Get Real Fridays", start: "16:00", end: "20:00", price: "AED 199" }]
     },
     {
       slug: "karaoke-night", days: [5], dayLabel: "Every Friday",
@@ -152,15 +160,15 @@ window.ABK_DATA = {
   takeover: {
     1: { slug: "monday-20-off", lines: ["20% off", "Mondays"], sub: "20% off food and drinks for cabin crew, teachers and hoteliers, from 9PM till close." },
     2: { slug: "quiz-night", lines: ["Quiz", "night"], sub: "With ItsDylanLive. Prizes up to AED 2,000, and quiz drunch from AED 189." },
-    3: { slug: "ladies-night", lines: ["Ladies", "night"], sub: "Ladies from AED 99 with a mixed bites platter, and Joe & David live from 8PM." },
+    3: { slug: "ladies-night", lines: ["Ladies", "night"], sub: "Ladies from AED 99 with a mixed bites platter, and Joe live from 8PM." },
     4: { slug: "steak-night", lines: ["Steak", "night"], sub: "A 250g rib-eye, fries and two house drinks for AED 199, with Fergal O'Neill live from 8PM." },
-    5: { slug: "karaoke-night", lines: ["Big", "Friday"], sub: "Teachers' brunch from 1PM, Fuel Up at 4PM, karaoke at 8PM and Fergal O'Neill till 2AM.", start: "13:00", end: "02:00", link: "whats-on.html#day-5" },
+    5: { slug: "karaoke-night", lines: ["Big", "Friday"], sub: "Teachers' brunch from 1PM, Get Real Fridays at 4PM, karaoke at 8PM and Fergal O'Neill till 2AM.", start: "13:00", end: "02:00", link: "whats-on.html#day-5" },
     6: { slug: "smoking-saturdays", lines: ["Smoking", "Saturdays"], sub: "Live BBQ brunch from 3PM, drunch from 7PM and live music all evening." },
     0: { slug: "sunday-social", lines: ["Sunday", "roast"], sub: "The full roast buffet from AED 99, 1PM to 8PM, then Lee Wall live from 8PM." }
   },
 
   /* Friday has three events; the week scroller shows them as one night. */
-  fridayWeek: { title: "Big Friday", img: "post-1", link: "karaoke-night", lines: [["1PM – 9PM", "Teachers' brunch & drunch"], ["4PM – 8PM", "Friday Fuel Up, AED 229 / 279"], ["8PM – 11PM", "Karaoke with Jen Kusch"], ["11PM – 2AM", "Live: Fergal O'Neill"]] },
+  fridayWeek: { title: "Big Friday", img: "post-1", link: "karaoke-night", lines: [["1PM – 9PM", "Teachers' brunch & drunch"], ["4PM – 8PM", "Get Real Fridays, AED 199"], ["8PM – 11PM", "Karaoke with Jen Kusch"], ["11PM – 2AM", "Live: Fergal O'Neill"]] },
 
   offers: [
     {
