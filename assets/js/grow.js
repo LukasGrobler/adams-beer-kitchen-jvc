@@ -275,12 +275,14 @@
       '<section class="sec sec--tight sec--wood" id="win"><div class="wrap"><div class="sec-head"><h2 class="d-l">Win your way to the Grand Prix</h2><p class="lede">Two ways to win while you watch. Heineken and Jack Daniel\'s run these themselves and pick the winners.</p></div><div class="promos">' +
       '<article class="promo"><span class="kicker">' + range(H.from, H.to) + '</span><h3 class="d-m">' + esc(H.name) + "</h3>" +
       '<ol class="steps"><li>Order 2 or more Heineken pints at the bar.</li><li>Scan the QR code on the Heineken card and scratch to reveal your code.</li><li>Enter it on the Fans\' Grid. You start at P16, and your first entry moves you up 4 places and wins you an F1 cup.</li><li>Come back and climb: 2 or more pints move you up 4 places, once every 24 hours.</li></ol>' +
-      '<ul class="ladder">' + H.prizes.slice().reverse().map(function (r) { return '<li><span class="ladder__p">' + esc(r[0]) + "</span><span><b>" + esc(r[1]) + '</b><span class="small">' + esc(r[2]) + "</span></span></li>"; }).join("") + "</ul>" +
+      '<ul class="ladder">' + H.prizes.slice().reverse().map(function (r) { return '<li><span class="ladder__p">' + esc(r[0]) + "</span><span><b>" + esc(r[1]) + '</b><span class="small">' + esc(r[2]) + "</span></span>" + (r[3] ? '<img src="assets/img/promo/' + esc(r[3]) + '.png" alt="" loading="lazy">' : "") + "</li>"; }).join("") + "</ul>" +
+      (H.lounge ? '<div class="lounge"><img src="assets/img/promo/' + esc(H.lounge.img) + '.jpg" alt="The VIP Hospitality Lounge at the Abu Dhabi Grand Prix" loading="lazy"><div><span class="kicker">The P1 prize</span><b>VIP Hospitality Lounge</b><ul>' + H.lounge.perks.map(function (k) { return "<li>" + esc(k) + "</li>"; }).join("") + "</ul></div></div>" : "") +
       '<h4 class="kicker">Ways to climb</h4>' + rows(H.points) +
       (H.url ? '<div class="btn-row"><a class="btn" href="' + esc(H.url) + '" target="_blank" rel="noopener">Open the Fans\' Grid</a></div>' : "") +
       '<p class="small" style="margin:0">Heineken runs the Fans\' Grid and picks the winners, under its own terms.</p></article>' +
       '<article class="promo"><span class="kicker">' + range(J.from, J.to) + '</span><h3 class="d-m">' + esc(J.name) + "</h3>" +
       "<p>Order any Jack Daniel's drink from the F1 menu and you get a scratch card. You could win " + esc(J.prize) + " on the spot.</p>" +
+      (J.prizes ? '<div class="merch">' + J.prizes.map(function (m) { return '<figure><img src="assets/img/promo/' + esc(m[1]) + '.jpg" alt="' + esc(m[0]) + '" loading="lazy"><figcaption>' + esc(m[0]) + "</figcaption></figure>"; }).join("") + "</div>" : "") +
       rows(J.menu.map(function (m) { return [m[0], m[1] ? "AED " + m[1] : ""]; })) +
       '<p class="small" style="margin:0">Jack Daniel\'s runs the scratch cards and the prizes.</p></article>' +
       "</div></div></section>" +

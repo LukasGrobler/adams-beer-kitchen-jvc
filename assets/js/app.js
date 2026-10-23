@@ -394,6 +394,13 @@
       (e.fine ? '<p class="small">' + esc(e.fine) + "</p>" : "") +
       '</div><div class="deals">' + deal + "</div></div></section>";
 
+    /* a menu for the night, e.g. the BBQ brunch (data.js > menu) */
+    if (e.menu) {
+      html += '<section class="sec sec--tight" style="padding-top:0"><div class="wrap wrap--narrow"><div class="sec-head"><h2 class="d-l">' + esc(e.menuTitle || "On the menu") + '</h2></div><div class="menu-groups">' +
+        e.menu.map(function (g) { return '<div class="menu-group"><h3 class="d-s">' + esc(g.name) + "</h3><ul>" + g.items.map(function (i) { return "<li>" + esc(i) + "</li>"; }).join("") + "</ul>" + (g.note ? '<p class="small">' + esc(g.note) + "</p>" : "") + "</div>"; }).join("") +
+        "</div></div></section>";
+    }
+
     /* who's on */
     if (e.lineup) {
       html += '<section class="sec sec--tight"><div class="wrap wrap--narrow"><div class="sec-head"><h2 class="d-l">Who\'s on</h2></div><ul class="lineup">' +
@@ -1043,7 +1050,7 @@
     "book booking reserve reservation table group party birthday private office celebration football soccer match premier league sports screens darts pool " +
     "terrace outdoor outside kids children family vegetarian vegan gluten halal dress smoking shisha pets dogs wifi payment delivery room service hotel " +
     "teachers teacher cabin crew hotelier hoteliers tower towers halloween vouchers burger pizza pasta salmon lamb chicken salad dessert desserts sliders sandwich " +
-    "stew lava crumble wheelchair accessible access capacity hiring joke funny thanks hello weather christmas restaurant people guests tickets " +
+    "stew crumble brownie cheesecake wings nachos calamari platter prawns mussels hotdog burrito fries truffle wheelchair accessible access capacity hiring joke funny thanks hello weather christmas restaurant people guests tickets " +
     "heineken formula prix race races jack daniel scratch amstel festive jumper bucket bottles").split(" ");
   var STOP = ("the and for with you your are can could would should will does did have has had this that what when where which who whom whose how why " +
     "there here they them their then than from about into onto over under just also very much many some more most any anything something nothing " +
@@ -1149,7 +1156,7 @@
     return { html: "Families are welcome for food, and guests on Google rate us kid-friendly." + (mid ? " During <b>Mid-Term Mayhem</b> (until 18 October) <b>kids under 12 eat free</b>." : "") + " For bringing little ones to a late event night, check with the team first.", chips: [["menu", "Show me the menu"], ["book", "Book a table"], ["human", "Talk to the team"]] };
   }
   function aVeg() {
-    return { html: "Yes. From the current menu:" + btList([["AED 68", "Kale & quinoa salad", ""], ["AED 60", "Pizza Margherita", ""], ["AED 60", "Lava cake or apple crumble", ""]]) + "<p>For vegan or allergy questions, the team will check with the kitchen.</p>", chips: [["menu", "Show me the menu"], ["human", "Ask the team"]] };
+    return { html: "Yes. From the current menu:" + btList([["AED 65", "Vegetarian pizza", "Peppers, onion, mushroom and olives"], ["AED 65", "Pasta", "Tomato and basil, arrabbiata or pesto"], ["AED 50", "Greek salad", "With feta"], ["AED 40 – 55", "Veggie bites", "Nachos, spring rolls, onion rings, edamame"]]) + "<p>For vegan or allergy questions, the team will check with the kitchen.</p>", chips: [["menu", "Show me the menu"], ["human", "Ask the team"]] };
   }
   function aAccess() {
     return { html: "Guests report the venue is <b>wheelchair accessible</b>, and there's a lift up to Floor 1 at HE Hotel Apartments. If you need anything set up, just let the team know.", chips: [["find", "How do I find you?"], ["human", "Talk to the team"]] };
@@ -1190,7 +1197,7 @@
     return { html: "From our current menu:" + btList(rows) + (steak ? '<p>Tip: on Thursdays it\'s <a href="steak-night.html">steak night</a>, a 250g rib-eye with fries and two house drinks for AED 199.</p>' : "") + btBtns([["Full food menu (PDF)", D.menus.food || "menu.html", "btn--ghost"]]), chips: [["menu", "Show me the menu"], ["book", "Book a table"]] };
   }
   function aPrice() {
-    return { html: "A quick guide to prices:" + btList([["AED 99", "Sunday roast buffet", ""], ["AED 149+", "Brunches and drunches", "Up to AED 279 for Premium"], ["AED 199", "Thursday steak night", "Rib-eye, fries and 2 house drinks"], ["AED 179", "Beer tower + bites platter", "Monday to Thursday"], ["AED 55–210", "Food menu", "Salads to the Angus rib-eye"]]), chips: [["brunch", "Brunch this weekend?"], ["deals", "Any deals today?"], ["menu", "Show me the menu"]] };
+    return { html: "A quick guide to prices:" + btList([["AED 99", "Sunday roast buffet", ""], ["AED 149+", "Brunches and drunches", "Up to AED 279 for Premium"], ["AED 199", "Thursday steak night", "Rib-eye, fries and 2 house drinks"], ["AED 179", "Beer tower + bites platter", "Monday to Thursday"], ["AED 30 – 250", "Food menu", "Fries to the seafood platter"]]), chips: [["brunch", "Brunch this weekend?"], ["deals", "Any deals today?"], ["menu", "Show me the menu"]] };
   }
   function aHandoff(label, q) {
     return { html: "Good question about " + label + ". I'd rather not guess, so the team will answer that one on WhatsApp." + btBtns([["Ask the team", waTo("Hi Adam's Beer Kitchen! " + (q || ""))]]), chips: BT_MAIN };

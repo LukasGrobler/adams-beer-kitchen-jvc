@@ -1402,3 +1402,26 @@ button.link { background: none; border: 0; border-bottom: 2px solid currentColor
 .pts li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--wood-line); color: var(--foam-2); }
 .pts b { font-family: var(--f-display); font-weight: 700; color: var(--foam); white-space: nowrap; }
 @media (max-width: 900px) { .promos { grid-template-columns: 1fr; } }
+
+/* ---------- v4.1 (23 October 2026): prize pictures, the VIP lounge, Jack Daniel's merch, menus on event pages ---------- */
+.ladder li { grid-template-columns: 56px 1fr 128px; }
+.ladder img { width: 128px; height: 96px; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0, 0, 0, .45)); }
+.lounge { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 16px; align-items: center; padding: 12px; border-radius: 8px; background: var(--wood); border: 2px solid var(--yellow); }
+.lounge img { width: 100%; aspect-ratio: 472 / 328; object-fit: cover; border-radius: 5px; }
+.lounge b { display: block; margin: 2px 0 6px; font-family: var(--f-display); font-weight: 800; font-size: 1.45rem; line-height: 1.05; color: var(--yellow); }
+.lounge ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.lounge li { font-family: var(--f-display); font-weight: 600; font-size: 1.08rem; color: var(--foam); }
+.lounge li::before { content: "✓"; color: var(--yellow); margin-right: 8px; }
+.merch { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.merch figure { margin: 0; display: grid; gap: 6px; padding: 10px 10px 12px; border-radius: 8px; background: #fff; }
+.merch img { width: 100%; aspect-ratio: 4 / 3; object-fit: contain; }
+.merch figcaption { text-align: center; font-family: var(--f-display); font-weight: 700; font-size: 1.05rem; color: #1a1206; }
+.menu-groups { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.menu-group { display: grid; gap: 12px; align-content: start; padding: 20px 22px; border-radius: 8px; background: var(--wood); border: 2px solid var(--wood-line); }
+.menu-group h3 { color: var(--yellow); }
+.menu-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.menu-group li { font-family: var(--f-display); font-weight: 600; font-size: 1.2rem; color: var(--foam); }
+.menu-group li::before { content: "•"; color: var(--brass); margin-right: 10px; }
+.menu-group p { margin: 0; }
+@media (max-width: 760px) { .menu-groups { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .lounge { grid-template-columns: 1fr; } .ladder li { grid-template-columns: 48px 1fr 92px; } .ladder img { width: 92px; height: 72px; } }

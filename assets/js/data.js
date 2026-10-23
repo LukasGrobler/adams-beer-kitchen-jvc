@@ -124,6 +124,11 @@ window.ABK_DATA = {
       facts: [["BBQ brunch", "3PM – 7PM"], ["Drunch", "7PM – 10PM"], ["Live music", "4PM – 12AM"]],
       packages: [{ name: "BBQ Brunch", time: "3PM – 7PM", house: 229, premium: 279 }, { name: "Saturday Drunch", time: "7PM – 10PM", house: 199, premium: 249 }],
       lineup: [{ who: "fergal", time: "4PM – 7PM" }, { who: "david", time: "9PM – 12AM" }],
+      img2: "smoking-saturdays-menu", menuTitle: "The BBQ brunch menu",
+      menu: [
+        { name: "Pick your starter", items: ["Jalapeño poppers", "BBQ chicken wings", "Chicken tenders", "Onion rings", "Solo nacho with guacamole, salsa and sour cream"] },
+        { name: "Mixed BBQ platter", items: ["Shish tawook chicken", "Grilled salmon", "Grilled jumbo prawns", "Rib-eye steak"], note: "Served with fresh salad and your choice of sauce: hummus, blue cheese, tartar, pepper mint or garlic mayo." }
+      ],
       slots: [{ label: "Smoking Saturdays BBQ Brunch", start: "15:00", end: "19:00", price: "AED 229 / 279" }, { label: "Fergal O'Neill live", start: "16:00", end: "19:00" }, { label: "Saturday Drunch", start: "19:00", end: "22:00", price: "AED 199 / 249" }, { label: "David Bracken live", start: "21:00", end: "00:00" }],
       week: { title: "Smoking Saturdays", lines: [["3PM – 7PM", "BBQ brunch, AED 229 / 279"], ["7PM – 10PM", "Drunch, AED 199 / 249"], ["Live", "Fergal O'Neill, David Bracken"]] }
     },
@@ -185,7 +190,7 @@ window.ABK_DATA = {
     },
     {
       slug: "halloween-week", name: "Halloween Week", with: "Two house drinks and a main course for AED 99",
-      from: "2026-10-26", to: "2026-10-31", when: "26 – 31 October, all day", img: null, type: ["Hallo­ween", "week at Adam's Beer Kitchen"],
+      from: "2026-10-26", to: "2026-10-31", when: "26 – 31 October, all day", img: "halloween-week",
       short: "Two house drinks and a main course for AED 99, all day.",
       intro: "Two house drinks and a main course for one spooky price, AED 99, all day from Monday 26 to Saturday 31 October. Costumes are encouraged, though not compulsory.",
       facts: [["When", "26 – 31 October"], ["Hours", "All day"], ["Price", "AED 99"]],
@@ -203,7 +208,7 @@ window.ABK_DATA = {
     },
     {
       slug: "festive-with-amstel", name: "Festive with Amstel", with: "Win an Amstel festive jumper",
-      from: "2026-12-01", to: "2026-12-31", when: "December", img: null, type: ["Festive", "with Amstel at Adam's Beer Kitchen"],
+      from: "2026-12-01", to: "2026-12-31", when: "December", img: "festive-with-amstel", img2: "festive-with-amstel-poster",
       short: "Order 2 Amstel pints for a chance to win an Amstel festive jumper.",
       intro: "Christmas comes with a jumper this year. Order two Amstel pints at the bar for a chance to win an Amstel festive jumper.",
       facts: [["Order", "2 Amstel pints"], ["Win", "A festive jumper"], ["When", "December"]],
@@ -253,48 +258,83 @@ window.ABK_DATA = {
     { img: "post-4", cap: "GAA tournament after party" }
   ],
 
-  /* Menus open here once the venue sends the PDFs. */
-  menus: { food: "assets/menus/room-service-menu.pdf", drinks: null, roomService: "assets/menus/room-service-menu.pdf" },
+  /* Menus open here as PDFs. Food menu from the venue, 23 October 2026; drinks menu still to come. */
+  menus: { food: "assets/menus/food-menu.pdf", drinks: null, roomService: "assets/menus/room-service-menu.pdf" },
 
-  /* The full menu (from the venue's current menu PDF), so Adam can answer price questions. [name, details, AED, search words] */
+  /* The full food menu (from the venue's menu PDF, 23 October 2026), so Adam can answer price questions. [name, details, AED, search words] */
   menuItems: [
-    ["Kale & quinoa salad", "Add chicken (AED 20), salmon (AED 25) or shrimps (AED 22)", 68, "salad kale quinoa vegetarian healthy"],
-    ["Classic Caesar salad", "Add chicken (AED 20), salmon (AED 25) or shrimps (AED 22)", 55, "salad caesar"],
-    ["Cheeseburger", "Beef or chicken", 99, "burger cheeseburger beef"],
-    ["Sliders", "Beef or chicken", 70, "sliders burger mini"],
-    ["Chicken fillet roll", "", 65, "chicken roll wrap sandwich"],
-    ["Rustic steak sandwich", "", 95, "steak sandwich"],
-    ["Club sandwich", "", 65, "club sandwich"],
-    ["Snack meal box", "2 chicken sliders, 6 BBQ wings, truffle fries, 6 jalapeño poppers", 90, "snack box wings fries poppers sharing"],
-    ["Pasta arrabbiata", "Penne, spicy tomato sauce, shrimps, garlic bread", 70, "pasta penne arrabbiata shrimp"],
-    ["Pasta Alfredo", "Fettuccine, creamy sauce, grilled chicken, garlic bread", 80, "pasta alfredo fettuccine chicken"],
-    ["Pizza Margherita", "", 60, "pizza margherita vegetarian"],
-    ["Pizza pepperoni", "", 70, "pizza pepperoni"],
-    ["Pizza supreme", "Peppers, aubergine, olives, mushroom, shredded chicken", 90, "pizza supreme"],
-    ["US Prime Angus ribeye", "Mashed potato, sautéed vegetables, herbed butter sauce", 210, "steak ribeye rib-eye beef angus"],
-    ["Lamb chops", "Thick-cut fries, green salad, mint pepper sauce", 180, "lamb chops"],
-    ["Grilled salmon", "Lemon butter sauce, rice, sautéed vegetables", 145, "salmon fish"],
-    ["Beef stew", "Mashed potato, garlic bread", 110, "beef stew"],
-    ["Butter chicken", "Rice, papad, pickle, fresh salad", 90, "butter chicken curry indian"],
-    ["Lava cake", "", 60, "dessert lava cake chocolate"],
-    ["Apple crumble", "", 60, "dessert apple crumble"],
-    ["Fruit bowl", "", 58, "dessert fruit healthy"]
+    ["Regular fries", "Thick or thin", 30, "fries chips"],
+    ["Truffle fries", "Thick fries, truffle oil, parmesan, oregano, parsley", 40, "fries truffle chips"],
+    ["Loaded fries", "Thick fries, beef bacon, grated cheddar, jalapeño, onion, sour cream", 45, "fries loaded bacon cheese chips"],
+    ["Chili cheese fries", "Thick fries, chili con carne, jalapeño, grated cheddar", 50, "fries chili cheese chips"],
+    ["Solo nacho", "Guacamole, salsa, sour cream", 40, "nachos nacho vegetarian"],
+    ["Solo crudités", "Carrot, cucumber, celery, olives, tomato, cheese and dips", 45, "crudites vegetables vegetarian"],
+    ["Jalapeño poppers", "Deep fried, with garlic mayo", 55, "jalapeno poppers vegetarian"],
+    ["Veg spring rolls", "With Thai sweet chili sauce", 50, "spring rolls vegetarian"],
+    ["Onion rings", "Deep fried, with sour cream", 55, "onion rings vegetarian"],
+    ["Edamame", "Salted or spiced", 50, "edamame vegetarian vegan"],
+    ["Beef lumpia", "With Thai chili sauce", 57, "lumpia beef rolls"],
+    ["Beijing crispy beef", "Crispy beef sautéed with Asian sauce", 65, "beef crispy beijing"],
+    ["Chicken balls", "With Asian sauce or curry sauce", 55, "chicken balls"],
+    ["Chicken tenders", "With honey mustard sauce", 55, "chicken tenders strips"],
+    ["Irish spice bag", "Fries, crispy chicken, onions, peppers and curry sauce", 65, "spice bag irish chicken curry"],
+    ["Dynamite shrimps", "Deep fried, with dynamite sauce", 65, "shrimps shrimp prawns dynamite"],
+    ["Crispy calamari", "Deep fried, with tartar sauce", 60, "calamari squid"],
+    ["Stuffed mushrooms", "Deep fried, with garlic mayo", 55, "mushrooms stuffed vegetarian"],
+    ["Crispy wings, 6 pieces", "BBQ, buffalo, lemon pepper, honey glaze, Thai style or sweet chili", 65, "wings chicken buffalo"],
+    ["Crispy wings, 12 pieces", "BBQ, buffalo, lemon pepper, honey glaze, Thai style or sweet chili", 99, "wings chicken buffalo"],
+    ["Bites platter", "6 wings, 6 veg rolls, crispy calamari, 6 beef lumpia, 6 jalapeño poppers, stuffed mushrooms, onion rings, cajun fries and dips", 155, "platter sharing bites"],
+    ["Cheese platter", "Cheddar, parmesan, emmental, blue cheese, camembert, crackers, grapes, honey and berry compote", 75, "cheese platter sharing"],
+    ["Mixed grill platter", "Chicken or beef: 3 chicken skewers, 3 chicken kebabs, 3 beef skewers, 3 beef kebabs, grilled veg and dips", 210, "mixed grill platter kebab skewers sharing"],
+    ["Slider platter", "6 beef, chicken or mixed sliders with fries", 130, "sliders platter sharing burger"],
+    ["Seafood platter", "Mussels, jumbo prawns, squid, salmon and grilled veg", 250, "seafood platter fish prawns sharing"],
+    ["Crudités platter", "Lettuce, celery, cucumber, carrot, olives, cherry tomato, cheddar cubes, pickles, hummus and blue cheese dip", 79, "crudites platter vegetarian sharing"],
+    ["Loaded nachos", "Guacamole, sour cream, jalapeño, spicy tomato salsa and cheese sauce. Add chili con carne or chicken for AED 20", 75, "nachos loaded sharing"],
+    ["US Prime Angus ribeye steak", "With 1 side and 1 sauce", 210, "steak ribeye rib-eye beef angus"],
+    ["Lamb chops", "With 1 side and 1 sauce", 180, "lamb chops"],
+    ["Grilled salmon", "With 1 side and lemon butter sauce", 145, "salmon fish"],
+    ["Fish & chips", "With tartar sauce, curry sauce and mushy minty peas", 110, "fish chips"],
+    ["Spicy garlic butter prawns", "With Thai chili and garlic bread", 120, "prawns shrimp garlic"],
+    ["Irish beef stew", "With mashed potato and garlic bread", 110, "beef stew irish"],
+    ["Mussels", "Natural, Thai curry or garlic cream", "111 – 135", "mussels seafood"],
+    ["Butter chicken", "With rice, papad, mixed pickle and fresh salad", 90, "butter chicken curry indian"],
+    ["Pizza Margherita", "Tomato, mozzarella and oregano", 60, "pizza margherita vegetarian"],
+    ["Tomato & pesto pizza", "Tomato, mozzarella, sliced tomato and pesto oil", 65, "pizza pesto vegetarian"],
+    ["Vegetarian pizza", "Tomato, mozzarella, peppers, onion, mushroom and olives", 65, "pizza vegetarian"],
+    ["Pepperoni & mushroom pizza", "Tomato, mozzarella, beef pepperoni and mushroom", 70, "pizza pepperoni"],
+    ["Tomato & basil pasta", "Spaghetti, penne or fettuccine. Add chicken or beef for AED 20, shrimps 22, mixed seafood 28", 65, "pasta tomato basil vegetarian"],
+    ["Pasta arrabbiata", "Tomato sauce with a hint of chili. Spaghetti, penne or fettuccine", 65, "pasta arrabbiata arrabiata spicy vegetarian"],
+    ["Pesto pasta", "Fresh basil pesto. Spaghetti, penne or fettuccine", 65, "pasta pesto vegetarian"],
+    ["Pasta Alfredo", "Beef bacon, mushroom, garlic and shallots in a creamy sauce", 65, "pasta alfredo creamy"],
+    ["Greek salad", "Classic Greek salad with feta. Add chicken for AED 20 or shrimps 22", 50, "salad greek feta vegetarian"],
+    ["Classic Caesar salad", "With croutons. Add chicken for AED 20 or shrimps 22", 55, "salad caesar"],
+    ["Angus beef burger", "200g Angus beef, lettuce, tomato, onion, pickle and cheese, with thin fries", 99, "burger beef angus cheeseburger"],
+    ["Chicken burger", "Fried chicken, lettuce, tomato, onion, pickle and cheese, with thin fries", 90, "burger chicken"],
+    ["Sliders", "Beef or chicken, with lettuce, tomato, onion, pickle, cheese and thin fries", 70, "sliders burger mini"],
+    ["Chicken fillet wrap", "Fried chicken, lettuce, tomato and cheese, with thin fries", 65, "chicken wrap fillet"],
+    ["Rustic steak sandwich", "Beef steak with peppers, onions, sundried tomato, rucola and balsamic glaze, with thin fries", 95, "steak sandwich"],
+    ["Club sandwich", "Chicken, beef bacon, egg, coleslaw, tomato and cheese, with thin fries", 65, "club sandwich"],
+    ["Classic hotdog", "Beef sausage, ketchup, mustard and fried onion, with thin fries", 62, "hotdog sausage"],
+    ["Burrito", "Beef or chicken, peppers, guacamole, sour cream, cheddar, lettuce, kidney beans and rice, with thin fries", 60, "burrito mexican"],
+    ["Apple crumble & vanilla ice cream", "Warm, rich and fruity", 50, "dessert apple crumble"],
+    ["Warm chocolate brownie & vanilla ice cream", "", 50, "dessert chocolate brownie"],
+    ["White chocolate & ginger cheesecake", "With caramel sauce", 50, "dessert cheesecake"]
   ],
 
-  /* A taste of the menu, from the venue's current menu PDF. */
+  /* A taste of the menu, from the venue's food menu. The Arabic and Russian homepages list the same dishes. */
   dishes: [
-    ["US Prime Angus ribeye", "Mashed potato, sautéed vegetables, herbed butter sauce", 210],
-    ["Lamb chops", "Thick-cut fries, green salad, mint pepper sauce", 180],
-    ["Grilled salmon", "Lemon butter sauce, rice, sautéed vegetables", 145],
-    ["Beef stew", "Mashed potato, garlic bread", 110],
-    ["Cheeseburger", "Beef or chicken", 99],
-    ["Rustic steak sandwich", "", 95],
-    ["Snack meal box", "2 chicken sliders, 6 BBQ wings, truffle fries, 6 jalapeño poppers", 90],
-    ["Butter chicken", "Rice, papad, pickle, fresh salad", 90],
-    ["Pizza supreme", "Peppers, aubergine, olives, mushroom, shredded chicken", 90],
-    ["Kale & quinoa salad", "Add chicken, salmon or shrimps", 68],
-    ["Lava cake", "", 60],
-    ["Apple crumble", "", 60]
+    ["Seafood platter", "Mussels, jumbo prawns, squid, salmon and grilled veg", 250],
+    ["US Prime Angus ribeye steak", "With a side and a sauce of your choice", 210],
+    ["Mixed grill platter", "Chicken and beef skewers and kebabs, grilled veg and dips", 210],
+    ["Lamb chops", "With a side and a sauce of your choice", 180],
+    ["Bites platter", "Wings, veg rolls, calamari, beef lumpia, jalapeño poppers, stuffed mushrooms, onion rings and cajun fries", 155],
+    ["Grilled salmon", "With a side and lemon butter sauce", 145],
+    ["Fish & chips", "Tartar sauce, curry sauce and mushy minty peas", 110],
+    ["Irish beef stew", "Mashed potato and garlic bread", 110],
+    ["Angus beef burger", "200g Angus beef with cheese and thin fries", 99],
+    ["Butter chicken", "Rice, papad, mixed pickle and fresh salad", 90],
+    ["Irish spice bag", "Fries, crispy chicken, onions, peppers and curry sauce", 65],
+    ["Apple crumble & vanilla ice cream", "", 50]
   ],
 
   /* ===================== v2 additions (18 October 2026) ===================== */
@@ -419,12 +459,15 @@ window.ABK_DATA = {
     heineken: {
       name: "Heineken Fans' Grid", from: "2026-10-30", to: "2026-11-27",
       url: "", /* the Fans' Grid website, once Heineken shares it; until then guests scan the QR code on the Heineken card */
-      prizes: [["P12", "A Heineken F1 cup", "Your first entry"], ["P8", "F1 TV 2027 season subscription", "Prize draw"], ["P4", "Abu Dhabi Grand Prix GA tickets", "Prize draw"], ["P1", "VIP Hospitality Lounge at the Abu Dhabi Grand Prix", "Prize draw"]],
+      /* [place on the grid, prize, how it's won, picture in assets/img/promo] */
+      prizes: [["P12", "A Heineken F1 cup", "Your first entry", "f1-cup"], ["P8", "F1 TV 2027 season subscription", "Prize draw", "f1-tv"], ["P4", "Abu Dhabi Grand Prix GA tickets", "Prize draw", "f1-tickets"], ["P1", "VIP Hospitality Lounge at the Abu Dhabi Grand Prix", "Prize draw", "f1-vip-pass"]],
+      lounge: { img: "vip-lounge", perks: ["A premium view of the track", "Luxury ambience", "Gourmet dining", "Abu Dhabi experiences"] },
       points: [["2+ Heineken pints at the bar", "+4 places"], ["A Heineken 24-pack from a shop or delivery", "+4 places"], ["A Heineken 12-pack", "+2 places"], ["A friend joins with your code", "+4 for you, +2 for them"]]
     },
     jack: {
       name: "Jack Daniel's F1 menu", from: "2026-10-01", to: "2026-11-30",
       prize: "a Jack's Garage cap or a limited edition T-shirt",
+      prizes: [["Jack's Garage cap", "jd-cap"], ["Limited edition T-shirt", "jd-tshirt"]],
       /* [drink, AED] SAMPLE dates and prices, to confirm with the venue (0 = no price shown) */
       menu: [["Formula Jack", 0], ["Lynchburg Lemonade", 0], ["Jack & Cola", 0], ["Jack & Ginger", 0], ["Jack Honey & Lemonade", 0], ["Jack Apple & Tonic", 0]]
     }
