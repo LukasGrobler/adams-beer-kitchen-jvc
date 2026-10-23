@@ -111,7 +111,7 @@
       '<form class="form co__pay" novalidate><p class="demo-note">Practice checkout: no card is charged. At launch this is the venue\'s own secure payment page (card or Apple Pay).</p>' +
       '<div class="field"><label for="co-card">Card number</label><input id="co-card" inputmode="numeric" value="4242 4242 4242 4242" autocomplete="off"></div>' +
       '<div class="form__row"><div class="field"><label for="co-exp">Expiry</label><input id="co-exp" value="12 / 28" autocomplete="off"></div><div class="field"><label for="co-cvc">CVC</label><input id="co-cvc" value="123" autocomplete="off"></div></div>' +
-      '<button class="btn" type="submit">Pay ' + aed(it.amount) + "</button></form></div>";
+      '<button class="btn" type="submit">Pay ' + aed(it.amount) + '</button><p class="small" style="margin:0">By paying you agree to our <a href="terms.html">terms</a>, including the refund rules.</p></form></div>';
     $(".co__pay", root).addEventListener("submit", function (e) {
       e.preventDefault();
       var btn = $("button", this); btn.disabled = true; btn.textContent = "Processing…";
@@ -266,7 +266,8 @@
       });
       return;
     }
-    var all = demoEvents().concat((TR ? TR.events() : []).filter(function (e) { return e.type === "whatsapp" || e.type === "voucher" || e.type === "deposit"; }));
+    /* with the server on, every booking from every phone; otherwise demo data plus this phone's bookings */
+    var live = !!D.api, all = live ? [] : demoEvents().concat((TR ? TR.events() : []).filter(function (e) { return e.type === "whatsapp" || e.type === "voucher" || e.type === "deposit"; }));
     var range = 30;
     var social = ["instagram", "ig-ad", "facebook", "whatsapp"];
     function label(s) { return TR ? TR.label(s) : s; }
@@ -295,7 +296,7 @@
       var evRows = Object.keys(byEv).map(function (k) { return { label: k, n: byEv[k] }; }).sort(function (x, y) { return y.n - x.n; }).slice(0, 7);
       var recent = cb.slice().sort(function (x, y) { return Date.parse(y.t) - Date.parse(x.t); }).slice(0, 8);
       root.innerHTML =
-        '<div class="dash"><div class="dash-top"><div><h2 class="d-l">Bookings dashboard</h2><p class="small" style="margin:6px 0 0">' + (all.some(function (e) { return !e.demo; }) ? "Demo data, plus the bookings made on this device." : "Demo data.") + " Live numbers appear once the booking counter is connected.</p></div>" +
+        '<div class="dash"><div class="dash-top"><div><h2 class="d-l">Bookings dashboard</h2><p class="small" style="margin:6px 0 0">' + (live ? "Every booking from every phone, counted by the server." : (all.some(function (e) { return !e.demo; }) ? "Demo data, plus the bookings made on this device." : "Demo data.") + " Live numbers appear once the booking counter is connected.") + "</p></div>" +
         '<div class="filters" role="group" aria-label="Time range">' + [[7, "7 days"], [30, "30 days"], [90, "90 days"]].map(function (r) { return '<button class="chip" type="button" data-range="' + r[0] + '" aria-pressed="' + (r[0] === range) + '">Last ' + r[1] + "</button>"; }).join("") + "</div></div>" +
         '<div class="dash-tiles">' + tiles.map(function (t) { return '<div class="dash-tile"><span class="dash-label">' + t[0] + '</span><b class="dash-value">' + t[1] + "</b>" + t[2] + "</div>"; }).join("") + "</div>" +
         '<div class="dash-grid"><section class="dash-card dash-wide"><h3 class="d-s">Booking enquiries per week</h3><p class="small" style="margin:2px 0 10px">The last 12 weeks, every source</p>' + columns(weeks) + "</section>" +
@@ -333,7 +334,13 @@
     root.addEventListener("mouseleave", untip);
     root.addEventListener("focusin", function (e) { var g = e.target.closest("[data-tip]"); if (g) { var r = g.getBoundingClientRect(); tip(g, g.getAttribute("data-tip"), r.left + r.width / 2, r.top - 8); } });
     root.addEventListener("focusout", untip);
-    draw();
+    if (!live) return draw();
+    root.innerHTML = '<p class="small">Loading the bookings…</p>';
+    var pin = ""; try { pin = sessionStorage.getItem("abk_pin") || ""; } catch (e) {}
+    fetch(D.api.replace(/\/$/, "") + "/api/track", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "list", pin: pin, days: 180 }) })
+      .then(function (r) { return r.json().catch(function () { return {}; }).then(function (j) { if (!r.ok) throw new Error(j.error || "Can't reach the booking counter"); return j; }); })
+      .then(function (j) { all = j.events || []; draw(); })
+      .catch(function (err) { root.innerHTML = '<p class="small">' + esc(err.message) + ". Check the connection and refresh.</p>"; });
   }
 
   function boot() {

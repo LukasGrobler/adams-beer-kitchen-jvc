@@ -200,7 +200,7 @@
       '<div class="form__row"><div class="field"><label for="cl-name">Your name</label><input id="cl-name" autocomplete="name" placeholder="e.g. Sarah Khan" maxlength="40"></div>' +
       '<div class="field"><label for="cl-phone">WhatsApp number</label><input id="cl-phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="05x xxx xxxx"></div></div>' +
       '<fieldset class="field"><legend>Your birthday</legend><div class="form__row"><select id="cl-day" aria-label="Day"><option value="">Day</option>' + days + '</select><select id="cl-month" aria-label="Month"><option value="">Month</option>' + months + "</select></div></fieldset>" +
-      '<label class="check"><input type="checkbox" id="cl-ok"> <span>I\'m 21 or over, and happy to get WhatsApp messages from Adam\'s Beer Kitchen JVC about my card, my birthday treat and what\'s on. I can stop them any time.</span></label>' +
+      '<label class="check"><input type="checkbox" id="cl-ok"> <span>I\'m 21 or over, and happy to get WhatsApp messages from Adam\'s Beer Kitchen JVC about my card, my birthday treat and what\'s on. I can stop them any time. <a href="privacy.html">Privacy policy</a></span></label>' +
       '<div class="btn-row"><button class="btn" type="submit">Get my card</button></div><p class="small" data-msg aria-live="polite" style="margin:0"></p></form>';
     $(".club-form", root).addEventListener("submit", function (e) {
       e.preventDefault();

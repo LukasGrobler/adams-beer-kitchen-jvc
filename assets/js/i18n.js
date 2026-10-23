@@ -24,6 +24,7 @@ window.ABK_I18N = {
     ftrExplore: "استكشف", ftrEnglish: "الموقع باللغة الإنجليزية",
     ftrFamily: "نقدّم أيضًا في أبوظبي:", ftrReem: "Adam's Beer Kitchen جزيرة الريم", ftrForsan: "Adam's Beer Kitchen الفرسان", ftrAnd: "و",
     ftrBase: "يُرجى الشرب بمسؤولية. لمن هم فوق 21 عامًا فقط.", ftrCredit: "تصميم الموقع: Lukas Grobler",
+    ftrPrivacy: "الخصوصية (بالإنجليزية)", ftrTerms: "الشروط (بالإنجليزية)",
     live: {
       open: "مفتوح الآن حتى 3 فجرًا", opens: "نفتح اليوم 12 ظهرًا",
       hhOn: "ساعة السعادة الآن حتى {t}", hhLater: "ساعة السعادة من 12 ظهرًا اليوم", hhTomorrow: "ساعة السعادة تعود غدًا 12 ظهرًا"
@@ -61,6 +62,7 @@ window.ABK_I18N = {
     ftrExplore: "Разделы", ftrEnglish: "Сайт на английском",
     ftrFamily: "Мы также есть в Абу-Даби:", ftrReem: "Adam's Beer Kitchen Al Reem Island", ftrForsan: "Adam's Beer Kitchen Al Forsan", ftrAnd: " и ",
     ftrBase: "Пейте ответственно. Только для гостей старше 21 года.", ftrCredit: "Сайт: Lukas Grobler",
+    ftrPrivacy: "Конфиденциальность (на английском)", ftrTerms: "Условия (на английском)",
     live: {
       open: "Открыто до 03:00", opens: "Откроемся сегодня в 12:00",
       hhOn: "Happy hour до {t}", hhLater: "Happy hour с 12:00 сегодня", hhTomorrow: "Happy hour снова завтра с 12:00"

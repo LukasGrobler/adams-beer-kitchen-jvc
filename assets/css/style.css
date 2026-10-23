@@ -1427,3 +1427,12 @@ button.link { background: none; border: 0; border-bottom: 2px solid currentColor
 @media (max-width: 560px) { .lounge { grid-template-columns: 1fr; } .ladder li { grid-template-columns: 48px 1fr 92px; } .ladder img { width: 92px; height: 72px; } }
 /* a special without a photo: the type poster's word fits the small card on phones */
 @media (max-width: 760px) { .special__img .d-m { font-size: 1.15rem; overflow-wrap: anywhere; } }
+
+/* ---------- v4.2 (23 October 2026): privacy and terms ---------- */
+.legal h2 { margin: 36px 0 12px; }
+.legal h2:first-child { margin-top: 0; }
+.legal p, .legal li { color: var(--foam-2); max-width: 68ch; }
+.legal ul { margin: 0; padding-left: 1.2em; display: grid; gap: 10px; }
+.legal strong { color: var(--foam); font-weight: 600; }
+.legal a { color: var(--yellow); }
+.ftr__legal { display: inline-flex; gap: 16px; }

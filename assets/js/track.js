@@ -3,11 +3,16 @@
    - Ads and QR codes link with ?src=... (see data.js > track.sources); otherwise the referrer decides.
    - The first source is remembered for 30 days, so a visitor who comes back later still counts for the ad.
    - Each booking adds a "via ..." line to the WhatsApp message, so the team sees the source too.
-   - Events are kept on this device (demo) and, once data.js has track.endpoint, sent to the booking counter. */
+   - Events are kept on this device, and once the server is on (data.js > api), bookings, deposits and vouchers
+     go to its booking counter too (source, night, guests and amount only), so the dashboard counts every phone. */
 (function () {
   "use strict";
   var D = window.ABK_DATA || {}, T = D.track || { sources: {} };
   var KEY_SRC = "abk_src", KEY_EV = "abk_events", DAY = 864e5;
+  /* the booking counter: on the server (data.js > api), or a separate address (data.js > track.endpoint) */
+  var EP = T.endpoint || (D.api ? D.api.replace(/\/$/, "") + "/api/track" : "");
+  /* bookings count on the server; deposits and vouchers only once payments are real, not the practice checkout */
+  function counted(ev) { return ev.type === "whatsapp" || ((ev.type === "voucher" || ev.type === "deposit") && !(D.payments && D.payments.mode === "demo")); }
 
   function ls(k, v) {
     try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) { return null; }
@@ -48,8 +53,8 @@
     Object.keys(data || {}).forEach(function (k) { ev[k] = data[k]; });
     var list = events(); list.push(ev); if (list.length > 500) list = list.slice(-500);
     ls(KEY_EV, JSON.stringify(list));
-    if (T.endpoint) {
-      try { navigator.sendBeacon(T.endpoint, JSON.stringify(ev)); } catch (e) { /* the counter is offline: the booking still goes through */ }
+    if (EP && counted(ev)) {
+      try { navigator.sendBeacon(EP, JSON.stringify(ev)); } catch (e) { /* the counter is offline: the booking still goes through */ }
     }
     return ev;
   }

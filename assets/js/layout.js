@@ -190,6 +190,7 @@
       "</div>" +
       '<p class="ftr__family">Also pouring in Abu Dhabi: <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-reem/">Adam\x27s Beer Kitchen Al Reem Island</a> and <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-forsan/">Adam\x27s Beer Kitchen Al Forsan</a>.</p>' +
       '<div class="ftr__base"><span>&copy; ' + year + " Adam's Beer Kitchen JVC. Please drink responsibly. Over-21s only.</span>" +
+      '<span class="ftr__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></span>' +
       (isHome ? '<a href="index.html?intro">Pour another (replay the intro)</a>' : "") +
       '<span class="ftr__credit">Website by Lukas Grobler</span></div>' +
       "</div></footer>" +
@@ -208,6 +209,7 @@
       "</div>" +
       '<p class="ftr__family">' + TX.ftrFamily + ' <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-reem/">' + TX.ftrReem + "</a>" + TX.ftrAnd + '<a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-forsan/">' + TX.ftrForsan + "</a>.</p>" +
       '<div class="ftr__base"><span>&copy; ' + year + " Adam's Beer Kitchen JVC. " + TX.ftrBase + "</span>" +
+      '<span class="ftr__legal"><a href="privacy.html">' + TX.ftrPrivacy + '</a><a href="terms.html">' + TX.ftrTerms + "</a></span>" +
       '<span class="ftr__credit">' + TX.ftrCredit + "</span></div>" +
       "</div></footer>" +
       '<nav class="actbar" aria-label="Quick actions"><a href="tel:' + V.phone + '">' + I.phone + " " + TX.call + '</a><a href="' + waLink + '" target="_blank" rel="noopener">' + I.wa + " " + TX.wa + '</a><a class="actbar__book" href="#book">' + TX.bookShort + "</a></nav>" +
