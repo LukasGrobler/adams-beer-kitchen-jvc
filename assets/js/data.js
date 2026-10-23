@@ -201,7 +201,7 @@ window.ABK_DATA = {
     },
     {
       slug: "beer-bucket", name: "Heineken Beer Bucket", with: "A bucket of Heineken for AED 129",
-      from: "2026-10-01", to: "2026-11-30", when: "October and November", img: null, type: ["Heineken", "bucket at Adam's Beer Kitchen"],
+      from: "2026-10-01", to: "2026-11-30", when: "October and November", img: "beer-bucket",
       short: "A bucket of Heineken for the table, AED 129. Dine-in only.",
       intro: "A bucket of Heineken bottles on ice for the table, AED 129, all through October and November. Built for the match, the race or just the catch-up.",
       facts: [["Bucket", "Heineken"], ["Price", "AED 129"], ["Until", "30 November"]],
