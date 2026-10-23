@@ -22,6 +22,7 @@ window.ABK_DATA = {
     handle: "@abk_jvc",
     opens: "12:00",
     closes: "03:00",
+    groupMax: 40, /* the biggest group that can book online; bigger groups are asked to call the team */
     happyHour: { 0: ["12:00", "21:00"], 1: ["12:00", "21:00"], 2: ["12:00", "21:00"], 3: ["12:00", "21:00"], 4: ["12:00", "21:00"], 5: ["12:00", "19:00"], 6: ["12:00", "19:00"] }
   },
 
@@ -365,7 +366,7 @@ window.ABK_DATA = {
     {
       slug: "christmas-parties", name: "Christmas parties", season: "1 – 24 December 2026", img: "post-1", src: "ig-ad",
       title: ["Christmas", "parties"], hook: "Office parties, friends' nights out and family get-togethers, in a pub that already has the screens, the booths and the private area.",
-      from: "2026-12-01", to: "2026-12-24", groupMin: 8,
+      from: "2026-12-01", to: "2026-12-24", groupMin: 2,
       packages: [
         { id: "xmas-feast", name: "Festive feast", note: "Three-course festive menu with 2 house drinks", price: 199, deposit: 50 },
         { id: "xmas-party", name: "Party package", note: "Sharing platters and 3 hours of house drinks", price: 249, deposit: 75 },

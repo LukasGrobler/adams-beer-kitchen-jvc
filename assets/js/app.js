@@ -648,9 +648,10 @@
     });
     [name, time, seat, notes].forEach(function (x) { x.addEventListener("input", update); x.addEventListener("change", update); });
     $$("[data-step]", form).forEach(function (b) {
-      b.addEventListener("click", function () { var v = Math.min(60, Math.max(1, (+guests.value || 1) + +b.getAttribute("data-step"))); guests.value = v; update(); });
+      b.addEventListener("click", function () { var v = Math.min(V.groupMax || 40, Math.max(1, (+guests.value || 1) + +b.getAttribute("data-step"))); guests.value = v; update(); });
     });
-    guests.addEventListener("input", update);
+    /* bigger groups than the online maximum are asked to call (the note under the field) */
+    guests.addEventListener("input", function () { if (+guests.value > (V.groupMax || 40)) guests.value = V.groupMax || 40; update(); });
     form.addEventListener("submit", function (ev) {
       ev.preventDefault();
       if (!name.value.trim()) { msg.textContent = "Add your name so the team knows who's coming."; name.focus(); return; }

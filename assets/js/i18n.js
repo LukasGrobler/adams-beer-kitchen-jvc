@@ -116,7 +116,7 @@ window.ABK_I18N = {
       var day = d.toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" });
       var notes = f.querySelector("[name=notes]").value.trim(), name = f.querySelector("[name=name]").value.trim();
       var lines = [T.waHello.trim(), "", "Hi Adam's Beer Kitchen! I'd like to book a table.", "",
-        "Name: " + (name || "…"), "Date: " + day, "Time: " + en(+time.value), "Guests: " + (f.querySelector("[name=guests]").value || 2)];
+        "Name: " + (name || "…"), "Date: " + day, "Time: " + en(+time.value), "Guests: " + Math.max(1, Math.min(D.venue.groupMax || 40, +f.querySelector("[name=guests]").value || 2))];
       if (notes) lines.push("Notes: " + notes);
       lines.push("", T.adam.pageNote);
       window.open("https://wa.me/" + D.venue.whatsapp + "?text=" + encodeURIComponent(lines.join("\n")), "_blank", "noopener");

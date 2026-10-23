@@ -1438,3 +1438,5 @@ button.link { background: none; border: 0; border-bottom: 2px solid currentColor
 .ftr__legal { display: inline-flex; gap: 16px; }
 /* the Grand Prix page's banner: the Adam's F1 car, shown whole */
 .gp-banner { aspect-ratio: 1476 / 830; margin-top: 8px; }
+.guest-note { margin: 6px 0 0; }
+.guest-note a { color: var(--yellow); }

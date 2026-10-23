@@ -24,6 +24,7 @@
   function renderCampaign(root) {
     var c = findCampaign(root.getAttribute("data-campaign"));
     if (!c) return;
+    var MAXG = D.venue.groupMax || 40; /* bigger groups call the team */
     var t0 = todayIso(), minD = c.from > t0 ? c.from : t0;
     var pkgs = c.packages.map(function (p, i) {
       return '<label class="pk' + (i === 0 ? " is-on" : "") + '"><input type="radio" name="pkg" value="' + p.id + '"' + (i === 0 ? " checked" : "") + '>' +
@@ -42,7 +43,7 @@
       '<form class="form cp-form" novalidate>' +
       '<fieldset class="field"><legend>Pick your package</legend><div class="pks">' + pkgs + "</div></fieldset>" +
       '<div class="form__row"><div class="field"><label for="cp-date">Date</label><input id="cp-date" type="date" min="' + minD + '" max="' + c.to + '" value="' + minD + '"></div>' +
-      '<div class="field"><label for="cp-guests">Guests</label><div class="stepper"><button type="button" data-cstep="-1" aria-label="One fewer guest">&minus;</button><input id="cp-guests" type="number" min="' + c.groupMin + '" max="80" value="' + Math.max(c.groupMin, 10) + '" inputmode="numeric"><button type="button" data-cstep="1" aria-label="One more guest">+</button></div></div></div>' +
+      '<div class="field"><label for="cp-guests">Guests</label><div class="stepper"><button type="button" data-cstep="-1" aria-label="One fewer guest">&minus;</button><input id="cp-guests" type="number" min="' + c.groupMin + '" max="' + MAXG + '" value="' + c.groupMin + '" inputmode="numeric"><button type="button" data-cstep="1" aria-label="One more guest">+</button></div><p class="small guest-note">More than ' + MAXG + ' guests? <a href="tel:' + D.venue.phone + '">Call the team</a> on ' + D.venue.phoneDisplay + '.</p></div></div>' +
       '<div class="field"><label for="cp-name">Your name</label><input id="cp-name" autocomplete="name" placeholder="e.g. Sarah"></div>' +
       '<div class="field"><label for="cp-co">Company or group <span class="small">(optional)</span></label><input id="cp-co" autocomplete="organization" placeholder="e.g. Emaar finance team"></div>' +
       '<p class="small" data-cp-msg aria-live="polite" style="margin:0"></p></form>' +
@@ -51,7 +52,7 @@
     var form = $(".cp-form", root), sum = $("[data-cp-sum]", root), msg = $("[data-cp-msg]", form);
     function state() {
       var id = $('input[name="pkg"]:checked', form).value, p = c.packages.filter(function (x) { return x.id === id; })[0];
-      var g = Math.max(c.groupMin, Math.min(80, +$("#cp-guests", form).value || c.groupMin));
+      var g = Math.max(c.groupMin, Math.min(MAXG, +$("#cp-guests", form).value || c.groupMin));
       return { p: p, g: g, date: $("#cp-date", form).value, name: $("#cp-name", form).value.trim(), co: $("#cp-co", form).value.trim() };
     }
     function draw() {
@@ -70,7 +71,7 @@
     form.addEventListener("change", draw); form.addEventListener("input", draw);
     form.addEventListener("click", function (e) {
       var b = e.target.closest("[data-cstep]"); if (!b) return;
-      var inp = $("#cp-guests", form); inp.value = Math.max(c.groupMin, Math.min(80, (+inp.value || 0) + +b.getAttribute("data-cstep"))); draw();
+      var inp = $("#cp-guests", form); inp.value = Math.max(c.groupMin, Math.min(MAXG, (+inp.value || 0) + +b.getAttribute("data-cstep"))); draw();
     });
     root.addEventListener("click", function (e) {
       if (!e.target.closest("[data-cp-go]")) return;
