@@ -87,7 +87,7 @@ window.ABK_DATA = {
     {
       slug: "teachers-brunch", days: [5], dayLabel: "Every Friday",
       name: "Teachers' Brunch", with: "School's out, brunch is in",
-      cats: ["drinks"], img: "post-7",
+      cats: ["drinks"], img: "teachers-brunch",
       short: "Brunch 1PM – 5PM from AED 149, drunch 5PM – 9PM from AED 199.",
       intro: "The bell has gone and the marking can wait. Teachers' Brunch runs 1PM to 5PM, and for the ones who aren't done yet, Teachers Drunch picks up from 5PM till 9PM.",
       facts: [["Brunch", "1PM – 5PM"], ["Drunch", "5PM – 9PM"], ["From", "AED 149"]],
