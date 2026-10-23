@@ -39,7 +39,7 @@ window.ABK_DATA = {
     {
       slug: "monday-20-off", days: [1], dayLabel: "Every Monday",
       name: "20% Off Mondays", with: "For cabin crew, teachers and hoteliers",
-      cats: ["deals"], img: "post-6",
+      cats: ["deals"], img: "monday-20-off", weekImg: "monday-20-off-wide",
       short: "20% off the food and drinks menus, 9PM till close.",
       intro: "You spend all week looking after everyone else. On Monday nights we return the favour: 20% off the food menu and the drinks menu for cabin crew, teachers and hoteliers.",
       facts: [["When", "9PM till close"], ["Discount", "20% off food & drinks"], ["Who", "Cabin crew, teachers, hoteliers"]],
