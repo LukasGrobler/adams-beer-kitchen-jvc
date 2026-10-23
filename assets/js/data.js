@@ -364,7 +364,7 @@ window.ABK_DATA = {
      Prices are per person; a package with per: "bucket" (or "tower") is priced per item instead. */
   campaigns: [
     {
-      slug: "christmas-parties", name: "Christmas parties", season: "1 – 24 December 2026", img: "post-1", src: "ig-ad",
+      slug: "christmas-parties", name: "Christmas parties", season: "1 – 24 December 2026", img: "christmas", src: "ig-ad",
       title: ["Christmas", "parties"], hook: "Office parties, friends' nights out and family get-togethers, in a pub that already has the screens, the booths and the private area.",
       from: "2026-12-01", to: "2026-12-24", groupMin: 2,
       packages: [
