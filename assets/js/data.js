@@ -454,7 +454,7 @@ window.ABK_DATA = {
      Heineken and Jack Daniel's run their promotions and pick their own winners; the page explains how to take part.
      Details from the brands' trade decks. Delete this block when the season's over. */
   f1: {
-    from: "2026-10-30", to: "2026-12-06", img: "post-1",
+    from: "2026-10-30", to: "2026-12-06", img: "grand-prix", photo: "post-1", /* the Adam's F1 car on the card; the screens photo by the race nights */
     /* the card on the Arabic and Russian homepages */
     ar: { name: "موسم الفورمولا 1", when: "30 أكتوبر – 6 ديسمبر", short: "كل سباقات الفورمولا 1 على الشاشات الكبيرة، وجوائز للفوز مع Heineken وJack Daniel's." },
     ru: { name: "Сезон Гран-при", when: "30 октября – 6 декабря", short: "Все гонки Формулы 1 на больших экранах и призы от Heineken и Jack Daniel's." },

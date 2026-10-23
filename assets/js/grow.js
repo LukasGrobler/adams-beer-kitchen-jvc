@@ -271,7 +271,7 @@
     root.innerHTML =
       '<section class="sec sec--tight" style="padding-top:0" id="races"><div class="wrap split split--top">' +
       '<div><div class="sec-head"><h2 class="d-l">Race nights</h2><p class="lede">Every race on the big screens, with the sound up. Times are Dubai time.</p></div><ul class="races">' + races + "</ul></div>" +
-      '<div class="frame frame--tall" style="max-width:420px;justify-self:center"><img src="assets/img/ig/' + esc(F1.img) + '.jpg" alt="The big screens at Adam\'s Beer Kitchen JVC" loading="lazy"></div></div></section>' +
+      '<div class="frame frame--tall" style="max-width:420px;justify-self:center"><img src="assets/img/ig/' + esc(F1.photo || F1.img) + '.jpg" alt="The big screens at Adam\'s Beer Kitchen JVC" loading="lazy"></div></div></section>' +
       '<section class="sec sec--tight sec--wood" id="win"><div class="wrap"><div class="sec-head"><h2 class="d-l">Win your way to the Grand Prix</h2><p class="lede">Two ways to win while you watch. Heineken and Jack Daniel\'s run these themselves and pick the winners.</p></div><div class="promos">' +
       '<article class="promo"><span class="kicker">' + range(H.from, H.to) + '</span><h3 class="d-m">' + esc(H.name) + "</h3>" +
       '<ol class="steps"><li>Order 2 or more Heineken pints at the bar.</li><li>Scan the QR code on the Heineken card and scratch to reveal your code.</li><li>Enter it on the Fans\' Grid. You start at P16, and your first entry moves you up 4 places and wins you an F1 cup.</li><li>Come back and climb: 2 or more pints move you up 4 places, once every 24 hours.</li></ol>' +
