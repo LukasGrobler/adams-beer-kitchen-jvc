@@ -37,8 +37,6 @@ window.ABK_DATA = {
       bio: "Fergal is our busiest musician, on three times a week: Thursday steak night, the late set after Friday karaoke, and the afternoon set at the Smoking Saturdays BBQ brunch." },
     "jen": { name: "Jen Kusch", role: "Karaoke host", initials: "JK", plays: "Karaoke host",
       bio: "Jen hosts Friday karaoke, running the list and handing out the mic. All you have to do is pick the song." },
-    "david": { name: "David Bracken", role: "Live music", initials: "DB",
-      bio: "David closes out Smoking Saturdays, taking over once the BBQ brunch and the drunch are done." },
     "lee": { name: "Lee Wall", role: "Live music", initials: "LW",
       bio: "Lee plays Sunday nights after the roast buffet, to see the weekend out." }
   },
@@ -107,11 +105,11 @@ window.ABK_DATA = {
       slug: "get-real-fridays", days: [5], dayLabel: "Every Friday",
       name: "Get Real Fridays", with: "Real estate agent deals",
       cats: ["drinks", "deals"], img: "post-5",
-      short: "Brunch for real estate agents, 4PM – 8PM, AED 199.",
-      intro: "Viewings done, deals closed, phone on silent. Get Real Fridays is the brunch for Dubai's real estate agents, 4PM to 8PM every Friday for AED 199. Bring the team and close out the week.",
-      facts: [["When", "4PM – 8PM"], ["For", "Real estate agents"], ["Brunch", "AED 199"]],
-      packages: [{ name: "Get Real Brunch", time: "4PM – 8PM, for real estate agents", house: 199 }],
-      slots: [{ label: "Get Real Fridays", start: "16:00", end: "20:00", price: "AED 199" }]
+      short: "Brunch for real estate agents, 4PM – 8PM, from AED 199.",
+      intro: "Viewings done, deals closed, phone on silent. Get Real Fridays is the brunch for Dubai's real estate agents, 4PM to 8PM every Friday from AED 199. Bring the team and close out the week.",
+      facts: [["When", "4PM – 8PM"], ["For", "Real estate agents"], ["From", "AED 199"]],
+      packages: [{ name: "Get Real Brunch", time: "4PM – 8PM, for real estate agents", house: 199, premium: 249 }],
+      slots: [{ label: "Get Real Fridays", start: "16:00", end: "20:00", price: "AED 199 / 249" }]
     },
     {
       slug: "karaoke-night", days: [5], dayLabel: "Every Friday",
@@ -128,18 +126,18 @@ window.ABK_DATA = {
       slug: "smoking-saturdays", days: [6], dayLabel: "Every Saturday",
       name: "Smoking Saturdays", with: "Live BBQ brunch and two live sets",
       cats: ["food", "drinks", "music"], img: "smoking-saturdays", weekImg: "post-10", /* the venue's poster on its page; a photo on the homepage week */
-      short: "BBQ brunch 3PM – 7PM, drunch 7PM – 10PM, live music all evening.",
-      intro: "The BBQ gets lit at 3PM and Fergal O'Neill plays through the brunch. Saturday Drunch follows from 7PM, then David Bracken closes the night out from 9PM.",
-      facts: [["BBQ brunch", "3PM – 7PM"], ["Drunch", "7PM – 10PM"], ["Live music", "3PM – 12AM"]],
+      short: "BBQ brunch 3PM – 7PM with Fergal O'Neill live, then drunch 7PM – 10PM.",
+      intro: "The BBQ gets lit at 3PM and Fergal O'Neill plays through the brunch. Saturday Drunch follows from 7PM till 10PM.",
+      facts: [["BBQ brunch", "3PM – 7PM"], ["Drunch", "7PM – 10PM"], ["Live music", "3PM – 6PM"]],
       packages: [{ name: "BBQ Brunch", time: "3PM – 7PM", house: 229, premium: 279 }, { name: "Saturday Drunch", time: "7PM – 10PM", house: 199, premium: 249 }],
-      lineup: [{ who: "fergal", time: "3PM – 6PM" }, { who: "david", time: "9PM – 12AM" }],
+      lineup: [{ who: "fergal", time: "3PM – 6PM" }],
       img2: "smoking-saturdays-menu", menuTitle: "The BBQ brunch menu",
       menu: [
         { name: "Pick your starter", items: ["Jalapeño poppers", "BBQ chicken wings", "Chicken tenders", "Onion rings", "Solo nacho with guacamole, salsa and sour cream"] },
         { name: "Mixed BBQ platter", items: ["Shish tawook chicken", "Grilled salmon", "Grilled jumbo prawns", "Rib-eye steak"], note: "Served with fresh salad and your choice of sauce: hummus, blue cheese, tartar, pepper mint or garlic mayo." }
       ],
-      slots: [{ label: "Smoking Saturdays BBQ Brunch", start: "15:00", end: "19:00", price: "AED 229 / 279" }, { label: "Fergal O'Neill live", start: "15:00", end: "18:00" }, { label: "Saturday Drunch", start: "19:00", end: "22:00", price: "AED 199 / 249" }, { label: "David Bracken live", start: "21:00", end: "00:00" }],
-      week: { title: "Smoking Saturdays", lines: [["3PM – 7PM", "BBQ brunch, AED 229 / 279"], ["7PM – 10PM", "Drunch, AED 199 / 249"], ["Live", "Fergal O'Neill, David Bracken"]] }
+      slots: [{ label: "Smoking Saturdays BBQ Brunch", start: "15:00", end: "19:00", price: "AED 229 / 279" }, { label: "Fergal O'Neill live", start: "15:00", end: "18:00" }, { label: "Saturday Drunch", start: "19:00", end: "22:00", price: "AED 199 / 249" }],
+      week: { title: "Smoking Saturdays", lines: [["3PM – 7PM", "BBQ brunch, AED 229 / 279"], ["7PM – 10PM", "Drunch, AED 199 / 249"], ["3PM – 6PM", "Live: Fergal O'Neill"]] }
     },
     {
       slug: "sunday-social", days: [0], dayLabel: "Every Sunday",
@@ -163,12 +161,12 @@ window.ABK_DATA = {
     3: { slug: "ladies-night", lines: ["Ladies", "night"], sub: "Ladies from AED 99 with a mixed bites platter, and Joe live from 8PM." },
     4: { slug: "steak-night", lines: ["Steak", "night"], sub: "A 250g rib-eye, fries and two house drinks for AED 199, with Fergal O'Neill live from 8PM." },
     5: { slug: "karaoke-night", lines: ["Big", "Friday"], sub: "Teachers' brunch from 1PM, Get Real Fridays at 4PM, karaoke at 8PM and Fergal O'Neill till 2AM.", start: "13:00", end: "02:00", link: "whats-on.html#day-5" },
-    6: { slug: "smoking-saturdays", lines: ["Smoking", "Saturdays"], sub: "Live BBQ brunch from 3PM, drunch from 7PM and live music all evening." },
+    6: { slug: "smoking-saturdays", lines: ["Smoking", "Saturdays"], sub: "Live BBQ brunch from 3PM with Fergal O'Neill, then drunch from 7PM." },
     0: { slug: "sunday-social", lines: ["Sunday", "roast"], sub: "The full roast buffet from AED 99, 1PM to 8PM, then Lee Wall live from 8PM." }
   },
 
   /* Friday has three events; the week scroller shows them as one night. */
-  fridayWeek: { title: "Big Friday", img: "post-1", link: "karaoke-night", lines: [["1PM – 9PM", "Teachers' brunch & drunch"], ["4PM – 8PM", "Get Real Fridays, AED 199"], ["8PM – 11PM", "Karaoke with Jen Kusch"], ["11PM – 2AM", "Live: Fergal O'Neill"]] },
+  fridayWeek: { title: "Big Friday", img: "post-1", link: "karaoke-night", lines: [["1PM – 9PM", "Teachers' brunch & drunch"], ["4PM – 8PM", "Get Real Fridays, AED 199 / 249"], ["8PM – 11PM", "Karaoke with Jen Kusch"], ["11PM – 2AM", "Live: Fergal O'Neill"]] },
 
   offers: [
     {

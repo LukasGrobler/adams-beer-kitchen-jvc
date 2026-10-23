@@ -1114,7 +1114,7 @@
     footy: "football", prem: "premier", epl: "premier", dhs: "aed", dh: "aed", bbq: "bbq", wifi: "wifi", "wi-fi": "wifi"
   };
   var VOCAB = ("happy hour brunch drunch quiz trivia ladies steak ribeye karaoke roast sunday monday tuesday wednesday thursday friday saturday " +
-    "tonight today tomorrow weekend music live band singer singing artist guitar fergal bracken david dylan itsdylanlive kusch wall parking valet location address where directions " +
+    "tonight today tomorrow weekend music live band singer singing artist guitar fergal dylan itsdylanlive kusch wall parking valet location address where directions " +
     "open opening close closing hours menu food drinks drink beer beers guinness cocktail cocktails wine whisky price prices cost deal deals offer offers discount " +
     "book booking reserve reservation table group party birthday private office celebration football soccer match premier league sports screens darts pool " +
     "terrace outdoor outside kids children family vegetarian vegan gluten halal dress smoking shisha pets dogs wifi payment delivery room service hotel " +
@@ -1306,13 +1306,13 @@
     if (/\bweekend\b/.test(s)) add("weekend");
     var dayIdx = -1;
     DAYS.forEach(function (d, i) { if (new RegExp("\\b" + d.toLowerCase() + "\\b").test(s)) dayIdx = i; });
-    var liveQ = /\b(live|music|band|singer|artist|guitar|playing|performing|on stage|dj|fergal|lee wall|bracken|joe|dylan)\b/.test(s) && !ev;
+    var liveQ = /\b(live|music|band|singer|artist|guitar|playing|performing|on stage|dj|fergal|lee wall|joe|dylan)\b/.test(s) && !ev;
     var whatsOnQ = /\b(what is on|whats on|what's on|what on|going on|happening|on now|on tonight)\b/.test(s);
     var todayQ = /\b(tonight|today|right now)\b/.test(s);
     if (dayIdx > -1 && !ev) add("day", dayIdx);
     else if (/\btomorrow\b/.test(s) && !ev) add("day", (biz().bdow + 1) % 7);
     else if (whatsOnQ && !ev && !liveQ) add("tonight");
-    var who = !ev && [[/\b(itsdylanlive|dylan)\b/, "itsdylanlive"], [/\bjoe\b/, "joe"], [/\bfergal\b/, "fergal"], [/\b(jen|kusch)\b/, "jen"], [/\b(david|bracken)\b/, "david"], [/\blee\b/, "lee"]].filter(function (x) { return D.artists[x[1]] && x[0].test(s); });
+    var who = !ev && [[/\b(itsdylanlive|dylan)\b/, "itsdylanlive"], [/\bjoe\b/, "joe"], [/\bfergal\b/, "fergal"], [/\b(jen|kusch)\b/, "jen"], [/\blee\b/, "lee"]].filter(function (x) { return D.artists[x[1]] && x[0].test(s); });
     if (who.length === 1) add("artist", who[0][1]);
     else if (liveQ) add("live");
     if (/\b(where|address|location|find you|directions|map|how do i get|get there)\b/.test(s)) add("find");
