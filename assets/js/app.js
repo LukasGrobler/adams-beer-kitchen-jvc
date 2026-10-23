@@ -265,10 +265,11 @@
   function specialCard(s) {
     var stt = specialState(s);
     if (stt === "past") return "";
+    var T = (TX && s[LANG]) || s, SX = TX && TX.specials; /* Arabic and Russian words from data.js and i18n.js */
     return '<a class="special" href="' + s.slug + '.html">' +
       '<span class="special__img">' + (s.img ? '<img src="' + img(s.img) + '" alt="" loading="lazy">' : '<span class="ev-poster--type" style="display:grid;place-items:center;height:100%;text-align:center;padding:8px;background:radial-gradient(circle at 50% 30%,#3b2412,#1a110b 70%)"><span class="d-m c-yellow">' + esc(typeLines(s)[0]) + "</span></span>") + "</span>" +
-      '<span style="display:grid;gap:8px"><span class="special__badge' + (stt === "soon" ? " special__badge--soon" : "") + '">' + (stt === "on" ? "On now" : "Coming up") + '</span><span class="d-m c-yellow">' + esc(s.name) + '</span><span class="kicker">' + esc(s.when) + '</span><span class="small">' + esc(s.short) + "</span></span>" +
-      '<span class="btn btn--sm btn--brass">See the details</span></a>';
+      '<span style="display:grid;gap:8px"><span class="special__badge' + (stt === "soon" ? " special__badge--soon" : "") + '">' + (stt === "on" ? (SX ? SX.on : "On now") : (SX ? SX.soon : "Coming up")) + '</span><span class="d-m c-yellow">' + esc(T.name) + '</span><span class="kicker">' + esc(T.when) + '</span><span class="small">' + esc(T.short) + "</span></span>" +
+      '<span class="btn btn--sm btn--brass">' + (SX ? SX.details : "See the details") + "</span></a>";
   }
 
   /* ---------------- what's on ---------------- */
@@ -305,7 +306,7 @@
     var F = D.f1;
     if (!F) return [];
     var a = fromIso(F.from), b = fromIso(F.to);
-    return [{ slug: "grand-prix", name: "Grand Prix season", from: F.from, to: F.to, img: F.img,
+    return [{ slug: "grand-prix", name: "Grand Prix season", from: F.from, to: F.to, img: F.img, ar: F.ar, ru: F.ru,
       when: (a.m === b.m ? a.d : a.d + " " + MONTHS[a.m]) + " – " + b.d + " " + MONTHS[b.m],
       short: "Every F1 race on the big screens, and F1 prizes to win with Heineken and Jack Daniel's." }];
   }
@@ -313,7 +314,7 @@
     /* what's on now first, then the rest by start date */
     var key = function (s) { return (specialState(s) === "on" ? "0" : "1") + s.from; };
     var html = D.specials.concat(f1Card()).sort(function (a, b) { return key(a) < key(b) ? -1 : key(a) > key(b) ? 1 : 0; }).map(specialCard).join("");
-    el.innerHTML = html || '<p class="empty">No specials on right now. Check back soon, or follow ' + V.handle + " on Instagram.</p>";
+    el.innerHTML = html || '<p class="empty">' + (TX && TX.specials ? TX.specials.none : "No specials on right now. Check back soon, or follow " + V.handle + " on Instagram.") + "</p>";
   }
 
   /* ---------------- event pages ---------------- */

@@ -36,7 +36,8 @@ window.ABK_I18N = {
       booking: "حجزك:", date: "التاريخ", time: "الوقت", guests: "الضيوف", forE: "المناسبة", justTable: "طاولة فقط",
       bookingNote: "اضغط أدناه وسيصل الطلب مباشرة إلى الفريق على واتساب. سيؤكدون طاولتك.", sendWa: "أرسل عبر واتساب",
       pageNote: "Sent from the Arabic page"
-    }
+    },
+    specials: { on: "متاح الآن", soon: "قريبًا", details: "التفاصيل (بالإنجليزية)", none: "لا توجد عروض خاصة حاليًا. تابعنا على إنستغرام @abk_jvc." }
   },
   ru: {
     dir: "ltr",
@@ -72,7 +73,8 @@ window.ABK_I18N = {
       booking: "Ваша бронь:", date: "Дата", time: "Время", guests: "Гостей", forE: "Событие", justTable: "Просто стол",
       bookingNote: "Нажмите ниже, и бронь уйдёт команде в WhatsApp. Они подтвердят стол.", sendWa: "Отправить в WhatsApp",
       pageNote: "Sent from the Russian page"
-    }
+    },
+    specials: { on: "Уже идёт", soon: "Скоро", details: "Подробнее (на английском)", none: "Сейчас спецпредложений нет. Следите за нами в Instagram @abk_jvc." }
   }
 };
 

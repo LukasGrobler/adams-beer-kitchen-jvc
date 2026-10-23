@@ -1425,3 +1425,5 @@ button.link { background: none; border: 0; border-bottom: 2px solid currentColor
 .menu-group p { margin: 0; }
 @media (max-width: 760px) { .menu-groups { grid-template-columns: 1fr; } }
 @media (max-width: 560px) { .lounge { grid-template-columns: 1fr; } .ladder li { grid-template-columns: 48px 1fr 92px; } .ladder img { width: 92px; height: 72px; } }
+/* a special without a photo: the type poster's word fits the small card on phones */
+@media (max-width: 760px) { .special__img .d-m { font-size: 1.15rem; overflow-wrap: anywhere; } }

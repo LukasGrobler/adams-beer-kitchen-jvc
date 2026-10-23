@@ -195,7 +195,9 @@ window.ABK_DATA = {
       intro: "Two house drinks and a main course for one spooky price, AED 99, all day from Monday 26 to Saturday 31 October. Costumes are encouraged, though not compulsory.",
       facts: [["When", "26 – 31 October"], ["Hours", "All day"], ["Price", "AED 99"]],
       deal: { title: "2 house drinks and a main course", price: 99 },
-      fine: "All day, 26 – 31 October. Terms and conditions apply."
+      fine: "All day, 26 – 31 October. Terms and conditions apply.",
+      ar: { name: "أسبوع الهالوين", when: "26 – 31 أكتوبر، طوال اليوم", short: "مشروبان مع طبق رئيسي بسعر 99 درهم، طوال اليوم." },
+      ru: { name: "Неделя Хэллоуина", when: "26 – 31 октября, весь день", short: "Два напитка и основное блюдо за 99 AED, весь день." }
     },
     {
       slug: "beer-bucket", name: "Heineken Beer Bucket", with: "A bucket of Heineken for AED 129",
@@ -204,7 +206,9 @@ window.ABK_DATA = {
       intro: "A bucket of Heineken bottles on ice for the table, AED 129, all through October and November. Built for the match, the race or just the catch-up.",
       facts: [["Bucket", "Heineken"], ["Price", "AED 129"], ["Until", "30 November"]],
       deal: { title: "A bucket of Heineken bottles", price: 129 },
-      fine: "Dine-in only. Same price for every brand. Valid October and November 2026."
+      fine: "Dine-in only. Same price for every brand. Valid October and November 2026.",
+      ar: { name: "دلو بيرة Heineken", when: "أكتوبر ونوفمبر", short: "دلو من زجاجات Heineken للطاولة بسعر 129 درهم. داخل المطعم فقط." },
+      ru: { name: "Ведро Heineken", when: "Октябрь и ноябрь", short: "Ведро бутылок Heineken на стол за 129 AED. Только в заведении." }
     },
     {
       slug: "festive-with-amstel", name: "Festive with Amstel", with: "Win an Amstel festive jumper",
@@ -212,7 +216,9 @@ window.ABK_DATA = {
       short: "Order 2 Amstel pints for a chance to win an Amstel festive jumper.",
       intro: "Christmas comes with a jumper this year. Order two Amstel pints at the bar for a chance to win an Amstel festive jumper.",
       facts: [["Order", "2 Amstel pints"], ["Win", "A festive jumper"], ["When", "December"]],
-      fine: "Run by Amstel. Dates to be confirmed."
+      fine: "Run by Amstel. Dates to be confirmed.",
+      ar: { name: "احتفل مع Amstel", when: "ديسمبر", short: "اطلب كأسين من Amstel لفرصة الفوز بكنزة Amstel الاحتفالية." },
+      ru: { name: "Праздник с Amstel", when: "Декабрь", short: "Закажите 2 пинты Amstel и получите шанс выиграть праздничный свитер Amstel." }
     }
   ],
 
@@ -449,6 +455,9 @@ window.ABK_DATA = {
      Details from the brands' trade decks. Delete this block when the season's over. */
   f1: {
     from: "2026-10-30", to: "2026-12-06", img: "post-1",
+    /* the card on the Arabic and Russian homepages */
+    ar: { name: "موسم الفورمولا 1", when: "30 أكتوبر – 6 ديسمبر", short: "كل سباقات الفورمولا 1 على الشاشات الكبيرة، وجوائز للفوز مع Heineken وJack Daniel's." },
+    ru: { name: "Сезон Гран-при", when: "30 октября – 6 декабря", short: "Все гонки Формулы 1 на больших экранах и призы от Heineken и Jack Daniel's." },
     /* race start, Dubai time. Las Vegas (Sunday 22 November) is left out: it starts at 8AM, before we open. */
     races: [
       { date: "2026-11-01", time: "00:00", name: "Mexico City Grand Prix", ar: "جائزة مكسيكو سيتي الكبرى", ru: "Гран-при Мехико" },
