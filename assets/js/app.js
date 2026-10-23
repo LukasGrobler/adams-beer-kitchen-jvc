@@ -1118,7 +1118,7 @@
     "open opening close closing hours menu food drinks drink beer beers guinness cocktail cocktails wine whisky price prices cost deal deals offer offers discount " +
     "book booking reserve reservation table group party birthday private office celebration football soccer match premier league sports screens darts pool " +
     "terrace outdoor outside kids children family vegetarian vegan gluten halal dress smoking shisha pets dogs wifi payment delivery room service hotel " +
-    "teachers teacher cabin crew hotelier hoteliers real estate agent agents realtor realtors broker brokers tower towers halloween vouchers burger pizza pasta salmon lamb chicken salad dessert desserts sliders sandwich " +
+    "teachers teacher cabin crew hotelier hoteliers real estate rera agent agents realtor realtors broker brokers tower towers halloween vouchers burger pizza pasta salmon lamb chicken salad dessert desserts sliders sandwich " +
     "stew crumble brownie cheesecake wings nachos calamari platter prawns mussels hotdog burrito fries truffle wheelchair accessible access capacity hiring joke funny thanks hello weather christmas restaurant people guests tickets " +
     "heineken formula prix race races jack daniel scratch amstel festive jumper bucket bottles").split(" ");
   var STOP = ("the and for with you your are can could would should will does did have has had this that what when where which who whom whose how why " +
@@ -1168,7 +1168,7 @@
   var EVENT_WORDS = [
     [/\b(quiz|trivia)\b/, "quiz-night"], [/\bladies\b/, "ladies-night"], [/\b(steak night|thirsty thursday)/, "steak-night"],
     [/\b(karaoke|singing|sing)\b/, "karaoke-night"], [/\b(roast|sunday social)\b/, "sunday-social"], [/\b(bbq|smoking saturday)/, "smoking-saturdays"],
-    [/\bteachers?\b/, "teachers-brunch"], [/\b(get real|real ?estate|realtors?|estate agents?|property agents?|brokers?|fuel up)\b/, "get-real-fridays"], [/(\b[25]0 ?%|\b[25]0 off|half price|half off|cabin crew|hoteliers?\b)/, "monday-20-off"],
+    [/\bteachers?\b/, "teachers-brunch"], [/\b(get real|real ?estate|rera|realtors?|estate agents?|property agents?|brokers?|fuel up)\b/, "get-real-fridays"], [/(\b[25]0 ?%|\b[25]0 off|half price|half off|cabin crew|hoteliers?\b)/, "monday-20-off"],
     [/\b(beer )?towers?\b/, "tower-up"], [/\b(beer )?buckets?\b/, "beer-bucket"], [/\b(festive|jumpers?)\b/, "festive-with-amstel"], [/\b(mid ?term|mayhem|vouchers?)\b/, "mid-term-mayhem"], [/\bhalloween\b/, "halloween-week"]
   ];
   function eventIn(s) { for (var i = 0; i < EVENT_WORDS.length; i++) if (EVENT_WORDS[i][0].test(s)) return EVENT_WORDS[i][1]; return null; }
@@ -1331,7 +1331,8 @@
     if (/\b(open|opening|close|closing|hours|until when|how late)\b/.test(s)) add("hours");
     if (/\b(age|21|under 21|id|minimum age|old enough)\b/.test(s)) add("age");
     if (/\b(christmas|new year)\b/.test(s)) add("festive");
-    HANDOFF.forEach(function (h) { if (h[0].test(s)) add("handoff", h[1]); });
+    var sh = s.replace(/\brera cards?\b/g, "rera"); /* "RERA card" is the agents' ID for Get Real Fridays, not a payment question */
+    HANDOFF.forEach(function (h) { if (h[0].test(sh)) add("handoff", h[1]); });
     if (/\b(weather|news|politics|bitcoin|stock)\b/.test(s)) add("offtopic");
     if (priceQ && !hits.length) add("price");
     /* "tonight" on its own ("anything tonight?") means what's on; next to another topic it just narrows that topic */
