@@ -118,18 +118,18 @@ window.ABK_DATA = {
     {
       slug: "smoking-saturdays", days: [6], dayLabel: "Every Saturday",
       name: "Smoking Saturdays", with: "Live BBQ brunch and two live sets",
-      cats: ["food", "drinks", "music"], img: "post-10",
+      cats: ["food", "drinks", "music"], img: "smoking-saturdays", weekImg: "post-10", /* the venue's poster on its page; a photo on the homepage week */
       short: "BBQ brunch 3PM – 7PM, drunch 7PM – 10PM, live music all evening.",
       intro: "The BBQ gets lit at 3PM and Fergal O'Neill plays through the brunch. Saturday Drunch follows from 7PM, then David Bracken closes the night out from 9PM.",
-      facts: [["BBQ brunch", "3PM – 7PM"], ["Drunch", "7PM – 10PM"], ["Live music", "4PM – 12AM"]],
+      facts: [["BBQ brunch", "3PM – 7PM"], ["Drunch", "7PM – 10PM"], ["Live music", "3PM – 12AM"]],
       packages: [{ name: "BBQ Brunch", time: "3PM – 7PM", house: 229, premium: 279 }, { name: "Saturday Drunch", time: "7PM – 10PM", house: 199, premium: 249 }],
-      lineup: [{ who: "fergal", time: "4PM – 7PM" }, { who: "david", time: "9PM – 12AM" }],
+      lineup: [{ who: "fergal", time: "3PM – 6PM" }, { who: "david", time: "9PM – 12AM" }],
       img2: "smoking-saturdays-menu", menuTitle: "The BBQ brunch menu",
       menu: [
         { name: "Pick your starter", items: ["Jalapeño poppers", "BBQ chicken wings", "Chicken tenders", "Onion rings", "Solo nacho with guacamole, salsa and sour cream"] },
         { name: "Mixed BBQ platter", items: ["Shish tawook chicken", "Grilled salmon", "Grilled jumbo prawns", "Rib-eye steak"], note: "Served with fresh salad and your choice of sauce: hummus, blue cheese, tartar, pepper mint or garlic mayo." }
       ],
-      slots: [{ label: "Smoking Saturdays BBQ Brunch", start: "15:00", end: "19:00", price: "AED 229 / 279" }, { label: "Fergal O'Neill live", start: "16:00", end: "19:00" }, { label: "Saturday Drunch", start: "19:00", end: "22:00", price: "AED 199 / 249" }, { label: "David Bracken live", start: "21:00", end: "00:00" }],
+      slots: [{ label: "Smoking Saturdays BBQ Brunch", start: "15:00", end: "19:00", price: "AED 229 / 279" }, { label: "Fergal O'Neill live", start: "15:00", end: "18:00" }, { label: "Saturday Drunch", start: "19:00", end: "22:00", price: "AED 199 / 249" }, { label: "David Bracken live", start: "21:00", end: "00:00" }],
       week: { title: "Smoking Saturdays", lines: [["3PM – 7PM", "BBQ brunch, AED 229 / 279"], ["7PM – 10PM", "Drunch, AED 199 / 249"], ["Live", "Fergal O'Neill, David Bracken"]] }
     },
     {

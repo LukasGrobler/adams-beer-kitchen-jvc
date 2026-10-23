@@ -205,7 +205,7 @@
       return { dow: 5, title: f.title, sub: "Brunches, karaoke and live music", img: f.img, link: "whats-on.html#day-5", book: "book.html?date=" + iso(nextOn(5, 26 * 60)), lines: f.lines };
     }
     var e = D.events.filter(function (x) { return x.days[0] === dow && x.week; })[0];
-    return { dow: dow, title: e.week.title, sub: e.with, img: e.img, link: e.slug + ".html", book: "book.html?event=" + e.slug, lines: e.week.lines };
+    return { dow: dow, title: e.week.title, sub: e.with, img: e.weekImg || e.img, link: e.slug + ".html", book: "book.html?event=" + e.slug, lines: e.week.lines };
   }
   function renderWeek(sec) {
     var track = $(".week__track", sec), dots = $(".week__dots", sec), pin = $(".week__pin", sec);
