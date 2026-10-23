@@ -104,7 +104,7 @@ window.ABK_DATA = {
     {
       slug: "get-real-fridays", days: [5], dayLabel: "Every Friday",
       name: "Get Real Fridays", with: "Unlimited drinks and a bites platter for real estate agents",
-      cats: ["drinks", "deals"], img: "post-5",
+      cats: ["drinks", "deals"], img: "get-real-fridays",
       short: "Unlimited drinks and a bites platter for real estate agents, 4PM – 8PM, from AED 199. Show your RERA card.",
       intro: "Viewings done, deals closed, phone on silent. Get Real Fridays is the brunch for Dubai's real estate agents: unlimited drinks and a bites platter, 4PM to 8PM every Friday, from AED 199. Show your RERA card, bring the team and close out the week.",
       facts: [["When", "4PM – 8PM"], ["Includes", "Unlimited drinks + bites platter"], ["From", "AED 199"]],
