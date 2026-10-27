@@ -34,11 +34,15 @@ window.ABK_DATA = {
     "joe": { name: "Joe", role: "Live music", initials: "J",
       bio: "Joe is the sound of Ladies Night on Wednesdays, playing while the ladies' packages and the bites platters go round." },
     "fergal": { name: "Fergal O'Neill", role: "Live music", initials: "FO", plays: "Acoustic guitar",
-      bio: "Fergal is our busiest musician, on three times a week: Thursday steak night, the late set after Friday karaoke, and the afternoon set at the Smoking Saturdays BBQ brunch." },
+      bio: "Fergal is our busiest musician, on three times a week: Thursday steak night, the late set after Friday karaoke, and the early-evening set at Sunday Social." },
     "jen": { name: "Jen Kusch", role: "Karaoke host", initials: "JK", plays: "Karaoke host",
       bio: "Jen hosts Friday karaoke, running the list and handing out the mic. All you have to do is pick the song." },
     "lee": { name: "Lee Wall", role: "Live music", initials: "LW",
-      bio: "Lee plays Sunday nights after the roast buffet, to see the weekend out." }
+      bio: "Lee plays twice a week: the Friday afternoon set while the brunches get going, and Sunday night to see the weekend out." },
+    "amy": { name: "Amy", role: "Live music", initials: "A",
+      bio: "Amy plays the Smoking Saturdays BBQ brunch, live through the afternoon while the grill does its thing." },
+    "matt": { name: "Matt", role: "Live music", initials: "M",
+      bio: "Matt takes the Saturday evening set, live through the Saturday drunch." }
   },
 
   /* Weekly events. "slots" drive the chalkboard, the calendar files and the booking form. */
@@ -95,11 +99,13 @@ window.ABK_DATA = {
       slug: "teachers-brunch", days: [5], dayLabel: "Every Friday",
       name: "Teachers' Brunch", with: "School's out, brunch is in",
       cats: ["drinks"], img: "teachers-brunch",
-      short: "Brunch 1PM – 5PM from AED 169, drunch 5PM – 9PM from AED 199.",
-      intro: "The bell has gone and the marking can wait. Teachers' Brunch runs 1PM to 5PM, and for the ones who aren't done yet, Teachers Drunch picks up from 5PM till 9PM.",
+      short: "Brunch 1PM – 5PM from AED 169 with a bites platter, drunch 5PM – 9PM from AED 199.",
+      intro: "The bell has gone and the marking can wait. Teachers' Brunch runs 1PM to 5PM with a bites platter, Lee Wall plays from 3PM to 6PM, and for the ones who aren't done yet, Teachers Drunch picks up from 5PM till 9PM.",
       facts: [["Brunch", "1PM – 5PM"], ["Drunch", "5PM – 9PM"], ["From", "AED 169"]],
-      packages: [{ name: "Teachers' Brunch", time: "1PM – 5PM", house: 169, premium: 199 }, { name: "Teachers Drunch", time: "5PM – 9PM", house: 199, premium: 249 }],
-      slots: [{ label: "Teachers' Brunch", start: "13:00", end: "17:00", price: "AED 169 / 199" }, { label: "Teachers Drunch", start: "17:00", end: "21:00", price: "AED 199 / 249" }]
+      packages: [{ name: "Teachers' Brunch", time: "1PM – 5PM, bites platter included", house: 169, premium: 199 }, { name: "Teachers Drunch", time: "5PM – 9PM", house: 199, premium: 249 }],
+      fine: "Valid teacher's ID required.",
+      lineup: [{ who: "lee", time: "3PM – 6PM" }],
+      slots: [{ label: "Teachers' Brunch", start: "13:00", end: "17:00", price: "AED 169 / 199" }, { label: "Lee Wall live", start: "15:00", end: "18:00" }, { label: "Teachers Drunch", start: "17:00", end: "21:00", price: "AED 199 / 249" }]
     },
     {
       slug: "get-real-fridays", days: [5], dayLabel: "Every Friday",
@@ -116,42 +122,42 @@ window.ABK_DATA = {
       slug: "karaoke-night", days: [5], dayLabel: "Every Friday",
       name: "Karaoke Night", with: "with Jen Kusch",
       cats: ["quiz", "music", "drinks"], img: "post-1",
-      short: "Karaoke 8PM – 11PM, Fergal O'Neill live till 2AM.",
-      intro: "The mic is yours from 8PM, with Jen Kusch running the show. Late Night Drunch keeps going till midnight, then Fergal O'Neill takes over until 2AM.",
-      facts: [["Karaoke", "8PM – 11PM"], ["Late drunch", "8PM – 12AM"], ["Live music", "11PM – 2AM"]],
-      packages: [{ name: "Late Night Drunch", time: "8PM – 12AM", house: 199, premium: 249 }],
+      short: "Karaoke and Late Night Drunch 8PM – 11PM, then Fergal O'Neill live till 2AM.",
+      intro: "The mic is yours from 8PM, with Jen Kusch running the show. Perform a song and enjoy a free shot on us. Late Night Drunch runs 8PM to 11PM, then Fergal O'Neill takes over until 2AM.",
+      facts: [["Karaoke", "8PM – 11PM"], ["Late drunch", "8PM – 11PM"], ["Live music", "11PM – 2AM"]],
+      packages: [{ name: "Late Night Drunch", time: "8PM – 11PM", house: 229, premium: 279 }],
       lineup: [{ who: "jen", time: "8PM – 11PM" }, { who: "fergal", time: "11PM – 2AM" }],
-      slots: [{ label: "Karaoke with Jen Kusch", start: "20:00", end: "23:00" }, { label: "Late Night Drunch", start: "20:00", end: "00:00", price: "AED 199 / 249" }, { label: "Fergal O'Neill live", start: "23:00", end: "02:00" }]
+      slots: [{ label: "Karaoke with Jen Kusch", start: "20:00", end: "23:00" }, { label: "Late Night Drunch", start: "20:00", end: "23:00", price: "AED 229 / 279" }, { label: "Fergal O'Neill live", start: "23:00", end: "02:00" }]
     },
     {
       slug: "smoking-saturdays", days: [6], dayLabel: "Every Saturday",
       name: "Smoking Saturdays", with: "Live BBQ brunch and two live sets",
       cats: ["food", "drinks", "music"], img: "smoking-saturdays", weekImg: "post-10", /* the venue's poster on its page; a photo on the homepage week */
-      short: "BBQ brunch 3PM – 7PM with Fergal O'Neill live, then drunch 7PM – 10PM.",
-      intro: "The BBQ gets lit at 3PM and Fergal O'Neill plays through the brunch. Saturday Drunch follows from 7PM till 10PM.",
-      facts: [["BBQ brunch", "3PM – 7PM"], ["Drunch", "7PM – 10PM"], ["Live music", "3PM – 6PM"]],
-      packages: [{ name: "BBQ Brunch", time: "3PM – 7PM", house: 229, premium: 279 }, { name: "Saturday Drunch", time: "7PM – 10PM", house: 199, premium: 249 }],
-      lineup: [{ who: "fergal", time: "3PM – 6PM" }],
+      short: "BBQ brunch 3PM – 7PM with 1 starter and the full BBQ platter, then drunch 7PM – 10PM. Live music from Amy and Matt.",
+      intro: "The BBQ gets lit at 3PM: every brunch comes with 1 starter and the full BBQ platter, and Amy plays from 2:30PM to 5:30PM. Saturday Drunch follows from 7PM till 10PM, with Matt live through it.",
+      facts: [["BBQ brunch", "3PM – 7PM"], ["Drunch", "7PM – 10PM"], ["Live music", "Amy & Matt"]],
+      packages: [{ name: "BBQ Brunch", time: "3PM – 7PM, 1 starter + full BBQ platter", house: 249, premium: 299 }, { name: "Saturday Drunch", time: "7PM – 10PM", house: 229, premium: 279 }],
+      lineup: [{ who: "amy", time: "2:30PM – 5:30PM" }, { who: "matt", time: "7PM – 10PM" }],
       img2: "smoking-saturdays-menu", menuTitle: "The BBQ brunch menu",
       menu: [
         { name: "Pick your starter", items: ["Jalapeño poppers", "BBQ chicken wings", "Chicken tenders", "Onion rings", "Solo nacho with guacamole, salsa and sour cream"] },
         { name: "Mixed BBQ platter", items: ["Shish tawook chicken", "Grilled salmon", "Grilled jumbo prawns", "Rib-eye steak"], note: "Served with fresh salad and your choice of sauce: hummus, blue cheese, tartar, pepper mint or garlic mayo." }
       ],
-      slots: [{ label: "Smoking Saturdays BBQ Brunch", start: "15:00", end: "19:00", price: "AED 229 / 279" }, { label: "Fergal O'Neill live", start: "15:00", end: "18:00" }, { label: "Saturday Drunch", start: "19:00", end: "22:00", price: "AED 199 / 249" }],
-      week: { title: "Smoking Saturdays", lines: [["3PM – 7PM", "BBQ brunch, AED 229 / 279"], ["7PM – 10PM", "Drunch, AED 199 / 249"], ["3PM – 6PM", "Live: Fergal O'Neill"]] }
+      slots: [{ label: "Amy live", start: "14:30", end: "17:30" }, { label: "Smoking Saturdays BBQ Brunch", start: "15:00", end: "19:00", price: "AED 249 / 299" }, { label: "Saturday Drunch", start: "19:00", end: "22:00", price: "AED 229 / 279" }, { label: "Matt live", start: "19:00", end: "22:00" }],
+      week: { title: "Smoking Saturdays", lines: [["3PM – 7PM", "BBQ brunch, AED 249 / 299"], ["7PM – 10PM", "Drunch, AED 229 / 279"], ["Live", "Amy, Matt"]] }
     },
     {
       slug: "sunday-social", days: [0], dayLabel: "Every Sunday",
       name: "Sunday Social", with: "Full roast buffet from AED 99",
       cats: ["food", "drinks", "music"], img: "post-9",
-      short: "Roast buffet 1PM – 8PM, Sunday Drunch 5PM – 8PM, Lee Wall live from 8PM.",
-      intro: "A proper roast buffet for AED 99, served 1PM to 8PM. Add two house drinks for AED 129, or two pints of Guinness for AED 149. Sunday Drunch runs 5PM to 8PM, and Lee Wall plays you into the new week.",
-      facts: [["Roast buffet", "1PM – 8PM"], ["From", "AED 99"], ["Live music", "8PM – 11PM"]],
-      deals: [["Full roast buffet", 99], ["Roast + 2 house drinks", 129], ["Roast + 2 Guinness", 149]],
-      packages: [{ name: "Sunday Drunch", time: "5PM – 8PM", house: 179, premium: 229 }],
-      lineup: [{ who: "lee", time: "8PM – 11PM" }],
-      slots: [{ label: "Sunday roast buffet", start: "13:00", end: "20:00", price: "From AED 99" }, { label: "Sunday Drunch", start: "17:00", end: "20:00", price: "AED 179 / 229" }, { label: "Lee Wall live", start: "20:00", end: "23:00" }],
-      week: { title: "Sunday social", lines: [["1PM – 8PM", "Roast buffet, AED 99"], ["Drunch", "5PM – 8PM, AED 179 / 229"], ["8PM – 11PM", "Live: Lee Wall"]] }
+      short: "Full roast buffet 1PM – 7PM, Sunday Drunch 5PM – 8PM, live music from Fergal O'Neill and Lee Wall.",
+      intro: "A proper full roast buffet for AED 99, served 1PM to 7PM. Add two house drinks for AED 149, or two pints of Guinness for AED 169. Sunday Drunch runs 5PM to 8PM with Fergal O'Neill live, and Lee Wall plays 9PM till midnight to see the weekend out.",
+      facts: [["Roast buffet", "1PM – 7PM"], ["From", "AED 99"], ["Live music", "From 5PM"]],
+      deals: [["Full roast buffet", 99], ["Full roast buffet + 2 house drinks", 149], ["Full roast buffet + 2 Guinness", 169]],
+      packages: [{ name: "Sunday Drunch", time: "5PM – 8PM", house: 199, premium: 249 }],
+      lineup: [{ who: "fergal", time: "5PM – 8PM" }, { who: "lee", time: "9PM – 12AM" }],
+      slots: [{ label: "Full roast buffet", start: "13:00", end: "19:00", price: "From AED 99" }, { label: "Sunday Drunch", start: "17:00", end: "20:00", price: "AED 199 / 249" }, { label: "Fergal O'Neill live", start: "17:00", end: "20:00" }, { label: "Lee Wall live", start: "21:00", end: "00:00" }],
+      week: { title: "Sunday social", lines: [["1PM – 7PM", "Full roast buffet, AED 99"], ["Drunch", "5PM – 8PM, AED 199 / 249"], ["Live", "Fergal O'Neill, Lee Wall"]] }
     }
   ],
 
@@ -161,13 +167,13 @@ window.ABK_DATA = {
     2: { slug: "quiz-night", lines: ["Quiz", "night"], sub: "With ItsDylanLive. Prizes up to AED 2,000, and quiz drunch from AED 189." },
     3: { slug: "ladies-night", lines: ["Ladies", "night"], sub: "Ladies from AED 99 with a mixed bites platter, and Joe live from 8PM." },
     4: { slug: "steak-night", lines: ["Steak", "night"], sub: "A 250g rib-eye, fries and two house drinks for AED 199, with Fergal O'Neill live from 8PM." },
-    5: { slug: "karaoke-night", lines: ["Big", "Friday"], sub: "Teachers' brunch from 1PM, Get Real Fridays at 4PM, karaoke at 8PM and Fergal O'Neill till 2AM.", start: "13:00", end: "02:00", link: "whats-on.html#day-5" },
-    6: { slug: "smoking-saturdays", lines: ["Smoking", "Saturdays"], sub: "Live BBQ brunch from 3PM with Fergal O'Neill, then drunch from 7PM." },
-    0: { slug: "sunday-social", lines: ["Sunday", "roast"], sub: "The full roast buffet from AED 99, 1PM to 8PM, then Lee Wall live from 8PM." }
+    5: { slug: "karaoke-night", lines: ["Big", "Friday"], sub: "Teachers' brunch from 1PM, Lee Wall at 3PM, Get Real Fridays at 4PM, karaoke at 8PM and Fergal O'Neill till 2AM.", start: "13:00", end: "02:00", link: "whats-on.html#day-5" },
+    6: { slug: "smoking-saturdays", lines: ["Smoking", "Saturdays"], sub: "Live BBQ brunch from 3PM with Amy live, then drunch from 7PM with Matt." },
+    0: { slug: "sunday-social", lines: ["Sunday", "roast"], sub: "The full roast buffet from AED 99, 1PM to 7PM, with Fergal O'Neill from 5PM and Lee Wall from 9PM." }
   },
 
   /* Friday has three events; the week scroller shows them as one night. */
-  fridayWeek: { title: "Big Friday", img: "post-1", link: "karaoke-night", lines: [["1PM – 9PM", "Teachers' brunch & drunch"], ["4PM – 8PM", "Get Real Fridays, AED 199 / 249"], ["8PM – 11PM", "Karaoke with Jen Kusch"], ["11PM – 2AM", "Live: Fergal O'Neill"]] },
+  fridayWeek: { title: "Big Friday", img: "post-1", link: "karaoke-night", lines: [["1PM – 9PM", "Teachers' brunch & drunch"], ["3PM – 6PM", "Live: Lee Wall"], ["4PM – 8PM", "Get Real Fridays, AED 199 / 249"], ["8PM – 11PM", "Karaoke & late drunch"], ["11PM – 2AM", "Live: Fergal O'Neill"]] },
 
   offers: [
     {
