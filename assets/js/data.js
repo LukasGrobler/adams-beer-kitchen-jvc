@@ -31,8 +31,6 @@ window.ABK_DATA = {
   artists: {
     "itsdylanlive": { name: "ItsDylanLive", role: "Quiz host", initials: "DL", plays: "Quiz host",
       bio: "ItsDylanLive runs quiz night every Tuesday: rounds of trivia, a league table that runs all season, and prizes worth up to AED 2,000 for the winning team. Bring your cleverest friends, plus the one who knows football." },
-    "joe": { name: "Joe", role: "Live music", initials: "J",
-      bio: "Joe is the sound of Ladies Night on Wednesdays, playing while the ladies' packages and the bites platters go round." },
     "fergal": { name: "Fergal O'Neill", role: "Live music", initials: "FO", plays: "Acoustic guitar",
       bio: "Fergal is our busiest musician, on three times a week: Thursday steak night, the late set after Friday karaoke, and the early-evening set at Sunday Social." },
     "jen": { name: "Jen Kusch", role: "Karaoke host", initials: "JK", plays: "Karaoke host",
@@ -72,15 +70,14 @@ window.ABK_DATA = {
     },
     {
       slug: "ladies-night", days: [3], dayLabel: "Every Wednesday",
-      name: "Ladies Night", with: "Live music with Joe",
-      cats: ["drinks", "music"], img: "post-12", img2: "post-5",
+      name: "Ladies Night", with: "A mixed bites platter with every package",
+      cats: ["drinks"], img: "post-12", img2: "post-5",
       short: "Ladies from AED 99, lads from AED 149, mixed bites platter included.",
-      intro: "Wednesday belongs to the ladies. The lads are welcome too, at lads' prices. Every package comes with a mixed bites platter, and Joe plays from 8PM.",
-      facts: [["Live music", "8PM – 11PM"], ["Ladies", "From AED 99"], ["Lads", "From AED 149"]],
+      intro: "Wednesday belongs to the ladies. The lads are welcome too, at lads' prices. Every package comes with a mixed bites platter.",
+      facts: [["Every package", "Mixed bites platter"], ["Ladies", "From AED 99"], ["Lads", "From AED 149"]],
       packages: [{ name: "Ladies", time: "Mixed bites platter included", house: 99, premium: 129 }, { name: "Lads", time: "Mixed bites platter included", house: 149, premium: 199 }],
-      lineup: [{ who: "joe", time: "8PM – 11PM" }],
-      slots: [{ label: "Ladies Night", start: "20:00", end: "23:00", price: "Ladies AED 99 / 129" }, { label: "Joe live", start: "20:00", end: "23:00" }],
-      week: { title: "Ladies night", lines: [["Ladies", "AED 99 / 129"], ["Lads", "AED 149 / 199"], ["8PM – 11PM", "Live: Joe"]] }
+      slots: [{ label: "Ladies Night", start: "20:00", end: "23:00", price: "Ladies AED 99 / 129" }],
+      week: { title: "Ladies night", lines: [["Ladies", "AED 99 / 129"], ["Lads", "AED 149 / 199"], ["Every package", "Mixed bites platter"]] }
     },
     {
       slug: "steak-night", days: [4], dayLabel: "Every Thursday",
@@ -165,7 +162,7 @@ window.ABK_DATA = {
   takeover: {
     1: { slug: "monday-20-off", lines: ["20% off", "Mondays"], sub: "20% off food and drinks for cabin crew, teachers and hoteliers, from 9PM till close." },
     2: { slug: "quiz-night", lines: ["Quiz", "night"], sub: "With ItsDylanLive. Prizes up to AED 2,000, and quiz drunch from AED 189." },
-    3: { slug: "ladies-night", lines: ["Ladies", "night"], sub: "Ladies from AED 99 with a mixed bites platter, and Joe live from 8PM." },
+    3: { slug: "ladies-night", lines: ["Ladies", "night"], sub: "Ladies from AED 99 and lads from AED 149, with a mixed bites platter in every package." },
     4: { slug: "steak-night", lines: ["Steak", "night"], sub: "A 250g rib-eye, fries and two house drinks for AED 199, with Fergal O'Neill live from 8PM." },
     5: { slug: "karaoke-night", lines: ["Big", "Friday"], sub: "Teachers' brunch from 1PM, Lee Wall at 3PM, Get Real Fridays at 4PM, karaoke at 8PM and Fergal O'Neill till 2AM.", start: "13:00", end: "02:00", link: "whats-on.html#day-5" },
     6: { slug: "smoking-saturdays", lines: ["Smoking", "Saturdays"], sub: "Live BBQ brunch from 3PM with Amy live, then drunch from 7PM with Matt." },

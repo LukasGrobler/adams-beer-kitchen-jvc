@@ -191,7 +191,7 @@
   }
 
   /* ---------------- marquee ---------------- */
-  var MARQUEE = ["Good food. Cold beer. Great vibes.", "Quiz night Tuesday", "Ladies night Wednesday", "Steak night Thursday", "Karaoke Friday", "Smoking Saturdays", "Sunday roast from AED 99", "Happy hour every day", "Live music five nights a week"];
+  var MARQUEE = ["Good food. Cold beer. Great vibes.", "Quiz night Tuesday", "Ladies night Wednesday", "Steak night Thursday", "Karaoke Friday", "Smoking Saturdays", "Sunday roast from AED 99", "Happy hour every day", "Live music four nights a week"];
   function renderMarquee(el, list) {
     var items = list || MARQUEE;
     var one = items.map(function (t) { return '<span class="marquee__item">' + I.hop + esc(t) + "</span>"; }).join("");
@@ -1021,7 +1021,7 @@
         e.lineup.forEach(function (l) { rows.push([DAYS3[dow], esc(D.artists[l.who].name), esc(l.time) + (dow === b.bdow ? ", tonight" : "")]); });
       });
     });
-    return { html: "Live music five nights a week, plus quiz and karaoke hosts:" + btList(rows) + btBtns([["See the line-up", "live-music.html", "btn--ghost"]]), chips: [["tonight", "What's on tonight?"], ["book", "Book a table"]] };
+    return { html: "Live music four nights a week, plus quiz and karaoke hosts:" + btList(rows) + btBtns([["See the line-up", "live-music.html", "btn--ghost"]]), chips: [["tonight", "What's on tonight?"], ["book", "Book a table"]] };
   }
   function aFind() {
     return { html: "We're on <b>Floor 1 of HE Hotel Apartments</b>, Assel Boulevard, JVC, " + esc(V.landmarks) + ". Valet parking at the entrance, then take the lift to Floor 1 and follow the music." + btBtns([["Open in Google Maps", V.maps], ["First-time guide", "find-us.html", "btn--ghost"]]), chips: [["hours", "Opening hours"], ["book", "Book a table"]] };
@@ -1306,13 +1306,13 @@
     if (/\bweekend\b/.test(s)) add("weekend");
     var dayIdx = -1;
     DAYS.forEach(function (d, i) { if (new RegExp("\\b" + d.toLowerCase() + "\\b").test(s)) dayIdx = i; });
-    var liveQ = /\b(live|music|band|singer|artist|guitar|playing|performing|on stage|dj|fergal|lee wall|joe|dylan|amy|matt)\b/.test(s) && !ev;
+    var liveQ = /\b(live|music|band|singer|artist|guitar|playing|performing|on stage|dj|fergal|lee wall|dylan|amy|matt)\b/.test(s) && !ev;
     var whatsOnQ = /\b(what is on|whats on|what's on|what on|going on|happening|on now|on tonight)\b/.test(s);
     var todayQ = /\b(tonight|today|right now)\b/.test(s);
     if (dayIdx > -1 && !ev) add("day", dayIdx);
     else if (/\btomorrow\b/.test(s) && !ev) add("day", (biz().bdow + 1) % 7);
     else if (whatsOnQ && !ev && !liveQ) add("tonight");
-    var who = !ev && [[/\b(itsdylanlive|dylan)\b/, "itsdylanlive"], [/\bjoe\b/, "joe"], [/\bfergal\b/, "fergal"], [/\b(jen|kusch)\b/, "jen"], [/\blee\b/, "lee"], [/\bamy\b/, "amy"], [/\bmatt\b/, "matt"]].filter(function (x) { return D.artists[x[1]] && x[0].test(s); });
+    var who = !ev && [[/\b(itsdylanlive|dylan)\b/, "itsdylanlive"], [/\bfergal\b/, "fergal"], [/\b(jen|kusch)\b/, "jen"], [/\blee\b/, "lee"], [/\bamy\b/, "amy"], [/\bmatt\b/, "matt"]].filter(function (x) { return D.artists[x[1]] && x[0].test(s); });
     if (who.length === 1) add("artist", who[0][1]);
     else if (liveQ) add("live");
     if (/\b(where|address|location|find you|directions|map|how do i get|get there)\b/.test(s)) add("find");
