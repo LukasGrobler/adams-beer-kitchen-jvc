@@ -88,10 +88,10 @@
       else s.hhText = b.bmins < h0 ? TX.live.hhLater : TX.live.hhTomorrow;
       return s;
     }
-    s.openText = open ? "Open now, till 3AM" : "Opens today at 12PM";
+    s.openText = open ? "Open now, till 3AM" : "Opens today at 11AM";
     if (open && b.bmins >= h0 && b.bmins < h1) { s.hh = true; s.hhText = "Happy hour on, ends in " + dur(h1 - b.bmins); }
-    else if (b.bmins < h0) s.hhText = "Happy hour from 12PM today";
-    else s.hhText = "Happy hour's back tomorrow at 12PM";
+    else if (b.bmins < h0) s.hhText = "Happy hour from 11AM today";
+    else s.hhText = "Happy hour's back tomorrow at 11AM";
     return s;
   }
   /* a time in the page's language: "9 مساءً" in Arabic, "21:00" in Russian */
@@ -124,7 +124,7 @@
     var b = biz(), items = slotsFor(b.bdow), html = "";
     if (b.bmins < toMin(V.opens)) {
       var first = items[0];
-      html = '<span class="board__next-row">' + (first ? "First up today: " + esc(first.s.label) + " at " + fmt(first.a) : "Doors open at 12PM") + "</span>";
+      html = '<span class="board__next-row">' + (first ? "First up today: " + esc(first.s.label) + " at " + fmt(first.a) : "Doors open at 11AM") + "</span>";
     } else {
       var on = items.filter(function (it) { return b.bmins >= it.a && b.bmins < it.b; }).pop();
       var next = items.filter(function (it) { return it.a > b.bmins; })[0];
@@ -132,7 +132,7 @@
       if (next) html += '<span class="board__next-row">Next up in <b>' + dur(next.a - b.bmins) + "</b>: " + esc(next.s.label) + "</span>";
       if (!on && !next) {
         var tm = slotsFor((b.bdow + 1) % 7)[0];
-        html = '<span class="board__next-row">' + (tm ? "Tomorrow: " + esc(tm.s.label) + " from " + fmt(tm.a) : "Happy hour from 12PM tomorrow") + "</span>";
+        html = '<span class="board__next-row">' + (tm ? "Tomorrow: " + esc(tm.s.label) + " from " + fmt(tm.a) : "Happy hour from 11AM tomorrow") + "</span>";
       }
     }
     el.innerHTML = html;
@@ -186,7 +186,7 @@
       "</div>" + (snaps ? '<div class="snaps" aria-hidden="true">' + snaps + "</div>" : "") + "</div>" +
       '<div class="board__rule"></div>' +
       '<ul class="board__list chalk' + (items.length > 4 ? " is-busy" : "") + '">' + rows + "</ul>" +
-      '<div class="board__foot"><span class="board__hh chalk">' + (st.open ? "Doors open till 3AM" : "Doors open at 12PM") + '</span><a class="board__book" href="book.html?date=' + iso(day) + '">Book for ' + title.toLowerCase() + "</a></div>" +
+      '<div class="board__foot"><span class="board__hh chalk">' + (st.open ? "Doors open till 3AM" : "Doors open at 11AM") + '</span><a class="board__book" href="book.html?date=' + iso(day) + '">Book for ' + title.toLowerCase() + "</a></div>" +
       '<span class="board__chalkstick" aria-hidden="true"></span></div>';
   }
 
@@ -280,7 +280,7 @@
       return '<button class="chip" type="button" data-f="' + f[0] + '" aria-pressed="' + (i === 0) + '">' + f[1] + "</button>";
     }).join("") + "</div>";
     html += '<div class="days">';
-    html += '<div class="dayrow" id="every-day"><div class="dayrow__head"><h3 class="dayrow__day">Offers</h3><span class="dayrow__date">Open 12PM – 3AM</span></div><div class="dayrow__items">' +
+    html += '<div class="dayrow" id="every-day"><div class="dayrow__head"><h3 class="dayrow__day">Offers</h3><span class="dayrow__date">Open 11AM – 3AM</span></div><div class="dayrow__items">' +
       D.offers.map(function (o) { return evCard(o, { time: o.facts[0][1] + (o.slug === "happy-hour" ? " Sun – Thu" : "") }); }).join("") + "</div></div>";
     for (var i = 0; i < 7; i++) {
       var dt = addDays(b.by, b.bm, b.bd, i), dow = dt.dow;
@@ -354,7 +354,7 @@
       "<li>" + I.pin + '<div><h3>Floor 1, HE Hotel Apartments</h3><p>Take the lift to the first floor. First time? <a class="link" href="find-us.html" style="font-size:1rem">Read the 30-second guide</a></p></div></li>' +
       "<li>" + I.car + "<div><h3>Valet parking</h3><p>Pull up at the entrance and hand over the keys.</p></div></li>" +
       "<li>" + I.wa + "<div><h3>Book on WhatsApp</h3><p>Tables go quickly on event nights. Booking takes about 20 seconds.</p></div></li>" +
-      "<li>" + I.clock + "<div><h3>Open daily 12PM – 3AM</h3><p>Happy hour every day from 12PM.</p></div></li></ul>";
+      "<li>" + I.clock + "<div><h3>Open daily 11AM – 3AM</h3><p>Happy hour every day from 11AM.</p></div></li></ul>";
   }
   function renderEvent(root) {
     var slug = root.getAttribute("data-event"), e = find(slug);
@@ -633,9 +633,14 @@
   }
   function renderWall(el) {
     var n = +(el.getAttribute("data-wall") || 8), rot = [-3, 2.5, -1.5, 3, -2.5, 1.5, -2, 2];
-    var picks = D.gallery.filter(function (g) { return ["post-2", "post-4", "post-11"].indexOf(g.img) === -1; }).slice(0, n);
+    /* this week's posters when data.js has them, otherwise photos from the gallery */
+    var posters = !!(D.posters && D.posters.length);
+    var picks = posters ? D.posters.slice(0, n) : D.gallery.filter(function (g) { return ["post-2", "post-4", "post-11"].indexOf(g.img) === -1; }).slice(0, n);
+    el.classList.toggle("wall--posters", posters);
     el.innerHTML = picks.map(function (g, i) { return '<button type="button" class="polaroid" style="--r:' + rot[i % rot.length] + 'deg" data-i="' + i + '"><img src="' + img(g.img) + '" alt="' + esc(g.cap) + '" loading="lazy"><span class="polaroid__cap">' + esc(g.cap) + "</span></button>"; }).join("") +
-      '<p class="wall__cta">Tag <a href="' + V.instagram + '" target="_blank" rel="noopener">' + V.handle + "</a> on Instagram and you might end up pinned here.</p>";
+      (posters
+        ? '<p class="wall__cta">Tap a poster to see it full size. New ones go up on <a href="' + V.instagram + '" target="_blank" rel="noopener">' + V.handle + "</a> first.</p>"
+        : '<p class="wall__cta">Tag <a href="' + V.instagram + '" target="_blank" rel="noopener">' + V.handle + "</a> on Instagram and you might end up pinned here.</p>");
     el.addEventListener("click", function (ev) { var b = ev.target.closest(".polaroid"); if (b) openLb(picks, +b.getAttribute("data-i")); });
   }
 
@@ -772,7 +777,7 @@
     var td = today().dow;
     el.innerHTML = "<tbody>" + WEEK.map(function (d) {
       var hh = V.happyHour[d];
-      return '<tr' + (d === td ? ' class="is-today"' : "") + '><th scope="row">' + DAYS[d] + (d === td ? " (today)" : "") + "</th><td>12PM – 3AM</td><td>Happy hour till " + fmt(hh[1]) + "</td></tr>";
+      return '<tr' + (d === td ? ' class="is-today"' : "") + '><th scope="row">' + DAYS[d] + (d === td ? " (today)" : "") + "</th><td>11AM – 3AM</td><td>Happy hour till " + fmt(hh[1]) + "</td></tr>";
     }).join("") + "</tbody>";
   }
   /* our own map, drawn from street data in map.js, with the route to the door; it works offline and tapping opens Google Maps.
@@ -813,7 +818,7 @@
       '<ul class="icon-list">' +
       "<li>" + I.pin + "<div><h3>" + esc(V.address[0]) + "</h3><p>" + esc(V.address[1]) + ", " + esc(V.address[2]) + "</p></div></li>" +
       "<li>" + I.lift + "<div><h3>Take the lift to Floor 1</h3><p>Valet parking at the hotel entrance.</p></div></li>" +
-      "<li>" + I.clock + "<div><h3>" + (st.open ? "Open now, till 3AM" : "Open daily 12PM – 3AM") + "</h3><p>Happy hour every day from 12PM.</p></div></li>" +
+      "<li>" + I.clock + "<div><h3>" + (st.open ? "Open now, till 3AM" : "Open daily 11AM – 3AM") + "</h3><p>Happy hour every day from 11AM.</p></div></li>" +
       "</ul>" +
       '<div class="btn-row" style="margin-top:26px"><a class="btn" href="' + V.maps + '" target="_blank" rel="noopener">Get directions</a><a class="btn btn--ghost" href="find-us.html">First time? Read the guide</a></div></div></div>';
   }
@@ -859,7 +864,7 @@
   /* ---------------- smooth scroll (desktop mouse only) ---------------- */
   function smooth() {
     if (reduce || !window.Lenis || !hasGsap || /[?&]shot=/.test(location.search) || !matchMedia("(pointer: fine)").matches) return;
-    var lenis = new Lenis({ lerp: 0.11, smoothWheel: true });
+    var lenis = new Lenis({ lerp: 0.16, smoothWheel: true });
     window.__lenis = lenis;
     lenis.on("scroll", ScrollTrigger.update);
     gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
@@ -895,32 +900,94 @@
       }
     };
   }
-  /* the pour: beer starts flowing straight away, fills in a second, logo pops, foam wipes up (about 2.2s) */
+  /* golden dust for the intro: slow motes rising, plus a burst when the hop lands */
+  function dust(cv) {
+    var ctx = cv.getContext("2d"), dpr = Math.min(window.devicePixelRatio || 1, 2), W = 0, H = 0, ps = [], run = true;
+    var spr = document.createElement("canvas"); spr.width = spr.height = 64;
+    var sc = spr.getContext("2d"), g = sc.createRadialGradient(32, 32, 0, 32, 32, 32);
+    g.addColorStop(0, "rgba(255,236,190,1)"); g.addColorStop(.25, "rgba(255,196,90,.85)"); g.addColorStop(1, "rgba(255,150,40,0)");
+    sc.fillStyle = g; sc.fillRect(0, 0, 64, 64);
+    function size() { W = cv.width = innerWidth * dpr; H = cv.height = innerHeight * dpr; }
+    function mote(any) { return { x: Math.random() * W, y: any ? Math.random() * H : H + 20, r: (Math.random() * 2.2 + .8) * dpr, vx: (Math.random() - .5) * .3 * dpr, vy: -(Math.random() * .7 + .2) * dpr, a: Math.random() * .5 + .25, life: -1 }; }
+    size();
+    for (var i = 0; i < 80; i++) ps.push(mote(true));
+    function tick() {
+      if (!run) return;
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = "lighter";
+      for (var i = ps.length - 1; i >= 0; i--) {
+        var p = ps[i];
+        p.x += p.vx; p.y += p.vy;
+        if (p.life >= 0) { p.vx *= .95; p.vy = p.vy * .95 + .05 * dpr; p.life -= .016; p.a = p.life; if (p.life <= 0) { ps.splice(i, 1); continue; } }
+        else if (p.y < -20) { ps[i] = mote(false); continue; }
+        var s = p.r * 7;
+        ctx.globalAlpha = Math.max(0, Math.min(1, p.a));
+        ctx.drawImage(spr, p.x - s / 2, p.y - s / 2, s, s);
+      }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+    addEventListener("resize", size);
+    return {
+      burst: function (x, y, n) {
+        for (var i = 0; i < n; i++) {
+          var ang = Math.random() * Math.PI * 2, sp = (Math.random() * 9 + 2) * dpr;
+          ps.push({ x: x * dpr, y: y * dpr, r: (Math.random() * 2.4 + .8) * dpr, vx: Math.cos(ang) * sp, vy: Math.sin(ang) * sp, a: 1, life: Math.random() * .5 + .7 });
+        }
+      },
+      stop: function () { run = false; removeEventListener("resize", size); }
+    };
+  }
+  /* the intro: gold flourishes sweep round, light runs along the lettering, the hop pops with a burst
+     of sparks, a shine crosses the logo, then the logo flies into the header as the dark closes in on it (about 2.5s) */
   function playPour() {
     var p = $("#pour");
     if (!p) { unlock(); return; }
     if (!hasGsap) { p.remove(); unlock(); return; }
     L.ss("abk_pour", "1");
-    var glassEl = $(".pour__glass", p), liquid = $(".pour__liquid", p), foam = $(".pour__foam", p), stream = $(".pour__stream", p), logo = $(".pour__logo", p), slogan = $$(".pour__slogan span", p);
-    gsap.set(liquid, { y: 335 });
-    gsap.set(foam, { scaleY: 0.35, transformOrigin: "50% 100%" });
-    gsap.set(logo, { opacity: 0, y: 12, scale: 0.9 });
-    gsap.set(slogan, { opacity: 0, y: 14 });
-    gsap.set(glassEl, { opacity: 0, scale: 0.92, y: 14 });
+    var box = $(".intro__logo", p), gold = $(".il--gold", p), white = $(".il--white", p), flare = $(".il--flare", p), hop = $(".il--hop", p),
+      ring = $(".intro__ring", p), slogan = $$(".intro__slogan span", p), place = $(".intro__place", p), fx = dust($(".intro__dust", p));
+    gsap.set([gold, white, hop], { opacity: 1 });
+    gsap.set(box, { "--a": "0deg", "--p": "-20%", "--s": "100%", scale: .9, y: 16 });
+    gsap.set(hop, { scale: 0, rotation: -140, transformOrigin: "76.3% 60.5%" });
+    gsap.set(ring, { scale: 0, opacity: 0 });
+    gsap.set(slogan, { opacity: 0, y: 18, filter: "blur(10px)" });
+    gsap.set(place, { opacity: 0, letterSpacing: ".6em" });
     var hero = heroIn();
-    var tl = gsap.timeline({ onComplete: function () { p.remove(); unlock(); } });
-    tl.to(glassEl, { opacity: 1, scale: 1, y: 0, duration: 0.3, ease: "power2.out" }, 0)
-      .to(stream, { attr: { height: 580 }, duration: 0.2, ease: "power1.in" }, 0.04)
-      .to(liquid, { y: 70, duration: 1, ease: "power2.out" }, 0.16)
-      .to(foam, { scaleY: 1, duration: 1, ease: "power2.out" }, 0.16)
-      .to(stream, { attr: { y: 330, height: 0 }, duration: 0.22, ease: "power2.in" }, 0.98)
-      .to(glassEl, { rotation: -5, transformOrigin: "50% 100%", duration: 0.13, yoyo: true, repeat: 1, ease: "sine.inOut" }, 1.1)
-      .to(logo, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: "back.out(2)" }, 1.02)
-      .to(slogan, { opacity: 1, y: 0, duration: 0.32, stagger: 0.16, ease: "power2.out" }, 1.25)
-      .to(p, { yPercent: -100, duration: 0.65, ease: "power3.inOut" }, 2.35)
-      .add(function () { if (hero) hero.play(); }, 2.47);
+    function hopBurst() {
+      var r = box.getBoundingClientRect();
+      fx.burst(r.left + r.width * .763, r.top + r.height * .605, 70);
+    }
+    function done() { fx.stop(); p.remove(); unlock(); }
+    var tl = gsap.timeline({ onComplete: done });
+    tl.to(box, { scale: 1, y: 0, duration: 1.5, ease: "power2.out" }, 0)
+      .to(box, { "--a": "360deg", duration: .7, ease: "power2.inOut" }, .04)
+      .to(flare, { opacity: 1, duration: .1 }, .1)
+      .to(box, { "--p": "125%", duration: .7, ease: "power2.inOut" }, .1)
+      .to(flare, { opacity: 0, duration: .2 }, .72)
+      .to(hop, { scale: 1, rotation: 0, duration: .45, ease: "back.out(2.6)" }, .64)
+      .add(hopBurst, .74)
+      .fromTo(ring, { scale: .2, opacity: 1 }, { scale: 3.4, opacity: 0, duration: .6, ease: "power2.out" }, .74)
+      .fromTo(box, { "--glow": 0 }, { "--glow": 1, duration: .18, yoyo: true, repeat: 1, ease: "sine.inOut" }, .74)
+      .to(box, { "--s": "-10%", duration: .55, ease: "power2.inOut" }, .84)
+      .to(slogan, { opacity: 1, y: 0, filter: "blur(0px)", duration: .4, stagger: .08, ease: "power3.out" }, .88)
+      .to(place, { opacity: 1, letterSpacing: ".28em", duration: .6, ease: "power3.out" }, 1.05);
+    /* the exit: fly into the header logo (falls back to a curtain lift if the header logo isn't there) */
+    var END = 1.75, brand = $("#hdr .brand img");
+    tl.add(function () {
+      var r1 = box.getBoundingClientRect(), r2 = brand && brand.getBoundingClientRect();
+      if (!r2 || !r2.width) { gsap.to(p, { yPercent: -100, duration: .6, ease: "power3.inOut" }); return; }
+      var cx = r2.left + r2.width / 2, cy = r2.top + r2.height / 2;
+      gsap.to([slogan, place], { opacity: 0, y: -10, duration: .2, ease: "power2.in" });
+      gsap.to(box, { x: cx - (r1.left + r1.width / 2), y: cy - (r1.top + r1.height / 2), scale: r2.width / r1.width, duration: .7, ease: "power3.inOut" });
+      /* both radii in px: GSAP can't convert vmax to px inside a CSS variable */
+      gsap.set(p, { "--cx": cx + "px", "--cy": cy + "px", "--r": Math.ceil(Math.hypot(innerWidth, innerHeight)) + "px" });
+      gsap.to(p, { "--r": (r2.width / 2) + "px", duration: .7, ease: "power3.inOut" });
+    }, END)
+      .to({}, { duration: .74 }, END)
+      .add(function () { if (hero) hero.play(); }, END + .2);
     function skip() { tl.progress(1); if (hero) hero.play(); }
-    setTimeout(function () { if (document.body.contains(p)) skip(); }, 4500); /* safety net */
+    setTimeout(function () { if (document.body.contains(p)) skip(); }, 5000); /* safety net */
     $(".pour__skip", p).addEventListener("click", skip);
     p.addEventListener("click", function (e) { if (!e.target.closest(".pour__skip")) skip(); });
     document.addEventListener("keydown", function k(e) { if (e.key === "Escape" || e.key === "Enter" || e.key === " ") { skip(); document.removeEventListener("keydown", k); } });
@@ -995,13 +1062,13 @@
     var st = liveStatus(), b = st.b, html;
     if (st.hh) html = "Yes! Happy hour is on right now and runs till <b>" + fmt(st.h1) + "</b>. That's " + dur(st.h1 - b.bmins) + " to go.";
     else if (b.bmins < st.h0) html = "Not yet. Happy hour starts at <b>" + fmt(st.h0) + "</b> today and runs till " + fmt(st.h1) + ".";
-    else html = "Happy hour's finished for today. It's back tomorrow from 12PM.";
-    html += "<p>Every day from 12PM: till 9PM Sunday to Thursday, and till 7PM on Friday and Saturday.</p>";
+    else html = "Happy hour's finished for today. It's back tomorrow from 11AM.";
+    html += "<p>Every day from 11AM: till 9PM Sunday to Thursday, and till 7PM on Friday and Saturday.</p>";
     return { html: html, chips: [["tonight", "What's on tonight?"], ["deals", "Any deals today?"], ["book", "Book a table"]] };
   }
   function aHours() {
     var st = liveStatus();
-    return { html: "We're open every day from <b>12PM till 3AM</b>. " + (st.open ? "We're open right now." : "We open at 12PM today.") + " Valet parking is available at HE Hotel Apartments.", chips: [["find", "How do I find you?"], ["tonight", "What's on tonight?"], ["book", "Book a table"]] };
+    return { html: "We're open every day from <b>11AM till 3AM</b>. " + (st.open ? "We're open right now." : "We open at 11AM today.") + " Valet parking is available at HE Hotel Apartments.", chips: [["find", "How do I find you?"], ["tonight", "What's on tonight?"], ["book", "Book a table"]] };
   }
   function aBrunch() {
     var rows = brunches().filter(function (x) { return [5, 6, 0].indexOf(x.dow) > -1; }).map(function (x) {
@@ -1028,7 +1095,7 @@
   }
   function aDeals() {
     var b = biz(), st = liveStatus(), rows = [];
-    rows.push(["Daily", '<a href="happy-hour.html">Happy hour</a>', st.hh ? "On now, till " + fmt(st.h1) : "From 12PM, till " + fmt(st.h1)]);
+    rows.push(["Daily", '<a href="happy-hour.html">Happy hour</a>', st.hh ? "On now, till " + fmt(st.h1) : "From 11AM, till " + fmt(st.h1)]);
     var e = find({ 1: "monday-20-off", 2: "quiz-night", 3: "ladies-night", 4: "steak-night", 5: "get-real-fridays", 6: "smoking-saturdays", 0: "sunday-social" }[b.bdow]);
     if (e) rows.push([DAYS3[b.bdow], '<a href="' + e.slug + '.html">' + esc(e.name) + "</a>", esc(e.short)]);
     if (b.bdow >= 1 && b.bdow <= 4) rows.push(["Mon – Thu", '<a href="tower-up.html">Tower up your day</a>', "2.5L beer tower and a bites platter, AED 179"]);
@@ -1114,7 +1181,7 @@
     footy: "football", prem: "premier", epl: "premier", dhs: "aed", dh: "aed", bbq: "bbq", wifi: "wifi", "wi-fi": "wifi"
   };
   var VOCAB = ("happy hour brunch drunch quiz trivia ladies steak ribeye karaoke roast sunday monday tuesday wednesday thursday friday saturday " +
-    "tonight today tomorrow weekend music live band singer singing artist guitar fergal dylan itsdylanlive amy matt kusch wall parking valet location address where directions " +
+    "tonight today tomorrow weekend music live band singer singing artist guitar fergal dylan itsdylanlive amy kusch wall parking valet location address where directions " +
     "open opening close closing hours menu food drinks drink beer beers guinness cocktail cocktails wine whisky price prices cost deal deals offer offers discount " +
     "book booking reserve reservation table group party birthday private office celebration football soccer match premier league sports screens darts pool " +
     "terrace outdoor outside kids children family vegetarian vegan gluten halal dress smoking shisha pets dogs wifi payment delivery room service hotel " +
@@ -1216,8 +1283,8 @@
   }
   var JOKES = [
     "Why did the quiz team bring a ladder? They heard the questions were on another level. Prove them wrong on Tuesday at 7PM.",
-    "I asked the chef for a steak joke. He said it was too rare. Thursday's rib-eye is done properly though: AED 199 with two house drinks.",
-    "What do you call a beer that works out? A strong ale. Happy hour starts at 12PM, no gym membership needed.",
+    "I asked the chef for a steak joke. He said it was too rare. Thursday's rib-eye is done properly though: AED 149 with two house drinks.",
+    "What do you call a beer that works out? A strong ale. Happy hour starts at 11AM, no gym membership needed.",
     "Our karaoke host says everyone's a great singer. She's very kind. Find out for yourself on Friday from 8PM."
   ];
   function aKids() {
@@ -1241,7 +1308,7 @@
   }
   function aDrinks() {
     var bucket = find("beer-bucket"), bucketOn = bucket && specialState(bucket) === "on";
-    return { html: "Guinness on tap, cocktails and a large selection of beers. The <b>beer tower</b> (2.5 litres with a bites platter) is AED 179 Monday to Thursday" + (bucketOn ? ", the <b>Heineken bucket</b> is AED 129" : "") + ", and happy hour runs every day from 12PM. The full drinks list is on its way to the site; the team can send it on WhatsApp now." + btBtns([["Ask for the drinks list", waTo("Hi Adam's Beer Kitchen! Could you send me the drinks menu?")]]), chips: [["hh", "Is it happy hour?"], ["deals", "Any deals today?"]] };
+    return { html: "Guinness on tap, cocktails and a large selection of beers. The <b>beer tower</b> (2.5 litres with a bites platter) is AED 179 Monday to Thursday" + (bucketOn ? ", the <b>Heineken bucket</b> is AED 129" : "") + ", and happy hour runs every day from 11AM. The full drinks list is on its way to the site; the team can send it on WhatsApp now." + btBtns([["Ask for the drinks list", waTo("Hi Adam's Beer Kitchen! Could you send me the drinks menu?")]]), chips: [["hh", "Is it happy hour?"], ["deals", "Any deals today?"]] };
   }
   function aAge() {
     return { html: "You need to be <b>21 or over</b> to drink in Dubai, and the team may ask for ID.", chips: BT_MAIN };
@@ -1263,10 +1330,10 @@
   function aDish(list) {
     var rows = list.slice(0, 5).map(function (m) { return ["AED " + m[2], esc(m[0]), esc(m[1])]; });
     var steak = list.some(function (m) { return /steak|ribeye/.test(m[3]); });
-    return { html: "From our current menu:" + btList(rows) + (steak ? '<p>Tip: on Thursdays it\'s <a href="steak-night.html">steak night</a>, a 250g rib-eye with fries and two house drinks for AED 199.</p>' : "") + btBtns([["Full food menu (PDF)", D.menus.food || "menu.html", "btn--ghost"]]), chips: [["menu", "Show me the menu"], ["book", "Book a table"]] };
+    return { html: "From our current menu:" + btList(rows) + (steak ? '<p>Tip: on Thursdays it\'s <a href="steak-night.html">steak night</a>, a 250g rib-eye with fries and two house drinks for AED 149.</p>' : "") + btBtns([["Full food menu (PDF)", D.menus.food || "menu.html", "btn--ghost"]]), chips: [["menu", "Show me the menu"], ["book", "Book a table"]] };
   }
   function aPrice() {
-    return { html: "A quick guide to prices:" + btList([["AED 99", "Sunday roast buffet", ""], ["AED 169+", "Brunches and drunches", "Up to AED 279 for Premium"], ["AED 199", "Thursday steak night", "Rib-eye, fries and 2 house drinks"], ["AED 179", "Beer tower + bites platter", "Monday to Thursday"], ["AED 30 – 250", "Food menu", "Fries to the seafood platter"]]), chips: [["brunch", "Brunch this weekend?"], ["deals", "Any deals today?"], ["menu", "Show me the menu"]] };
+    return { html: "A quick guide to prices:" + btList([["AED 99", "Sunday roast buffet", ""], ["AED 169+", "Brunches and drunches", "Up to AED 279 for Premium"], ["AED 149", "Thursday steak night", "Rib-eye, fries and 2 house drinks"], ["AED 179", "Beer tower + bites platter", "Monday to Thursday"], ["AED 30 – 250", "Food menu", "Fries to the seafood platter"]]), chips: [["brunch", "Brunch this weekend?"], ["deals", "Any deals today?"], ["menu", "Show me the menu"]] };
   }
   function aHandoff(label, q) {
     return { html: "Good question about " + label + ". I'd rather not guess, so the team will answer that one on WhatsApp." + btBtns([["Ask the team", waTo("Hi Adam's Beer Kitchen! " + (q || ""))]]), chips: BT_MAIN };
@@ -1306,13 +1373,13 @@
     if (/\bweekend\b/.test(s)) add("weekend");
     var dayIdx = -1;
     DAYS.forEach(function (d, i) { if (new RegExp("\\b" + d.toLowerCase() + "\\b").test(s)) dayIdx = i; });
-    var liveQ = /\b(live|music|band|singer|artist|guitar|playing|performing|on stage|dj|fergal|lee wall|dylan|amy|matt)\b/.test(s) && !ev;
+    var liveQ = /\b(live|music|band|singer|artist|guitar|playing|performing|on stage|dj|fergal|lee wall|dylan|amy)\b/.test(s) && !ev;
     var whatsOnQ = /\b(what is on|whats on|what's on|what on|going on|happening|on now|on tonight)\b/.test(s);
     var todayQ = /\b(tonight|today|right now)\b/.test(s);
     if (dayIdx > -1 && !ev) add("day", dayIdx);
     else if (/\btomorrow\b/.test(s) && !ev) add("day", (biz().bdow + 1) % 7);
     else if (whatsOnQ && !ev && !liveQ) add("tonight");
-    var who = !ev && [[/\b(itsdylanlive|dylan)\b/, "itsdylanlive"], [/\bfergal\b/, "fergal"], [/\b(jen|kusch)\b/, "jen"], [/\blee\b/, "lee"], [/\bamy\b/, "amy"], [/\bmatt\b/, "matt"]].filter(function (x) { return D.artists[x[1]] && x[0].test(s); });
+    var who = !ev && [[/\b(itsdylanlive|dylan)\b/, "itsdylanlive"], [/\bfergal\b/, "fergal"], [/\b(jen|kusch)\b/, "jen"], [/\blee\b/, "lee"], [/\bamy\b/, "amy"]].filter(function (x) { return D.artists[x[1]] && x[0].test(s); });
     if (who.length === 1) add("artist", who[0][1]);
     else if (liveQ) add("live");
     if (/\b(where|address|location|find you|directions|map|how do i get|get there)\b/.test(s)) add("find");

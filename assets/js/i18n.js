@@ -9,7 +9,7 @@ window.ABK_I18N = {
     nav: [["#week", "برنامج الأسبوع"], ["#deals", "العروض"], ["#groups", "المناسبات"], ["#menu", "القائمة"], ["#find", "موقعنا"]],
     langs: [["index.html", "English", "en"], ["ru.html", "Русский", "ru"]],
     book: "احجز طاولة", bookShort: "احجز طاولة",
-    openDaily: "مفتوح يوميًا 12 ظهرًا – 3 فجرًا",
+    openDaily: "مفتوح يوميًا 11 صباحًا – 3 فجرًا",
     menuOpen: "افتح القائمة", menuClose: "أغلق القائمة", home: "الرئيسية",
     call: "اتصال", wa: "واتساب",
     waHello: "مرحبًا Adam's Beer Kitchen! ",
@@ -19,15 +19,15 @@ window.ABK_I18N = {
     gateNoText: "عد إلينا في عيد ميلادك الحادي والعشرين. سنحجز لك مقعدًا.",
     ftrBlurb: "طعام شهي، بيرة باردة وأجواء رائعة، في الطابق الأول من HE Hotel Apartments.",
     ftrVisit: "زورونا", ftrAddress: ["الطابق 1، HE Hotel Apartments", "شارع أسيل، البرشاء جنوب الرابعة", "قرية جميرا الدائرية (JVC)، دبي"],
-    ftrHours: "مفتوح يوميًا 12 ظهرًا – 3 فجرًا", ftrValet: "خدمة صف السيارات متوفرة",
+    ftrHours: "مفتوح يوميًا 11 صباحًا – 3 فجرًا", ftrValet: "خدمة صف السيارات متوفرة",
     ftrTalk: "تواصل معنا", ftrWa: "راسلنا على واتساب", ftrIg: "إنستغرام",
     ftrExplore: "استكشف", ftrEnglish: "الموقع باللغة الإنجليزية",
     ftrFamily: "نقدّم أيضًا في أبوظبي:", ftrReem: "Adam's Beer Kitchen جزيرة الريم", ftrForsan: "Adam's Beer Kitchen الفرسان", ftrAnd: "و",
     ftrBase: "يُرجى الشرب بمسؤولية. لمن هم فوق 21 عامًا فقط.", ftrCredit: "تصميم الموقع: Lukas Grobler",
     ftrPrivacy: "الخصوصية (بالإنجليزية)", ftrTerms: "الشروط (بالإنجليزية)",
     live: {
-      open: "مفتوح الآن حتى 3 فجرًا", opens: "نفتح اليوم 12 ظهرًا",
-      hhOn: "ساعة السعادة الآن حتى {t}", hhLater: "ساعة السعادة من 12 ظهرًا اليوم", hhTomorrow: "ساعة السعادة تعود غدًا 12 ظهرًا"
+      open: "مفتوح الآن حتى 3 فجرًا", opens: "نفتح اليوم 11 صباحًا",
+      hhOn: "ساعة السعادة الآن حتى {t}", hhLater: "ساعة السعادة من 11 صباحًا اليوم", hhTomorrow: "ساعة السعادة تعود غدًا 11 صباحًا"
     },
     adam: {
       launch: "اسأل آدم", sub: "مضيفك في Adam's Beer Kitchen JVC", placeholder: "اسألني أي شيء", send: "إرسال", close: "إغلاق",
@@ -47,7 +47,7 @@ window.ABK_I18N = {
     nav: [["#week", "Неделя"], ["#deals", "Акции"], ["#groups", "Праздники"], ["#menu", "Меню"], ["#find", "Как добраться"]],
     langs: [["index.html", "English", "en"], ["ar.html", "العربية", "ar"]],
     book: "Забронировать стол", bookShort: "Забронировать",
-    openDaily: "Открыто 12:00 – 03:00",
+    openDaily: "Открыто 11:00 – 03:00",
     menuOpen: "Открыть меню", menuClose: "Закрыть меню", home: "Главная",
     call: "Позвонить", wa: "WhatsApp",
     waHello: "Здравствуйте, Adam's Beer Kitchen! ",
@@ -57,15 +57,15 @@ window.ABK_I18N = {
     gateNoText: "Приходите на свой 21-й день рождения. Мы придержим для вас место.",
     ftrBlurb: "Вкусная еда, холодное пиво и отличная атмосфера на первом этаже HE Hotel Apartments.",
     ftrVisit: "Адрес", ftrAddress: ["1-й этаж, HE Hotel Apartments", "Assel Boulevard, Al Barsha South Fourth", "Jumeirah Village Circle (JVC), Дубай"],
-    ftrHours: "Открыто каждый день 12:00 – 03:00", ftrValet: "Парковка с валетом",
+    ftrHours: "Открыто каждый день 11:00 – 03:00", ftrValet: "Парковка с валетом",
     ftrTalk: "Связаться", ftrWa: "Написать в WhatsApp", ftrIg: "Instagram",
     ftrExplore: "Разделы", ftrEnglish: "Сайт на английском",
     ftrFamily: "Мы также есть в Абу-Даби:", ftrReem: "Adam's Beer Kitchen Al Reem Island", ftrForsan: "Adam's Beer Kitchen Al Forsan", ftrAnd: " и ",
     ftrBase: "Пейте ответственно. Только для гостей старше 21 года.", ftrCredit: "Сайт: Lukas Grobler",
     ftrPrivacy: "Конфиденциальность (на английском)", ftrTerms: "Условия (на английском)",
     live: {
-      open: "Открыто до 03:00", opens: "Откроемся сегодня в 12:00",
-      hhOn: "Happy hour до {t}", hhLater: "Happy hour с 12:00 сегодня", hhTomorrow: "Happy hour снова завтра с 12:00"
+      open: "Открыто до 03:00", opens: "Откроемся сегодня в 11:00",
+      hhOn: "Happy hour до {t}", hhLater: "Happy hour с 11:00 сегодня", hhTomorrow: "Happy hour снова завтра с 11:00"
     },
     adam: {
       launch: "Спросите Адама", sub: "Ваш хост в Adam's Beer Kitchen JVC", placeholder: "Спросите что угодно", send: "Отправить", close: "Закрыть",

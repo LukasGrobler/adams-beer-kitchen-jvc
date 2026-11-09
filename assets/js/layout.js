@@ -90,7 +90,7 @@
     (more.length ? '<div class="nav__more"><button type="button" aria-expanded="false" aria-controls="moredrop">More ' + I.chev + '</button><div class="nav__drop" id="moredrop">' +
     more.map(function (n) { return '<a href="' + n[0] + '"' + (n[2] ? ' class="opt"' : "") + hl(n) + cur(n[0]) + ">" + n[1] + "</a>"; }).join("") +
     "</div></div>" : "") + "</nav>" +
-    '<div class="hdr__cta">' + langPick + '<span class="pill" data-open-pill><span class="pill__dot"></span><span data-open-text>' + tx("openDaily", "Open daily 12PM – 3AM") + '</span></span><a class="btn btn--sm" href="' + bookHref + '">' + tx("bookShort", "Book a table") + "</a>" +
+    '<div class="hdr__cta">' + langPick + '<span class="pill" data-open-pill><span class="pill__dot"></span><span data-open-text>' + tx("openDaily", "Open daily 11AM – 3AM") + '</span></span><a class="btn btn--sm" href="' + bookHref + '">' + tx("bookShort", "Book a table") + "</a>" +
     '<button class="hdr__burger" type="button" aria-label="' + tx("menuOpen", "Open menu") + '" aria-expanded="false" aria-controls="mnav"><span></span></button></div>' +
     "</div></header>" +
     '<div class="mnav" id="mnav" role="dialog" aria-modal="true" aria-label="Menu"><div class="mnav__top"><a class="brand" href="' + home + '"><img src="assets/img/logo.png" alt="Adam\'s Beer Kitchen" width="58" height="58"></a><button class="mnav__close" type="button" aria-label="' + tx("menuClose", "Close menu") + '">&times;</button></div>' +
@@ -119,37 +119,27 @@
   var forcePour = /[?&]intro\b/.test(location.search);
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var needPour = isHome && !reduce && !skip && (forcePour || ss("abk_pour") !== "1");
-  var glass = "M30 22 H190 L196 70 L176 308 Q175 318 165 318 H55 Q45 318 44 308 L24 70 Z";
-  var bubbles = "";
-  [[60, 290, 0], [92, 300, .3], [130, 280, .15], [160, 296, .45], [110, 310, .6], [76, 270, .75], [150, 262, .9]].forEach(function (b) {
-    bubbles += '<circle class="pour__bubble" cx="' + b[0] + '" cy="' + b[1] + '" r="2.6" fill="#fff4d6" style="animation-delay:' + b[2] + 's"/>';
-  });
+  /* the intro: the logo builds itself in gold light (flourishes sweep in, the lettering is lit
+     left to right, the hop pops, a shine runs across), then it flies into the header */
   var pour = needPour ?
-    '<div class="pour" id="pour" aria-hidden="true"><div class="pour__stage">' +
-    '<svg class="pour__glass" viewBox="0 0 220 340" style="opacity:0"><defs>' +
-    '<clipPath id="pourClip"><path d="' + glass + '"/></clipPath>' +
-    '<linearGradient id="pourBeer" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd66b"/><stop offset=".35" stop-color="#f5b02e"/><stop offset="1" stop-color="#b8640c"/></linearGradient>' +
-    '<linearGradient id="pourDepth" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity=".2"/><stop offset=".25" stop-color="#fff" stop-opacity=".14"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".24"/></linearGradient>' +
-    '<linearGradient id="pourStream" x1="0" x2="1"><stop offset="0" stop-color="#e99a16"/><stop offset=".5" stop-color="#ffd970"/><stop offset="1" stop-color="#e99a16"/></linearGradient></defs>' +
-    '<rect class="pour__stream" x="104" y="-420" width="12" height="0" rx="6" fill="url(#pourStream)"/>' +
-    '<g clip-path="url(#pourClip)"><g class="pour__liquid" transform="translate(0 335)"><rect width="220" height="360" fill="url(#pourBeer)"/><rect width="220" height="360" fill="url(#pourDepth)"/>' + bubbles +
-    '<g class="pour__foam"><path d="M0 -30 C14 -40 28 -24 44 -32 S72 -42 88 -30 S118 -22 134 -34 S164 -42 180 -30 S208 -24 220 -32 V6 H0 Z" fill="#fff6e2"/>' +
-    '<circle cx="30" cy="-12" r="5" fill="#fffdf7"/><circle cx="74" cy="-6" r="4" fill="#fffdf7"/><circle cx="120" cy="-14" r="6" fill="#fffdf7"/><circle cx="168" cy="-8" r="4.5" fill="#fffdf7"/>' +
-    '<path d="M0 6 H220" stroke="#efd29c" stroke-width="4"/></g></g></g>' +
-    '<path d="' + glass + '" fill="rgba(255,255,255,.05)" stroke="rgba(244,234,219,.88)" stroke-width="3.5" stroke-linejoin="round"/>' +
-    '<g clip-path="url(#pourClip)">' +
-    '<path d="M48 302 Q110 314 172 302" stroke="rgba(255,255,255,.28)" stroke-width="6" fill="none" stroke-linecap="round"/>' +
-    '<path d="M37 88 L53 282" stroke="#fff" stroke-opacity=".28" stroke-width="7" stroke-linecap="round"/>' +
-    '<path d="M184 92 L179 150" stroke="#fff" stroke-opacity=".18" stroke-width="4" stroke-linecap="round"/></g></svg>' +
-    '<img class="pour__logo" src="assets/img/logo.png" alt="" width="160" height="160" style="opacity:0">' +
-    '<p class="pour__slogan"><span style="opacity:0">Good food.</span> <span style="opacity:0">Cold beer.</span> <span style="opacity:0">Great vibes.</span></p></div>' +
-    '<svg class="pour__edge" viewBox="0 0 1440 70" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0 H1440 V30 C1340 58 1260 18 1160 40 S960 62 860 36 S660 14 560 40 S360 64 260 36 S80 20 0 44 Z" fill="#fff4dc"/></svg>' +
+    '<div class="pour intro" id="pour" aria-hidden="true"><canvas class="intro__dust"></canvas><div class="intro__stage">' +
+    '<div class="intro__logo"><span class="intro__ring"></span>' +
+    '<img class="il il--gold" src="assets/img/intro/logo-gold.png" alt="" style="opacity:0">' +
+    '<img class="il il--white" src="assets/img/intro/logo-white.png" alt="" style="opacity:0">' +
+    '<span class="il il--flare" style="opacity:0"></span>' +
+    '<img class="il il--hop" src="assets/img/intro/logo-hop.png" alt="" style="opacity:0">' +
+    '<span class="il il--shine"></span></div>' +
+    '<p class="pour__slogan intro__slogan"><span style="opacity:0">Good food.</span> <span style="opacity:0">Cold beer.</span> <span style="opacity:0">Great vibes.</span></p>' +
+    '<p class="intro__place" style="opacity:0">Jumeirah Village Circle · Dubai</p></div>' +
     '<button class="pour__skip" type="button">Skip intro</button></div>' : "";
 
   if (needGate || needPour) document.documentElement.classList.add("is-locked");
 
   var me = document.currentScript;
-  me.insertAdjacentHTML("afterend", header + gate + pour);
+  /* page change: the curtain that came up on the last page lifts off this one (fx.js drops it on the way out) */
+  var curtain = !needGate && !needPour && !reduce && ss("abk_pt") === "1" ? '<div class="fx-pt fx-pt--out" aria-hidden="true"><img src="assets/img/logo.png" alt="" width="120" height="120"></div>' : "";
+  if (ss("abk_pt") === "1") ss("abk_pt", "0");
+  me.insertAdjacentHTML("afterend", header + gate + pour + curtain);
 
   (function () {
     var lp = document.querySelector(".langpick"), b = lp && lp.querySelector("button");
@@ -184,11 +174,10 @@
     var html =
       '<footer class="ftr"><div class="wrap"><div class="ftr__grid">' +
       '<div class="ftr__brand"><img src="assets/img/logo.png" alt="Adam\'s Beer Kitchen" width="120" height="120"><p>Good food, cold beer and great vibes, one floor up at HE Hotel Apartments. JVC\'s best-kept secret, until now.</p></div>' +
-      '<div><h3>Visit</h3><address>' + V.address.join("<br>") + "</address><p class=\"small\" style=\"margin-top:10px\">Open daily 12PM – 3AM<br>Valet parking available</p></div>" +
+      '<div><h3>Visit</h3><address>' + V.address.join("<br>") + "</address><p class=\"small\" style=\"margin-top:10px\">Open daily 11AM – 3AM<br>Valet parking available</p></div>" +
       '<div><h3>Talk to us</h3><ul><li><a href="tel:' + V.phone + '">' + V.phoneDisplay + '</a></li><li><a href="' + waLink + '" target="_blank" rel="noopener">WhatsApp us</a></li><li><a href="' + V.instagram + '" target="_blank" rel="noopener">Instagram ' + V.handle + '</a></li><li><a href="book.html">Book a table</a></li></ul></div>' +
       '<div class="ftr__explore"><h3>Explore</h3><ul><li><a href="whats-on.html">What\'s on</a></li><li><a href="brunches.html">Brunches & drunches</a></li><li><a href="live-music.html">Live music</a></li><li><a href="sports.html">Sports & darts</a></li><li><a href="club.html">Adam\'s Club</a></li><li><a href="matches.html">Match board</a></li><li><a href="predictor.html">Score predictor</a></li><li><a href="christmas-parties.html">Christmas &amp; NYE</a></li><li><a href="vouchers.html">Gift vouchers</a></li><li><a href="quiz-league.html">Quiz league</a></li><li><a href="offers.html">Offers</a></li><li><a href="menu.html">Menu</a></li><li><a href="gallery.html">Gallery</a></li><li><a href="reviews.html">Reviews</a></li><li><a href="about.html">Our story</a></li><li><a href="hotel-guests.html">Hotel guests</a></li><li><a href="songs.html">Request a song</a></li><li><a href="creators.html">Creators</a></li><li><a href="find-us.html">Find us</a></li><li><a href="ar.html" lang="ar" dir="rtl">العربية</a></li><li><a href="ru.html" lang="ru">Русский</a></li></ul></div>' +
       "</div>" +
-      '<p class="ftr__family">Also pouring in Abu Dhabi: <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-reem/">Adam\x27s Beer Kitchen Al Reem Island</a> and <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-forsan/">Adam\x27s Beer Kitchen Al Forsan</a>.</p>' +
       '<div class="ftr__base"><span>&copy; ' + year + " Adam's Beer Kitchen JVC. Please drink responsibly. Over-21s only.</span>" +
       '<span class="ftr__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></span>' +
       (isHome ? '<a href="index.html?intro">Pour another (replay the intro)</a>' : "") +
@@ -207,7 +196,6 @@
       '<div class="ftr__explore"><h3>' + TX.ftrExplore + "</h3><ul>" + TX.nav.map(function (n) { return '<li><a href="' + n[0] + '">' + n[1] + "</a></li>"; }).join("") +
       '<li><a href="index.html" lang="en" dir="ltr">' + TX.ftrEnglish + "</a></li>" + TX.langs.filter(function (l) { return l[2] !== "en"; }).map(function (l) { return '<li><a href="' + l[0] + '"' + hl([0, 0, 0, l[2]]) + ">" + l[1] + "</a></li>"; }).join("") + "</ul></div>" +
       "</div>" +
-      '<p class="ftr__family">' + TX.ftrFamily + ' <a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-reem/">' + TX.ftrReem + "</a>" + TX.ftrAnd + '<a href="https://lukasgrobler.github.io/adams-beer-kitchen-al-forsan/">' + TX.ftrForsan + "</a>.</p>" +
       '<div class="ftr__base"><span>&copy; ' + year + " Adam's Beer Kitchen JVC. " + TX.ftrBase + "</span>" +
       '<span class="ftr__legal"><a href="privacy.html">' + TX.ftrPrivacy + '</a><a href="terms.html">' + TX.ftrTerms + "</a></span>" +
       '<span class="ftr__credit">' + TX.ftrCredit + "</span></div>" +

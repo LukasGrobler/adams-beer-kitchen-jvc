@@ -20,10 +20,10 @@ window.ABK_DATA = {
     reviewUrl: "https://www.google.com/maps/place/Adams+Beer+Kitchen+JVC/data=!4m2!3m1!1s0x0:0xbb22cb6ce9d9866",
     instagram: "https://www.instagram.com/abk_jvc/",
     handle: "@abk_jvc",
-    opens: "12:00",
+    opens: "11:00",
     closes: "03:00",
     groupMax: 40, /* the biggest group that can book online; bigger groups are asked to call the team */
-    happyHour: { 0: ["12:00", "21:00"], 1: ["12:00", "21:00"], 2: ["12:00", "21:00"], 3: ["12:00", "21:00"], 4: ["12:00", "21:00"], 5: ["12:00", "19:00"], 6: ["12:00", "19:00"] }
+    happyHour: { 0: ["11:00", "21:00"], 1: ["11:00", "21:00"], 2: ["11:00", "21:00"], 3: ["11:00", "21:00"], 4: ["11:00", "21:00"], 5: ["11:00", "19:00"], 6: ["11:00", "19:00"] }
   },
 
   /* Each name opens a pop-up with the bio and their next dates (live-music.html#artist-KEY links straight to it).
@@ -39,8 +39,6 @@ window.ABK_DATA = {
       bio: "Lee plays twice a week: the Friday afternoon set while the brunches get going, and Sunday night to see the weekend out." },
     "amy": { name: "Amy", role: "Live music", initials: "A",
       bio: "Amy plays the Smoking Saturdays BBQ brunch, live through the afternoon while the grill does its thing." },
-    "matt": { name: "Matt", role: "Live music", initials: "M",
-      bio: "Matt takes the Saturday evening set, live through the Saturday drunch." }
   },
 
   /* Weekly events. "slots" drive the chalkboard, the calendar files and the booking form. */
@@ -62,35 +60,35 @@ window.ABK_DATA = {
       short: "Teams, trivia and prizes up to AED 2,000.",
       intro: "Round up your cleverest friends, plus the one who knows football. ItsDylanLive asks the questions, you argue over the answers, and the winning team walks away with prizes worth up to AED 2,000.",
       facts: [["Quiz", "7PM – 9:30PM"], ["Prizes", "Up to AED 2,000"], ["Drunch", "7PM – 10PM"]],
-      packages: [{ name: "Quiz Drunch", time: "7PM – 10PM", house: 189, premium: 239 }],
+      packages: [{ name: "Quiz Drunch", time: "7PM – 10PM", house: 199, premium: 249 }],
       lineup: [{ who: "itsdylanlive", time: "7PM – 9:30PM" }],
-      slots: [{ label: "Quiz Night with ItsDylanLive", start: "19:00", end: "21:30" }, { label: "Quiz Drunch", start: "19:00", end: "22:00", price: "AED 189 / 239" }],
+      slots: [{ label: "Quiz Night with ItsDylanLive", start: "19:00", end: "21:30" }, { label: "Quiz Drunch", start: "19:00", end: "22:00", price: "AED 199 / 249" }],
       hallOfFame: true,
-      week: { title: "Quiz night", lines: [["7PM – 9:30PM", "Hosted by ItsDylanLive"], ["Prizes", "Up to AED 2,000"], ["Drunch", "7PM – 10PM, AED 189 / 239"]] }
+      week: { title: "Quiz night", lines: [["7PM – 9:30PM", "Hosted by ItsDylanLive"], ["Prizes", "Up to AED 2,000"], ["Drunch", "7PM – 10PM, AED 199 / 249"]] }
     },
     {
       slug: "ladies-night", days: [3], dayLabel: "Every Wednesday",
       name: "Ladies Night", with: "A mixed bites platter with every package",
       cats: ["drinks"], img: "post-12", img2: "post-5",
-      short: "Ladies from AED 99, lads from AED 149, mixed bites platter included.",
+      short: "Ladies from AED 129, lads from AED 179, mixed bites platter included.",
       intro: "Wednesday belongs to the ladies. The lads are welcome too, at lads' prices. Every package comes with a mixed bites platter.",
-      facts: [["Every package", "Mixed bites platter"], ["Ladies", "From AED 99"], ["Lads", "From AED 149"]],
-      packages: [{ name: "Ladies", time: "Mixed bites platter included", house: 99, premium: 129 }, { name: "Lads", time: "Mixed bites platter included", house: 149, premium: 199 }],
-      slots: [{ label: "Ladies Night", start: "20:00", end: "23:00", price: "Ladies AED 99 / 129" }],
-      week: { title: "Ladies night", lines: [["Ladies", "AED 99 / 129"], ["Lads", "AED 149 / 199"], ["Every package", "Mixed bites platter"]] }
+      facts: [["Every package", "Mixed bites platter"], ["Ladies", "From AED 129"], ["Lads", "From AED 179"]],
+      packages: [{ name: "Ladies", time: "Mixed bites platter included", house: 129, premium: 159 }, { name: "Lads", time: "Mixed bites platter included", house: 179, premium: 229 }],
+      slots: [{ label: "Ladies Night", start: "20:00", end: "23:00", price: "Ladies AED 129 / 159" }],
+      week: { title: "Ladies night", lines: [["Ladies", "AED 129 / 159"], ["Lads", "AED 179 / 229"], ["Every package", "Mixed bites platter"]] }
     },
     {
       slug: "steak-night", days: [4], dayLabel: "Every Thursday",
       name: "Steak Night", with: "and Thirsty Thursdays",
       cats: ["food", "drinks", "music"], img: "post-3",
-      short: "250g rib-eye, fries and two house drinks for AED 199.",
-      intro: "A 250g rib-eye with fries and two house beers or house wines for AED 199. If you would rather keep the drinks flowing, Thirsty Thursdays drunch runs 7PM to 11PM, and Fergal O'Neill is on from 8PM.",
-      facts: [["Steak deal", "AED 199"], ["Drunch", "7PM – 11PM"], ["Live music", "8PM – 11PM"]],
-      deal: { title: "250g rib-eye, fries and 2 house beers or house wines", price: 199 },
+      short: "250g rib-eye, fries and two house drinks for AED 149.",
+      intro: "A 250g rib-eye with fries and two house beers or house wines for AED 149. If you would rather keep the drinks flowing, Thirsty Thursdays drunch runs 7PM to 11PM, and Fergal O'Neill is on from 8PM.",
+      facts: [["Steak deal", "AED 149"], ["Drunch", "7PM – 11PM"], ["Live music", "8PM – 11PM"]],
+      deal: { title: "250g rib-eye, fries and 2 house beers or house wines", price: 149 },
       packages: [{ name: "Thirsty Thursdays Drunch", time: "7PM – 11PM", house: 199, premium: 249 }],
       lineup: [{ who: "fergal", time: "8PM – 11PM" }],
-      slots: [{ label: "Steak Night", start: "19:00", end: "23:00", price: "AED 199" }, { label: "Thirsty Thursdays Drunch", start: "19:00", end: "23:00", price: "AED 199 / 249" }, { label: "Fergal O'Neill live", start: "20:00", end: "23:00" }],
-      week: { title: "Steak night", lines: [["AED 199", "250g rib-eye, fries + 2 house drinks"], ["Drunch", "7PM – 11PM, AED 199 / 249"], ["8PM – 11PM", "Live: Fergal O'Neill"]] }
+      slots: [{ label: "Steak Night", start: "19:00", end: "23:00", price: "AED 149" }, { label: "Thirsty Thursdays Drunch", start: "19:00", end: "23:00", price: "AED 199 / 249" }, { label: "Fergal O'Neill live", start: "20:00", end: "23:00" }],
+      week: { title: "Steak night", lines: [["AED 149", "250g rib-eye, fries + 2 house drinks"], ["Drunch", "7PM – 11PM, AED 199 / 249"], ["8PM – 11PM", "Live: Fergal O'Neill"]] }
     },
     {
       slug: "teachers-brunch", days: [5], dayLabel: "Every Friday",
@@ -119,29 +117,29 @@ window.ABK_DATA = {
       slug: "karaoke-night", days: [5], dayLabel: "Every Friday",
       name: "Karaoke Night", with: "with Jen Kusch",
       cats: ["quiz", "music", "drinks"], img: "post-1",
-      short: "Karaoke and Late Night Drunch 8PM – 11PM, then Fergal O'Neill live till 2AM.",
-      intro: "The mic is yours from 8PM, with Jen Kusch running the show. Perform a song and enjoy a free shot on us. Late Night Drunch runs 8PM to 11PM, then Fergal O'Neill takes over until 2AM.",
-      facts: [["Karaoke", "8PM – 11PM"], ["Late drunch", "8PM – 11PM"], ["Live music", "11PM – 2AM"]],
-      packages: [{ name: "Late Night Drunch", time: "8PM – 11PM", house: 229, premium: 279 }],
+      short: "Karaoke 8PM – 11PM and Late Night Drunch 8PM – 12AM, then Fergal O'Neill live till 2AM.",
+      intro: "The mic is yours from 8PM, with Jen Kusch running the show. Perform a song and enjoy a free shot on us. Late Night Drunch runs 8PM to 12AM, then Fergal O'Neill takes over until 2AM.",
+      facts: [["Karaoke", "8PM – 11PM"], ["Late drunch", "8PM – 12AM"], ["Live music", "11PM – 2AM"]],
+      packages: [{ name: "Late Night Drunch", time: "8PM – 12AM", house: 229, premium: 279 }],
       lineup: [{ who: "jen", time: "8PM – 11PM" }, { who: "fergal", time: "11PM – 2AM" }],
-      slots: [{ label: "Karaoke with Jen Kusch", start: "20:00", end: "23:00" }, { label: "Late Night Drunch", start: "20:00", end: "23:00", price: "AED 229 / 279" }, { label: "Fergal O'Neill live", start: "23:00", end: "02:00" }]
+      slots: [{ label: "Karaoke with Jen Kusch", start: "20:00", end: "23:00" }, { label: "Late Night Drunch", start: "20:00", end: "00:00", price: "AED 229 / 279" }, { label: "Fergal O'Neill live", start: "23:00", end: "02:00" }]
     },
     {
       slug: "smoking-saturdays", days: [6], dayLabel: "Every Saturday",
       name: "Smoking Saturdays", with: "Live BBQ brunch and two live sets",
       cats: ["food", "drinks", "music"], img: "smoking-saturdays", weekImg: "post-10", /* the venue's poster on its page; a photo on the homepage week */
-      short: "BBQ brunch 3PM – 7PM with 1 starter and the full BBQ platter, then drunch 7PM – 10PM. Live music from Amy and Matt.",
-      intro: "The BBQ gets lit at 3PM: every brunch comes with 1 starter and the full BBQ platter, and Amy plays from 2:30PM to 5:30PM. Saturday Drunch follows from 7PM till 10PM, with Matt live through it.",
-      facts: [["BBQ brunch", "3PM – 7PM"], ["Drunch", "7PM – 10PM"], ["Live music", "Amy & Matt"]],
+      short: "BBQ brunch 3PM – 7PM with 1 starter and the full BBQ platter, then drunch 7PM – 10PM. Live music from Amy.",
+      intro: "The BBQ gets lit at 3PM: every brunch comes with 1 starter and the full BBQ platter, and Amy plays from 2:30PM to 5:30PM. Saturday Drunch follows from 7PM till 10PM.",
+      facts: [["BBQ brunch", "3PM – 7PM"], ["Drunch", "7PM – 10PM"], ["Live music", "Amy"]],
       packages: [{ name: "BBQ Brunch", time: "3PM – 7PM, 1 starter + full BBQ platter", house: 249, premium: 299 }, { name: "Saturday Drunch", time: "7PM – 10PM", house: 229, premium: 279 }],
-      lineup: [{ who: "amy", time: "2:30PM – 5:30PM" }, { who: "matt", time: "7PM – 10PM" }],
+      lineup: [{ who: "amy", time: "2:30PM – 5:30PM" }],
       img2: "smoking-saturdays-menu", menuTitle: "The BBQ brunch menu",
       menu: [
         { name: "Pick your starter", items: ["Jalapeño poppers", "BBQ chicken wings", "Chicken tenders", "Onion rings", "Solo nacho with guacamole, salsa and sour cream"] },
         { name: "Mixed BBQ platter", items: ["Shish tawook chicken", "Grilled salmon", "Grilled jumbo prawns", "Rib-eye steak"], note: "Served with fresh salad and your choice of sauce: hummus, blue cheese, tartar, pepper mint or garlic mayo." }
       ],
-      slots: [{ label: "Amy live", start: "14:30", end: "17:30" }, { label: "Smoking Saturdays BBQ Brunch", start: "15:00", end: "19:00", price: "AED 249 / 299" }, { label: "Saturday Drunch", start: "19:00", end: "22:00", price: "AED 229 / 279" }, { label: "Matt live", start: "19:00", end: "22:00" }],
-      week: { title: "Smoking Saturdays", lines: [["3PM – 7PM", "BBQ brunch, AED 249 / 299"], ["7PM – 10PM", "Drunch, AED 229 / 279"], ["Live", "Amy, Matt"]] }
+      slots: [{ label: "Amy live", start: "14:30", end: "17:30" }, { label: "Smoking Saturdays BBQ Brunch", start: "15:00", end: "19:00", price: "AED 249 / 299" }, { label: "Saturday Drunch", start: "19:00", end: "22:00", price: "AED 229 / 279" }],
+      week: { title: "Smoking Saturdays", lines: [["3PM – 7PM", "BBQ brunch, AED 249 / 299"], ["7PM – 10PM", "Drunch, AED 229 / 279"], ["Live", "Amy, 2:30PM – 5:30PM"]] }
     },
     {
       slug: "sunday-social", days: [0], dayLabel: "Every Sunday",
@@ -161,16 +159,16 @@ window.ABK_DATA = {
   /* Tonight takeover: on each day the homepage headline becomes that day's main event. */
   takeover: {
     1: { slug: "monday-20-off", lines: ["20% off", "Mondays"], sub: "20% off food and drinks for cabin crew, teachers and hoteliers, from 9PM till close." },
-    2: { slug: "quiz-night", lines: ["Quiz", "night"], sub: "With ItsDylanLive. Prizes up to AED 2,000, and quiz drunch from AED 189." },
-    3: { slug: "ladies-night", lines: ["Ladies", "night"], sub: "Ladies from AED 99 and lads from AED 149, with a mixed bites platter in every package." },
-    4: { slug: "steak-night", lines: ["Steak", "night"], sub: "A 250g rib-eye, fries and two house drinks for AED 199, with Fergal O'Neill live from 8PM." },
+    2: { slug: "quiz-night", lines: ["Quiz", "night"], sub: "With ItsDylanLive. Prizes up to AED 2,000, and quiz drunch from AED 199." },
+    3: { slug: "ladies-night", lines: ["Ladies", "night"], sub: "Ladies from AED 129 and lads from AED 179, with a mixed bites platter in every package." },
+    4: { slug: "steak-night", lines: ["Steak", "night"], sub: "A 250g rib-eye, fries and two house drinks for AED 149, with Fergal O'Neill live from 8PM." },
     5: { slug: "karaoke-night", lines: ["Big", "Friday"], sub: "Teachers' brunch from 1PM, Lee Wall at 3PM, Get Real Fridays at 4PM, karaoke at 8PM and Fergal O'Neill till 2AM.", start: "13:00", end: "02:00", link: "whats-on.html#day-5" },
-    6: { slug: "smoking-saturdays", lines: ["Smoking", "Saturdays"], sub: "Live BBQ brunch from 3PM with Amy live, then drunch from 7PM with Matt." },
+    6: { slug: "smoking-saturdays", lines: ["Smoking", "Saturdays"], sub: "Live BBQ brunch from 3PM with Amy live, then drunch from 7PM till 10PM." },
     0: { slug: "sunday-social", lines: ["Sunday", "roast"], sub: "The full roast buffet from AED 99, 1PM to 7PM, with Fergal O'Neill from 5PM and Lee Wall from 9PM." }
   },
 
   /* Friday has three events; the week scroller shows them as one night. */
-  fridayWeek: { title: "Big Friday", img: "post-1", link: "karaoke-night", lines: [["1PM – 9PM", "Teachers' brunch & drunch"], ["3PM – 6PM", "Live: Lee Wall"], ["4PM – 8PM", "Get Real Fridays, AED 199 / 249"], ["8PM – 11PM", "Karaoke & late drunch"], ["11PM – 2AM", "Live: Fergal O'Neill"]] },
+  fridayWeek: { title: "Big Friday", img: "post-1", link: "karaoke-night", lines: [["1PM – 9PM", "Teachers' brunch & drunch"], ["3PM – 6PM", "Live: Lee Wall"], ["4PM – 8PM", "Get Real Fridays, AED 199 / 249"], ["8PM – 12AM", "Karaoke & late drunch"], ["11PM – 2AM", "Live: Fergal O'Neill"]] },
 
   offers: [
     {
@@ -178,7 +176,7 @@ window.ABK_DATA = {
       dayLabel: "Every day",
       short: "Sunday – Thursday till 9PM, Friday & Saturday till 7PM.",
       intro: "The best hours of the day, priced accordingly. Happy Hour starts the moment the doors open and runs till 9PM Sunday to Thursday, and till 7PM on Friday and Saturday.",
-      facts: [["Sun – Thu", "12PM – 9PM"], ["Fri – Sat", "12PM – 7PM"], ["Where", "Whole venue"]]
+      facts: [["Sun – Thu", "11AM – 9PM"], ["Fri – Sat", "11AM – 7PM"], ["Where", "Whole venue"]]
     },
     {
       slug: "tower-up", name: "Tower Up Your Day", with: "2.5L beer tower + bites platter", cats: ["deals", "drinks"], img: "post-1",
@@ -187,6 +185,23 @@ window.ABK_DATA = {
       intro: "A 2.5 litre tower of select beer and a bites platter, for AED 179, all day Monday to Thursday. Built for sharing, so bring the group.",
       facts: [["When", "Mon – Thu, all day"], ["Tower", "2.5L + bites platter"], ["Price", "AED 179"]],
       fine: "Monday to Thursday, all day. Terms and conditions apply."
+    },
+    {
+      slug: "grill-platter", name: "Grill Platter", with: "AED 119 with 2 house drinks, AED 149 with 2 Guinness", cats: ["deals", "food"], img: "grill-platter",
+      dayLabel: "Monday to Friday, all day",
+      short: "A grill platter with 2 house drinks for AED 119, or 2 Guinness for AED 149, Monday to Friday.",
+      intro: "Beef kofta, steak, chicken skewers and chicken kofta, grilled corn, tomatoes, onion and lime, with a garlic dip. AED 119 with 2 house drinks, or AED 149 with 2 Guinness, all day Monday to Friday.",
+      facts: [["When", "Mon – Fri, all day"], ["Platter", "Mixed grill + sides"], ["House drinks", "AED 119"], ["2 Guinness", "AED 149"]],
+      packages: [{ name: "Grill Platter", time: "Monday – Friday, all day", house: 119, premium: 149 }],
+      fine: "House option: platter with 2 house drinks. Premium option: platter with 2 Guinness. Monday to Friday, all day. Terms and conditions apply."
+    },
+    {
+      slug: "beer-buckets-towers", name: "Beer Buckets & Beer Towers", with: "Towers from AED 229, buckets from AED 165", cats: ["deals", "drinks"], img: "beer-buckets-towers",
+      dayLabel: "Every day",
+      short: "A beer tower (Amstel or Tiger) for AED 229, or a bucket of 5 bottles for AED 165.",
+      intro: "Share a beer tower or a bucket for the table. Towers are Amstel or Tiger only, AED 229. Buckets are 5 bottles for AED 165: Corona, Heineken, Singha, Brooklyn IPA and Budweiser.",
+      facts: [["Beer Towers", "Amstel & Tiger only"], ["Beer Buckets", "5 bottles"], ["Towers", "AED 229"], ["Buckets", "AED 165"]],
+      fine: "Buckets: Corona, Heineken, Singha, Brooklyn IPA, Budweiser. Terms and conditions apply."
     }
   ],
 
@@ -260,6 +275,33 @@ window.ABK_DATA = {
     ["1 Sep 2026", "Know It Ales"]
   ],
 
+  /* the drinks in the brunch and drunch packages, from the Brunch/Drunch drinks menu (30 Oct 2026).
+     The homepage bar ("Pick your pour") pours these; Premium also includes everything in House. */
+  drinks: {
+    house: [
+      { group: "Bottled beers", items: ["Singha", "Brooklyn", "Tiger", "Birra Moretti", "Heineken"] },
+      { group: "Draught beers", items: ["Carlsberg", "Budweiser", "Somersby"] },
+      { group: "Spirits", items: ["Vodka", "White Rum", "Gin", "Pink Gin", "Whiskey"] },
+      { group: "Wines", items: ["Cabernet Sauvignon", "Merlot", "Sauvignon Blanc", "Rosé", "Sparkling Wine"] }
+    ],
+    premium: [
+      { group: "Premium draught", items: ["Guinness", "Magners", "Heineken", "Stella", "Amstel", "Birra Moretti", "Peroni", "Midway IPA"] },
+      { group: "Cocktails", items: ["Aperol Spritz", "Berry Martini", "Mojito", "Cosmopolitan", "Strawberry Daiquiri"] },
+      { group: "Bubbles", items: ["Prosecco"] }
+    ]
+  },
+
+  /* the homepage wall: this week's posters (web copies of the ones in "Posters for ABK"), one per night */
+  posters: [
+    { img: "poster-mon", cap: "Monday: 20% off" },
+    { img: "poster-tue", cap: "Tuesday: quiz night" },
+    { img: "poster-wed", cap: "Wednesday: ladies night" },
+    { img: "poster-thu", cap: "Thursday: steak night" },
+    { img: "poster-fri", cap: "Friday: TGIF" },
+    { img: "poster-sat", cap: "Saturday: Smoking Saturdays" },
+    { img: "poster-sun", cap: "Sunday: Sunday Social" },
+    { img: "poster-buckets", cap: "Every day: buckets & towers" }
+  ],
   gallery: [
     { img: "post-12", cap: "Wednesday well spent" },
     { img: "post-3", cap: "Steak night, no regrets" },

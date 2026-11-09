@@ -21,6 +21,9 @@
 
   /* ---------------- campaign landing pages ---------------- */
   function findCampaign(slug) { return D.campaigns.filter(function (c) { return c.slug === slug; })[0]; }
+  /* A real deposit only runs once data.js > payments has real payment links; until then, every package
+     is "book it on WhatsApp, pay on the night" instead of a pretend-charge checkout. */
+  function depFor(p, g) { return D.payments.mode === "links" ? p.deposit * g : 0; }
   function renderCampaign(root) {
     var c = findCampaign(root.getAttribute("data-campaign"));
     if (!c) return;
@@ -30,7 +33,7 @@
       return '<label class="pk' + (i === 0 ? " is-on" : "") + '"><input type="radio" name="pkg" value="' + p.id + '"' + (i === 0 ? " checked" : "") + '>' +
         '<span class="pk__name">' + esc(p.name) + '</span><span class="pk__note">' + esc(p.note) + '</span>' +
         '<span class="pk__price"><b>' + aed(p.price) + "</b> per " + esc(p.per || "person") + "</span>" +
-        '<span class="pk__dep">' + (p.deposit ? (p.deposit === p.price ? "Paid in full to book" : aed(p.deposit) + " deposit per person to lock the date") : "Free to book, pay on the night") + "</span></label>";
+        '<span class="pk__dep">' + (D.payments.mode !== "links" ? "Reserve on WhatsApp — pay on the night" : p.deposit ? (p.deposit === p.price ? "Paid in full to book" : aed(p.deposit) + " deposit per person to lock the date") : "Free to book, pay on the night") + "</span></label>";
     }).join("");
     root.innerHTML =
       '<section class="cp-hero"><div class="wrap cp-hero__in"><div class="cp-hero__copy">' +
@@ -57,7 +60,7 @@
     }
     function draw() {
       /* a bucket or a tower is priced per item, so there's no total for the group */
-      var s = state(), each = s.p.per && s.p.per !== "person", total = s.p.price * s.g, dep = s.p.deposit * s.g;
+      var s = state(), each = s.p.per && s.p.per !== "person", total = s.p.price * s.g, dep = depFor(s.p, s.g);
       $$(".pk", form).forEach(function (l) { l.classList.toggle("is-on", $("input", l).checked); });
       sum.innerHTML =
         '<ul class="cp-lines"><li><span>' + esc(s.p.name) + "</span><b>" + aed(s.p.price) + (each ? " per " + esc(s.p.per) : " × " + s.g) + "</b></li>" +
@@ -79,7 +82,7 @@
       if (!s.name) { msg.textContent = "Add your name so the team knows who's booking."; $("#cp-name", form).focus(); return; }
       if (!s.date || s.date < $("#cp-date", form).min || s.date > c.to) { msg.textContent = "Pick a date within " + c.season + "."; $("#cp-date", form).focus(); return; }
       msg.textContent = "";
-      var dep = s.p.deposit * s.g;
+      var dep = depFor(s.p, s.g);
       if (dep) {
         location.href = "checkout.html?" + new URLSearchParams({ kind: "deposit", c: c.slug, item: s.p.id, guests: s.g, date: s.date, name: s.name, co: s.co }).toString();
       } else {
@@ -104,6 +107,17 @@
     var p = new URLSearchParams(location.search), it = itemFor(p);
     if (!it) { root.innerHTML = '<div class="empty">Nothing to pay for here. <a class="link" href="christmas-parties.html">See Christmas parties</a> or <a class="link" href="vouchers.html">gift vouchers</a>.</div>'; return; }
     if (D.payments.mode === "links" && D.payments.links[p.get("item")]) { location.href = D.payments.links[p.get("item")]; return; }
+    if (D.payments.mode !== "links") {
+      /* Online payments aren't live yet: every one of these bounces to WhatsApp instead of a pretend checkout. */
+      var waLines = it.lines.map(function (l) { return l[0] + ": " + l[1]; }).join("\n");
+      var waMsg = p.get("kind") === "voucher"
+        ? "Hi Adam's Beer Kitchen! I'd like to buy a gift voucher.\n\n" + it.title.replace("Gift voucher: ", "Voucher: ") + ", " + aed(it.amount) + "\n" + waLines
+        : "Hi Adam's Beer Kitchen! I'd like to book " + it.c.name + " (" + it.pk.name + ").\n\n" + waLines;
+      root.innerHTML = '<div class="empty"><p class="lede" style="margin:0 0 18px">Online payments aren\'t live yet — we\'re taking ' +
+        (p.get("kind") === "voucher" ? "voucher orders" : "these bookings") + ' on WhatsApp for now.</p>' +
+        '<div class="btn-row"><a class="btn btn--wa" target="_blank" rel="noopener" href="' + waTo(waMsg) + '">' + (I.wa || "") + ' Send on WhatsApp</a><a class="btn btn--ghost" href="index.html">Back to the homepage</a></div></div>';
+      return;
+    }
     root.innerHTML =
       '<div class="co"><div class="co__sum"><p class="kicker" style="margin:0">You\'re paying for</p><h2 class="d-m" style="margin:6px 0 12px">' + esc(it.title) + "</h2>" +
       '<ul class="cp-lines">' + it.lines.map(function (l) { return "<li><span>" + esc(l[0]) + "</span><b>" + esc(l[1]) + "</b></li>"; }).join("") +
@@ -142,18 +156,24 @@
     }).join("") + "</div>" +
       '<form class="form vform" novalidate><div class="form__row"><div class="field"><label for="vo-to">Who\'s it for?</label><input id="vo-to" placeholder="e.g. Sam"></div><div class="field"><label for="vo-from">From</label><input id="vo-from" autocomplete="name" placeholder="e.g. Sarah"></div></div>' +
       '<div class="field"><label for="vo-msg">A message <span class="small">(optional)</span></label><input id="vo-msg" maxlength="90" placeholder="Happy birthday! First round\'s on me."></div>' +
-      '<button class="btn" type="submit" data-vo-buy>Buy the ' + esc(first.name) + " voucher, " + aed(first.price) + '</button><p class="small" data-vo-msg aria-live="polite" style="margin:0"></p></form>';
+      '<button class="btn" type="submit" data-vo-buy>' + voLabel(first) + '</button><p class="small" data-vo-msg aria-live="polite" style="margin:0"></p></form>';
     var form = $(".vform", root);
     function pick() { var id = $('input[name="voucher"]:checked', root).value; return D.vouchers.filter(function (v) { return v.id === id; })[0]; }
+    function voLabel(v) { return D.payments.mode === "links" ? "Buy the " + v.name + " voucher, " + aed(v.price) : "Ask about the " + v.name + " voucher on WhatsApp"; }
     root.addEventListener("change", function () {
       $$(".vcard", root).forEach(function (l) { l.classList.toggle("is-on", $("input", l).checked); });
-      var v = pick(); $("[data-vo-buy]", root).textContent = "Buy the " + v.name + " voucher, " + aed(v.price);
+      $("[data-vo-buy]", root).textContent = voLabel(pick());
     });
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var to = $("#vo-to", form).value.trim(), from = $("#vo-from", form).value.trim();
       if (!to || !from) { $("[data-vo-msg]", form).textContent = "Add who it's for and who it's from."; (to ? $("#vo-from", form) : $("#vo-to", form)).focus(); return; }
-      location.href = "checkout.html?" + new URLSearchParams({ kind: "voucher", item: pick().id, to: to, from: from, msg: $("#vo-msg", form).value.trim() }).toString();
+      var v = pick(), msgv = $("#vo-msg", form).value.trim();
+      if (D.payments.mode === "links") {
+        location.href = "checkout.html?" + new URLSearchParams({ kind: "voucher", item: v.id, to: to, from: from, msg: msgv }).toString();
+      } else {
+        window.open(waTo("Hi Adam's Beer Kitchen! I'd like to buy a gift voucher.\n\nVoucher: " + v.name + ", " + aed(v.price) + "\nFor: " + to + "\nFrom: " + from + (msgv ? "\nMessage: " + msgv : "")), "_blank", "noopener");
+      }
     });
   }
   function renderVoucher(root) {
